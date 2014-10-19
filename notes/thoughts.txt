@@ -14,6 +14,17 @@ How many players?
 - Let's say five.
 
 
+API / interaction thoughts
+--------------------------
+- AIs set a destination for each player, and the speed they want to move at
+  - Speed depends on their speed-ability and on their energy.
+
+
+Turning
+-------
+
+
+
 Skills & abilities
 ------------------
 - Passing accuracy

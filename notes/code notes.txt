@@ -1,0 +1,18 @@
+
+
+
+What gets passed to the players?
+--------------------------------
+
+
+
+What do we hold internally? ie the game state
+---------------------------------------------
+
+
+
+Client API
+----------
+
+
+

@@ -7,6 +7,53 @@ Power ups
   - New abilities, e.g. bend-it-like-Beckham
 
 
+How many players?
+-----------------
+- Too many might make it hard to see things in a GUI.
+- So five or six players?
+- Let's say five.
+
+
+Skills & abilities
+------------------
+- Passing accuracy
+- Curl "Bend it like Beckham"
+- Ball control (controlling a ball passed to you or intercepted)
+- Tackling
+- Speed
+- Stamina
+
+
+Initial allocation of abilities
+-------------------------------
+- 
+
+
+Size of the pitch
+-----------------
+- The goal should be wider than the sum of the players!
+  - Even if the players are spread out, the ball should be able to get through to the goal.
+
+Cheats
+------
+- Fouling
+- Diving
+- Biting
+- The Hand of God
+
+
+Sprint
+------
+- Ability to sprint for a short while (quite limited) which drains energy faster
+- A way to break away from a marker.
+
+
+Marking
+-------
+- How do we stop people just marking others incredibly closely?
+- Is there anything to stop them just sticking together?
+  - (What stops this in real football?)
+
 
 
 

@@ -1,0 +1,13 @@
+Power ups
+---------
+- The game could have power-ups that randomly appear. They could give you:
+  - Extra stamina
+  - Extra speed
+  - Extra skill
+  - New abilities, e.g. bend-it-like-Beckham
+
+
+
+
+
+

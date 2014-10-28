@@ -8,6 +8,37 @@ What gets passed to the players?
 
 What do we hold internally? ie the game state
 ---------------------------------------------
+- Pitch size is 105m x 68m
+  - Coordinates are doubles from (0.0, 0.0) to (105.0, 68.0)
+  - Starting from top-left of the pitch
+
+- Players have a direction they are facing (in degrees)
+  - 0 is pointing upwards
+  - 90 is pointing right
+
+- PlayerInfo
+  - Public dynamic info (change as the game is played)
+    - Position
+    - Direction
+    - HasBall
+  - Private dynamic info (includes the "intention" of the player)
+    - Energy
+    - Destination
+    - Speed (percentage of max speed)
+    - Action (tackle, hard tackle, foul, dive etc)
+  - Static info (though these can change - just less often)
+    - BallControl
+    - PassingAccuracy
+    - MaximumEnergy
+    - Agility (turning ability)
+    - CurlAbility
+    - TacklingAbility
+    - MaxSpeed
+    - MaxKickingForce
+
+    
+  
+
 
 
 

@@ -20,11 +20,6 @@ API / interaction thoughts
   - Speed depends on their speed-ability and on their energy.
 
 
-Turning
--------
-
-
-
 Skills & abilities
 ------------------
 - Passing accuracy
@@ -33,17 +28,44 @@ Skills & abilities
 - Tackling
 - Speed
 - Stamina
+- Turning speed (A more general 'agility' ability? Would it be used for anything else?)
 
 
 Initial allocation of abilities
 -------------------------------
 - 100 points in each ability
+- Is this enough? 
+  - Even distribution would give 20 points in each ability to each player.
+  - If 100 = perfect ability (e.g passing) then an average of 20% would be too low.
+- Answer: The 100 total (per ability) can be changed.
+  - So 100 = 100% accuracy
+- Less accuracy could make the games more interesting.
+  - More random anyway. Not sure whether this is good or bad.
+  - Even so: ability counts for something overall.
+
+
+Passing accuracy
+----------------
+- 100% (100 points) accuracy means 
+
+
+Turning
+-------
+- Players are facing in a direction
+- When they want to run in a direction they must turn first
+- This takes some time, depending on their agility
+- For passing and shooting, there could be an option to do so without turning.
+  - This reduces the accuracy, depending on the angle.
 
 
 Size of the pitch
 -----------------
 - The goal should be wider than the sum of the players!
   - Even if the players are spread out, the ball should be able to get through to the goal.
+- Size in "units"
+- Should we store values as doubles or integers?
+  - Doubles would be easier for calculations.
+
 
 Cheats
 ------
@@ -51,6 +73,22 @@ Cheats
 - Diving
 - Biting
 - The Hand of God
+- They all give you some advantage, if you get away with them.
+
+Hard tackle
+-----------
+- When tackling a player, you have the option to specify a hard tackle.
+  - This gives you a greater chance of getting the ball.
+  - But also gives a greater chance of committing a foul.
+
+
+Fouls
+-----
+- Deliberate fouls using the fouling API
+- Bashing into another player
+  - Not quite sure how to decide which player is guilty
+- Impeding progress
+
 
 
 Sprint
@@ -64,6 +102,50 @@ Marking
 - How do we stop people just marking others incredibly closely?
 - Is there anything to stop them just sticking together?
   - (What stops this in real football?)
+- This will be ok
+  - Because AIs see the current position every second, so there is a one second reaction time
+  - Also, players will have different speeds.
+
+
+Controlling destinations / intentions
+-------------------------------------
+- Should the API let AIs control the "intention" of each player
+  - Its destination and action
+- Or should AIs control the second-by-second action of each player
+  - e.g. Run in X direction at Y speed
+  - This seems better
+- How will tackling work?
+  - It may be impossible to tackle without "intention"
+  - If it was just "tackle in X direction" you would most likely miss.
+  - On the other hand, if you can just say "tackle player 3" at any time, this is too easy.
+  - So maybe you can say "tackle player 3"
+    - But only if you are close to them.
+
+
+Changing direction
+------------------
+- When you say to run in a certain direction at a certain speed, what happens if you are not 
+  currently facing that direction?
+  - 1: You first turn (which takes an amount of time depending on your agility)
+  - 2: You turn as you move.
+
+- For 2: You always move in the direction you are facing, at your current speed.
+  - You turn at your turning speed.
+  - So you move in an arc.
+  - I rather like this.    
+
+
+Physics 10x faster than AI updates?
+-----------------------------------
+- We need to make sure we detect collisions.
+  - Ball -->   <-- Player
+  - If they are going too fast, then they could "go through" each other, if we
+    don't check often enough.
+  - (Or we could try to be clever!)
+  - If we know the maximum speed of the ball and players, then we know the max combined speed.
+    So we can make sure we calculate fast enough to ensure collision detection.
+  
+
 
 
 

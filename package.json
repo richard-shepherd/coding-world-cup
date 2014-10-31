@@ -6,6 +6,6 @@
     "start": "node app.js"
   },
   "dependencies": {
-
+      "collections" : "1.2.1"
   }
 }

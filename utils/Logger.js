@@ -15,8 +15,27 @@
  * Constructor.
  */
 Logger = new function() {
-}
+};
+
+/**
+ * An enum for log levels.
+ */
+Logger.LogLevel = {
+    DEBUG: [0, "Debug"],
+    INFO: [1, "Info"],
+    INFO_PLUS: [3, "InfoPlus"],
+    WARNING: [4, "Warning"],
+    ERROR: [5, "Error"],
+    FATAL: [6, "Fatal"]
+};
+
+// Sections of the log can be indented...
+Logger._indent_level = 0;
+
+// The collection of loggers...
 
 
 
 
+// Exports...
+exports.Logger = Logger;

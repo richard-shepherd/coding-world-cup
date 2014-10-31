@@ -5,7 +5,9 @@
  *
  * This is a log-handler class which can be registered
  * with the Logger.
- *
+ */
+
+/**
  * @constructor
  */
 function LogHandler_Console(minimumLogLevel) {

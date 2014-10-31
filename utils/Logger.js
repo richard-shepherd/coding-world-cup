@@ -9,7 +9,9 @@
  *
  * This class manages log levels, formatting and indenting as well
  * as the collection of log-handlers.
+ */
 
+/**
  * @constructor
  */
 function Logger() {

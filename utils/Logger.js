@@ -1,21 +1,19 @@
 /**
  * Logger
  * ------
- * This "logger" is really a log-broker.
+ * The "logger" is really a log-broker.
  *
- * You register logging classes with it, which each implement
+ * You register log-handler classes with it, which each implement
  * a log(message) method. When you log to this class, it forwards
- * the message to the registered brokers.
+ * the message to the registered handlers.
  *
  * This class manages log levels, formatting and indenting as well
- * as the collection of loggers.
- */
+ * as the collection of log-handlers.
 
-/**
- * Constructor.
+ * @constructor
  */
-Logger = new function() {
-};
+function Logger() {
+}
 
 /**
  * An enum for log levels.
@@ -29,13 +27,65 @@ Logger.LogLevel = {
     FATAL: [6, "Fatal"]
 };
 
-// Sections of the log can be indented...
+// Indent level (sections of the log can be indented)...
 Logger._indent_level = 0;
 
-// The collection of loggers...
+// The collection of log-handlers...
+var set = require('collections/set');
+Logger._handlers = new set();
 
+/**
+ * Adds a log-handler. This is an object implementing:
+ * handle_log_message(message, level, indent_level)
+ */
+Logger.add_handler = function(handler) {
+    Logger._handlers.add(handler);
+};
 
+/**
+ * Removes a log handler.
+ */
+Logger.remove_handler = function(handler) {
+    Logger._handlers.delete(handler);
+};
 
+/**
+ * Logs the message.
+ */
+Logger.log = function(message, level) {
+    // We find the indent...
+    var indent = '';
+    if(Logger._indent_level > 0) {
+        indent = new Array(Logger._indent_level + 1).join('  ') + '- ';
+    }
+
+    // We add the log-level if it is high enough...
+    if(level[0] >= Logger.LogLevel.WARNING[0]) {
+        var prefix = level[1] + ': ';
+    }
+
+    // We log the formatted message...
+    var formattedMessage = indent + prefix + message;
+    Logger._handlers.forEach(function(handler) {
+        handler.log(formattedMessage);
+    });
+};
+
+/**
+ * Increases the indent level.
+ */
+Logger.indent = function() {
+    Logger._indent_level += 1;
+};
+
+/**
+ * Decreases the indent level.
+ */
+Logger.dedent = function() {
+    if(Logger._indent_level > 0) {
+        Logger._indent_level -= 1;
+    }
+};
 
 // Exports...
-exports.Logger = Logger;
+module.exports = Logger;

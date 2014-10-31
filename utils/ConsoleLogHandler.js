@@ -9,8 +9,17 @@
  * @constructor
  */
 function ConsoleLogHandler(minimumLogLevel) {
-
+    this._minimumLogLevel = minimumLogLevel;
 }
+
+/**
+ * Logs to the console.
+ */
+ConsoleLogHandler.prototype.log = function(message, level) {
+    if(level[0] >= this._minimumLogLevel[0]) {
+        console.log(message);
+    }
+};
 
 // Exports...
 module.exports = ConsoleLogHandler;

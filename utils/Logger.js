@@ -38,14 +38,14 @@ Logger._handlers = new set();
  * Adds a log-handler. This is an object implementing:
  * handle_log_message(message, level, indent_level)
  */
-Logger.add_handler = function(handler) {
+Logger.addHandler = function(handler) {
     Logger._handlers.add(handler);
 };
 
 /**
  * Removes a log handler.
  */
-Logger.remove_handler = function(handler) {
+Logger.removeHandler = function(handler) {
     Logger._handlers.delete(handler);
 };
 
@@ -56,18 +56,19 @@ Logger.log = function(message, level) {
     // We find the indent...
     var indent = '';
     if(Logger._indent_level > 0) {
-        indent = new Array(Logger._indent_level + 1).join('  ') + '- ';
+        indent = new Array(Logger._indent_level).join('  ') + '- ';
     }
 
     // We add the log-level if it is high enough...
+    var prefix  = '';
     if(level[0] >= Logger.LogLevel.WARNING[0]) {
-        var prefix = level[1] + ': ';
+        prefix = level[1] + ': ';
     }
 
     // We log the formatted message...
     var formattedMessage = indent + prefix + message;
     Logger._handlers.forEach(function(handler) {
-        handler.log(formattedMessage);
+        handler.log(formattedMessage, level);
     });
 };
 

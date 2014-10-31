@@ -1,0 +1,11 @@
+{
+  "name": "coding-world-cup",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+
+  }
+}

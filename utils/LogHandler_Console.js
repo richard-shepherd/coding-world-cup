@@ -1,6 +1,6 @@
 /**
- * ConsoleLogHandler
- * -----------------
+ * LogHandler_Console
+ * ------------------
  * Logs messages to the console.
  *
  * This is a log-handler class which can be registered
@@ -8,18 +8,18 @@
  *
  * @constructor
  */
-function ConsoleLogHandler(minimumLogLevel) {
+function LogHandler_Console(minimumLogLevel) {
     this._minimumLogLevel = minimumLogLevel;
 }
 
 /**
  * Logs to the console.
  */
-ConsoleLogHandler.prototype.log = function(message, level) {
+LogHandler_Console.prototype.log = function(message, level) {
     if(level[0] >= this._minimumLogLevel[0]) {
         console.log(message);
     }
 };
 
 // Exports...
-module.exports = ConsoleLogHandler;
+module.exports = LogHandler_Console;

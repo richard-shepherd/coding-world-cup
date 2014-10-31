@@ -1,3 +1,3 @@
 exports.Logger = require('./Logger');
-exports.ConsoleLogHandler = require('./ConsoleLogHandler');
+exports.LogHandler_Console = require('./LogHandler_Console');
 

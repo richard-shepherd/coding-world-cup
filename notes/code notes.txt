@@ -10,6 +10,13 @@ What's the relationship between state and controller objects?
   - Player holds PlayerState
     - Or Player itself holds the dynamic-state etc.
     - ie, no PlayerState object as such.
+- ANSWER: There is state at each level
+  - But it is just the state for that level
+  - So Player has PlayerState
+  - Team has a collection of Players
+    - And also has TeamState
+    - TeamState is just the team-related info (ie, not the player info)
+  - Similarly for Game and GameState
 
 What gets passed to the AIs?
 ----------------------------

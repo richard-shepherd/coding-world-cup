@@ -187,7 +187,10 @@ Direction
   - Intentions could be in a private part of the state.
   - The destination could be translated into a vector when moving the player
     - (We'll have to calculate this anyway to move them.)
-	- Thiis vector is shown to everyone.
-	
+	- This vector is shown to everyone.
 
+
+Players pass through each other?
+--------------------------------
+-
 

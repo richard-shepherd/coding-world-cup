@@ -36,7 +36,6 @@ What do we hold internally? ie the game state
     - MaxSpeed
     - MaxKickingForce
 
-    
   
 
 

@@ -65,7 +65,7 @@ Size of the pitch
 - Size in "units"
 - Should we store values as doubles or integers?
   - Doubles would be easier for calculations.
-
+- For the game it will be 100m x 50m
 
 Cheats
 ------
@@ -145,9 +145,49 @@ Physics 10x faster than AI updates?
   - If we know the maximum speed of the ball and players, then we know the max combined speed.
     So we can make sure we calculate fast enough to ensure collision detection.
   
+What gets passed to AIs? 
+------------------------
+- Is it OK to pass all player-state to AIs?
+  - Or should some state be private?
+  - Particularly the "intentions"?
+    - Maybe it's OK to show intentions?
+	- Opponents only see this one second after it's happened (ie, in the next turn)
+	- Intentions only happen when a player is close to the action.
+
+- We could have a serialize() method on PlayerState
+  - This can choose which parts of the object to serialize if we decide to keep some parts private
 
 
+Game of two halves?
+-------------------
+- Should we have two halves to the game, where you switch ends half way through?
+  - In one sense there's no point.
+  - In another, it means that AIs have to cope with this.
+  - Also: allows for a great deal of recovery of players
+    - Though maybe not to full strength.
+    - Energy could go up by (say) 50% of max energy.
+    - So there are some tactics about running at full speed etc when close to half time.
+	
+Substitutes
+-----------
+- If a player is injured in a foul, can you substitue another?
+  - Inclined to say No.	
+  
 
+Direction
+---------
+- Should AIs provide the direction in degrees or as a vector?
+- Or provide a destination "intention".
+  - AIs will almost certainly have a destination in mind.
+  - So providing a direction is a bit weird.
+  - They will have to translate this into a direction,
+    then the engine has to translate this back into a vector
 
+- The AI could specify a destination.
+  - Intentions could be in a private part of the state.
+  - The destination could be translated into a vector when moving the player
+    - (We'll have to calculate this anyway to move them.)
+	- Thiis vector is shown to everyone.
+	
 
 

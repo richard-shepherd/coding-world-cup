@@ -1,8 +1,7 @@
 /**
- * TeamState
- * ---------
- * Holds all the state for one team, in particular the state of
- * each player in the team.
+ * Team
+ * ----
+ * Manages one team, including the collection of players in it.
  */
 var Array = require('collections/shim_array');
 var Player = require('./Player');
@@ -10,10 +9,10 @@ var Player = require('./Player');
 /**
  * @constructor
  */
-function TeamState() {
+function Team() {
     // The players...
-    this.players = [];
-    for(var i=0; i<TeamState.NUMBER_OF_PLAYERS; ++i) {
+    this.players = new Array();
+    for(var i=0; i<Team.NUMBER_OF_PLAYERS; ++i) {
         this.players.push(new Player());
     }
 
@@ -22,7 +21,7 @@ function TeamState() {
 }
 
 // The number of players on each team (not including the goalkeeper)...
-TeamState.NUMBER_OF_PLAYERS = 5;
+Team.NUMBER_OF_PLAYERS = 5;
 
 // Exports...
-module.exports = TeamState;
+module.exports = Team;

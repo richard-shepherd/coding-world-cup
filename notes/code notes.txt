@@ -1,8 +1,21 @@
+What's the relationship between state and controller objects?
+-------------------------------------------------------------
+- e.g between the PlayerState and Player objects.
+- Player cannot hold a PlayerState, as the PlayerStates are held
+  by the TeamState.
+  - The TeamState does not hold the Players - just the state.
+  - This is because we only want to pass the public state to the
+    AIs. So we have "state" objects that hold the things they get to see.
+- Unless:
+  - Player holds PlayerState
+    - Or Player itself holds the dynamic-state etc.
+    - ie, no PlayerState object as such.
 
-
-
-What gets passed to the players?
---------------------------------
+What gets passed to the AIs?
+----------------------------
+- Position (etc) of all players
+  - All player-state, except intentions for the opponent.
+- Game stats
 
 
 

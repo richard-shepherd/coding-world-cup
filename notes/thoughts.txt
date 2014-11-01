@@ -192,5 +192,12 @@ Direction
 
 Players pass through each other?
 --------------------------------
--
+- Maybe players should be able to pass through each other?
+  - It would make the game a lot simpler.
+  - Avoid player collision detection, blocking and so on.
+- Interaction would have to be deliberate
+  - e.g. tackling, fouling etc.
+
+
+
 

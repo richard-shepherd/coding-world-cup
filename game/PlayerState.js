@@ -12,13 +12,17 @@
  * "intentions" are private, and are only available to the AI which
  * is controlling the player.
  */
+var PlayerState_Dynamic = require('./PlayerState_Dynamic');
 
 /**
  * @constructor
  */
 function PlayerState() {
-
-    //
+    // Dynamic state, such as position...
+    this.dynamicState = new PlayerState_Dynamic();
 }
+
+// Exports...
+module.exports = PlayerState;
 
 

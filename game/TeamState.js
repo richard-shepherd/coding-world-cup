@@ -17,6 +17,7 @@ function TeamState() {
     this.score = 0;
 }
 
+
 // Exports...
 module.exports = TeamState;
 

@@ -16,12 +16,26 @@
 /**
  * @constructor
  */
-function PlayerState_Static() {
+function PlayerState_Static(playerNumber, playerType) {
+    // The player number (unique across both teams)...
+    this.playerNumber = playerNumber;
+
+    // The player type (player or goalkeeper)...
+    this.playerType = playerType;
+
     // How accurately the player passes the ball. This also
     // controls kicking when not passing, including shooting
     // at goal...
     this.passingAbility = 0.0;
 }
+
+/**
+ * An enum for types of player.
+ */
+PlayerState_Static.PlayerType = {
+    PLAYER: 0,
+    GOALKEEPER: 1
+};
 
 // Exports...
 module.exports = PlayerState_Static;

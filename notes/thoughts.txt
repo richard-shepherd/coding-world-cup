@@ -170,7 +170,7 @@ Game of two halves?
 	
 Substitutes
 -----------
-- If a player is injured in a foul, can you substitue another?
+- If a player is injured in a foul, can you substitute another?
   - Inclined to say No.	
   
 

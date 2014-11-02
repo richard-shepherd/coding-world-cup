@@ -19,12 +19,12 @@ var PlayerState_Intentions = require('./PlayerState_Intentions');
 /**
  * @constructor
  */
-function Player() {
+function Player(playerNumber, playerType) {
     // Dynamic state (position etc)...
     this.dynamicState = new PlayerState_Dynamic();
 
     // Static state (skills, abilities etc)...
-    this.staticState = new PlayerState_Static();
+    this.staticState = new PlayerState_Static(playerNumber, playerType);
 
     // Intentions (direction, speed etc)...
     this.intentionsState = new PlayerState_Intentions();

@@ -30,6 +30,24 @@ function Player(playerNumber, playerType) {
     this.intentionsState = new PlayerState_Intentions();
 }
 
+/**
+ * isPlayer
+ * --------
+ * Returns true if this player is a player (ie, not a goalkeeper).
+ */
+Player.prototype.isPlayer = function() {
+    return this.staticState.playerType === PlayerState_Static.PlayerType.PLAYER;
+};
+
+/**
+ * isGoalkeeper
+ * ------------
+ * Returns true if this player is a goalkeeper.
+ */
+Player.prototype.isGoalkeeper = function() {
+    return this.staticState.playerType === PlayerState_Static.PlayerType.GOALKEEPER;
+};
+
 // Exports...
 module.exports = Player;
 

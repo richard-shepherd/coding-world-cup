@@ -12,19 +12,27 @@ function Team() {
     // The team state (score etc)...
     this.state = new TeamState();
 
-    // The collection of players.
+    // The collection of _players.
     // (The player objects are created in the Game, and passed to us later)...
-    this.players = [];
+    this._players = [];
 }
 
 /**
  * Adds a player to this team.
  */
 Team.prototype.addPlayer = function(player) {
-    this.players.push(player);
+    this._players.push(player);
 };
 
-// The number of players on each team (not including the goalkeeper)...
+/**
+ * Updates the positions of the _players using the current time
+ * from the game.
+ */
+Team.prototype.updatePositions = function(game) {
+
+}
+
+// The number of _players on each team (not including the goalkeeper)...
 Team.NUMBER_OF_PLAYERS = 5;
 
 // Exports...

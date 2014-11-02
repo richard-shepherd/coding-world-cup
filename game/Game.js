@@ -20,53 +20,53 @@ var PlayerState_Static = require('./PlayerState_Static');
  * @constructor
  */
 function Game() {
-    // We create the teams and the players...
+    // We create the teams and the _players...
     this.createTeams();
 
     // The interval in seconds between calculation updates.
     // This includes the 'physics' of player and ball movement
     // as well as player interactions (such as tackling) and other
     // game events...
-    this.calculationIntervalSeconds = 0.1;
+    this._calculationIntervalSeconds = 0.1;
 
     // The interval in seconds between updates / requests being
     // sent to the AIs...
-    this.aiUpdateIntervalSeconds = 1.0;
+    this._aiUpdateIntervalSeconds = 1.0;
 
     // The length of the game in seconds...
-    this.gameLengthSeconds = 90.0 * 60.0;
+    this._gameLengthSeconds = 90.0 * 60.0;
 }
 
 /**
- * Creates the teams and the players.
+ * Creates the teams and the _players.
  */
 Game.prototype.createTeams = function() {
     // We create the two teams...
-    this.team1 = new Team();
-    this.team2 = new Team();
+    this._team1 = new Team();
+    this._team2 = new Team();
 
-    // We create the players and assign them to the teams...
-    this.players = [];
+    // We create the _players and assign them to the teams...
+    this._players = [];
     var playerNumber = {value: 0};
-    this.addPlayersToTeam(this.team1, playerNumber);
-    this.addPlayersToTeam(this.team2, playerNumber);
+    this.addPlayersToTeam(this._team1, playerNumber);
+    this.addPlayersToTeam(this._team2, playerNumber);
 };
 
 /**
- * Adds players and the goalkeeper to the team passed in.
+ * Adds _players and the goalkeeper to the team passed in.
  */
 Game.prototype.addPlayersToTeam = function(team, playerNumber) {
-    // We add the players...
+    // We add the _players...
     for(var i=0; i<Team.NUMBER_OF_PLAYERS; ++i) {
         var player = new Player(playerNumber.value, PlayerState_Static.PlayerType.PLAYER);
-        this.players.push(player);
+        this._players.push(player);
         team.addPlayer(player);
         playerNumber.value++;
     }
 
     // And the goalkeeper...
     var player = new Player(playerNumber.value, PlayerState_Static.PlayerType.GOALKEEPER);
-    this.players.push(player);
+    this._players.push(player);
     team.addPlayer(player);
     playerNumber.value++;
 };
@@ -74,29 +74,19 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
 /**
  * calculate
  * ---------
- * Calculates new positions of players and takes actions, based
+ * Calculates new positions of _players and takes actions, based
  * on the current game time.
  */
 Game.prototype.calculate = function() {
     // To calculate the next game state, we:
-    // 1. Move players to their new positions.
+    // 1. Move _players to their new positions.
     // 2. Perform actions (turning, tacking, kicking).
 
-    // 1. We move the players...
-    this.updatePositions();
+    // 1. We move the _players...
+    this._team1.updatePositions(this);
+    this._team2.updatePositions(this);
 };
 
-/**
- * updatePositions
- * ---------------
- * Updates the positions of the players, based on current game time
- * and the directions, speed and intentions of the players.
- */
-Game.prototype.updatePositions = function() {
-    // We update the positions of the players in the two teams...
-    this.team1.updatePositions(this);
-    this.team2.updatePositions(this);
-};
 
 // Exports...
 module.exports = Game;

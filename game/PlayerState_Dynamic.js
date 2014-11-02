@@ -15,6 +15,9 @@ function PlayerState_Dynamic() {
 
     // Whether the player has the ball or not...
     this.hasBall = false;
+
+    // The player's energy. (Between 0.0 and Player.MAX_ENERGY.)
+    this.energy = 0.0;
 }
 
 // Exports...

@@ -1,3 +1,11 @@
+Energy
+------
+- Energy should decrease as the square of speed?
+  - Or at least, greater than linear.
+  - If there is a linear relationship, then it is just as sensible
+    to run fast as slow.
+    - Well, sort-of. You do still use up energy that you may need later.
+
 Power ups
 ---------
 - The game could have power-ups that randomly appear. They could give you:

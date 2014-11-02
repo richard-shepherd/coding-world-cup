@@ -27,6 +27,11 @@ function PlayerState_Static(playerNumber, playerType) {
     // controls kicking when not passing, including shooting
     // at goal...
     this.passingAbility = 0.0;
+
+    // How fast the player can run...
+    this.runningAbility = 0.0;
+
+
 }
 
 /**

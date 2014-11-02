@@ -24,7 +24,7 @@ function PlayerState_Intentions() {
     this.destination = new Position();
 
     // The speed the player is moving towards the destination, as
-    // a percentage of their current maximum speed...
+    // a percentage of their maximum speed...
     this.speed = 0.0;
 }
 

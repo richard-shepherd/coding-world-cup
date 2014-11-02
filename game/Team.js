@@ -10,7 +10,7 @@ var TeamState = require('./TeamState');
  */
 function Team() {
     // The team state (score etc)...
-    this.state = new TeamState();
+    this._state = new TeamState();
 
     // The collection of _players.
     // (The player objects are created in the Game, and passed to us later)...
@@ -29,8 +29,10 @@ Team.prototype.addPlayer = function(player) {
  * from the game.
  */
 Team.prototype.updatePositions = function(game) {
-
-}
+    this._players.forEach(function(player){
+        player.updatePosition();
+    });
+};
 
 // The number of _players on each team (not including the goalkeeper)...
 Team.NUMBER_OF_PLAYERS = 5;

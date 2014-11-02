@@ -87,6 +87,15 @@ Game.prototype.calculate = function() {
     this._team2.updatePositions(this);
 };
 
+/**
+ * getCalculationInterval
+ * ----------------------
+ * Returns the time in (game) seconds since the previous calculation.
+ */
+Game.prototype.getCalculationInterval = function() {
+    // TODO: Write this!
+};
+
 
 // Exports...
 module.exports = Game;

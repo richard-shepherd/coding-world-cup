@@ -45,6 +45,11 @@ Player.MAX_SPEED = 10.0;
 Player.MAX_ENERGY = 100.0;
 
 /**
+ * The maximum rate at which players turn, in degrees/second.
+ */
+Player.MAX_TURNING_RATE = 720.0;
+
+/**
  * isPlayer
  * --------
  * Returns true if this player is a player (ie, not a goalkeeper).

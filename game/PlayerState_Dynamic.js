@@ -18,6 +18,10 @@ function PlayerState_Dynamic() {
 
     // The player's energy. (Between 0.0 and Player.MAX_ENERGY.)
     this.energy = 0.0;
+
+    // The direction the player is facing, in degrees.
+    // 0.0 is straight up, 90.0 is facing right...
+    this.direction = 0.0;
 }
 
 // Exports...

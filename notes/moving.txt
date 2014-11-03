@@ -1,0 +1,14 @@
+Movement
+--------
+- How does movement work?
+
+- The player has a destination and a direction.
+
+- The player always moves in the direction they are facing.
+  And then turns towards the destination.
+  - Even if this is in the opposite direction to the destination?
+  - I wonder if this might mean that you go round in circles
+    and never get to the destination.
+
+- Alternatively, the player first turns.
+  - And then moves when facing the right direction.

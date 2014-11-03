@@ -1,6 +1,6 @@
 var TestUtilsLib = require('../test_utils');
 var CreatePlayers = TestUtilsLib.CreatePlayers;
-var MockGame = TestUtilsLib.MockGame;
+var GameMocks = TestUtilsLib.GameMocks;
 
 /**
  * Tests that a player can move to the right.
@@ -15,11 +15,13 @@ exports['Simple movement right'] = function(test) {
     player._intentionsState.speed = 100.0;
 
     // We set the calculation interval to 1 second...
-    var game = new MockGame.MockGame_CalculationInterval(1.0);
+    var game = new GameMocks.MockGame_CalculationInterval(1.0);
     player.updatePosition(game);
 
-    test.approx(2.2 / 10.0, 0.22);
-
+    // The player should be moving at 10m/s, so should have moved
+    // 10 metres to the right...
+    test.approx(player._dynamicState.position.x, 60.0);
+    test.approx(player._dynamicState.position.y, 25.0);
 
     test.done();
 };

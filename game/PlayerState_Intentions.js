@@ -20,13 +20,27 @@ var Position = require('./Position');
  * @constructor
  */
 function PlayerState_Intentions() {
-    // The point on the pitch the player is moving towards...
-    this.destination = new Position();
+    // The currently intention...
+    this.action = PlayerState_Intentions.Action.NONE;
 
-    // The speed the player is moving towards the destination, as
-    // a percentage of their maximum speed...
-    this.speed = 0.0;
+    // For the MOVE intention...
+    this.destination = new Position();
+    this.speed = 0.0; // As a percentage of the player's max speed.
+
+    // For the TURN intention...
+    this.direction = 0.0;
 }
+
+/**
+ * Action
+ * ------
+ * An enum for the desired action.
+ */
+PlayerState_Intentions.Action = {
+    NONE: 0,
+    TURN: 1,
+    MOVE: 2
+};
 
 // Exports...
 module.exports = PlayerState_Intentions;

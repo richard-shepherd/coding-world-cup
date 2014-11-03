@@ -1,6 +1,6 @@
 /**
- * MockGame
- * --------
+ * GameMocks
+ * ---------
  * Mocks of the Game object for various purposes.
  */
 

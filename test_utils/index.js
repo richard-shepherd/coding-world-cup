@@ -1,5 +1,5 @@
 exports.CreatePlayers = require('./CreatePlayers');
-exports.MockGame = require('./MockGame');
+exports.GameMocks = require('./GameMocks');
 exports.NodeunitApprox = require('./NodeunitApprox');
 
 

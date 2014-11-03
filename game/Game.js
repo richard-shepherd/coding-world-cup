@@ -79,8 +79,8 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
  */
 Game.prototype.calculate = function() {
     // To calculate the next game state, we:
-    // 1. Move _players to their new positions.
-    // 2. Perform actions (turning, tacking, kicking).
+    // 1. Turn and/or move players to their new positions.
+    // 2. Perform actions (tackling, kicking).
 
     // 1. We move the _players...
     this._team1.updatePositions(this);

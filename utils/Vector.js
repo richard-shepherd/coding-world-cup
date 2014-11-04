@@ -13,6 +13,16 @@ function Vector(x, y) {
     this.y = y;
 }
 
+/**
+ * scale
+ * -----
+ * Scales the vector by the factor provided.
+ */
+Vector.prototype.scale = function(factor) {
+    this.x *= factor;
+    this.y *= factor;
+};
+
 // Exports...
 module.exports = Vector;
 

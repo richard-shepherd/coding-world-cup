@@ -11,27 +11,19 @@ var Player = GameLib.Player;
  * --------------
  * Returns a Player at the position passed in.
  */
-function createPlayerAt(x, y) {
+function createPlayerAt(x, y, direction) {
     var player = new Player();
     player._dynamicState.position.x = x;
     player._dynamicState.position.y = y;
+    player._dynamicState.direction = direction;
     player._dynamicState.energy = Player.MAX_ENERGY;
+    player._staticState.passingAbility = 100.0;
+    player._staticState.runningAbility = 100.0;
     return player;
 };
 
-/**
- * createPlayerFacing
- * ------------------
- * Creates a player facing the direction passed in.
- */
-function createPlayerFacing(direction) {
-    var player = createPlayerAt(50.0, 25.0);
-    player._dynamicState.direction = direction;
-    return player;
-};
 
 // Exports...
 exports.createPlayerAt = createPlayerAt;
-exports.createPlayerFacing = createPlayerFacing;
 
 

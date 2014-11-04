@@ -161,11 +161,33 @@ Player.prototype.updatePosition_Move = function(game) {
 
     // We are facing the right direction, so we can move towards
     // the destination.
-    //
-    // We find the distance to the destination, and the maximum distance that
-    // the player can travel in this current time interval. The player may only
-    // be able to travel part of the way to the destination in this time slice...
+    var distanceToDestination = position.distanceTo(destination);
+    var distanceToMove = this.getSpeed() * game.getCalculationInterval();
+    if(distanceToDestination < distanceToMove) {
+        distanceToMove = distanceToDestination;
+    }
 
+    // We find the vector to the destination, and scale it by the
+    // distance to move...
+    var vectorToDestination = position.vectorTo(destination);
+    var scaleFactor = distanceToMove / distanceToDestination;
+    vectorToDestination.scale(scaleFactor);
+
+    // We move the player...
+    position.addVector(vectorToDestination);
+};
+
+/**
+ * getSpeed
+ * --------
+ * Returns the current speed the player will move at in m/s.
+ * This is a function of the player's max speed and current energy.
+ */
+Player.prototype.getSpeed = function() {
+    var runningAbility = this._staticState.runningAbility / 100.0;
+    var energy = this._dynamicState.energy / 100.0;
+    var speed = runningAbility * energy * Player.MAX_SPEED;
+    return speed;
 };
 
 // Exports...

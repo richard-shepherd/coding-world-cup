@@ -7,6 +7,7 @@
  * (100.0, 50.0) is the bottom right.
  */
 var Utils = require('./Utils');
+var Vector = require('./Vector');
 
 /**
  * @constructor
@@ -41,6 +42,26 @@ Position.prototype.distanceTo = function(other) {
     var distance = Math.sqrt(x2 + y2);
     return distance;
 };
+
+/**
+ * vectorTo
+ * --------
+ * Returns the vector from this position to the one passed in.
+ */
+Position.prototype.vectorTo = function(position) {
+    return new Vector(position.x - this.x, position.y - this.y);
+};
+
+/**
+ * addVector
+ * ---------
+ * Adds the vector to the position.
+ */
+Position.prototype.addVector = function(vector) {
+    this.x += vector.x;
+    this.y += vector.y;
+};
+
 
 // Exports...
 module.exports = Position;

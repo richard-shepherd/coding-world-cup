@@ -1,4 +1,5 @@
 var assert = require('nodeunit').assert;
+var Utils = require('../utils').Utils;
 
 /**
  * approx
@@ -8,8 +9,7 @@ var assert = require('nodeunit').assert;
  * eight decimal places.
  */
 assert.approx = function approx(actual, expected, message) {
-    var epsilon = 0.00000001;
-    if (actual < expected - epsilon || actual > expected + epsilon) {
+    if(!Utils.approxEqual(actual, expected)) {
         assert.fail(actual, expected, message, "~=");
     }
 };

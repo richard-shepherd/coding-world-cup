@@ -1,0 +1,15 @@
+TODO: Add ball to Game object
+
+TODO: Method to set destination
+
+TODO: Method to set direction in degrees
+
+TODO: Method to set direction facing a destination
+
+TODO: Create the game loop
+
+TODO: Create and serialize the DTO
+
+TODO: Create a "random walk" engine for testing the GUI
+
+

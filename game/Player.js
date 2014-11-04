@@ -70,11 +70,67 @@ Player.prototype.isGoalkeeper = function() {
 /**
  * updatePosition
  * --------------
- * Moves the player based on their current intentions, speed and so on, and
- * on the time elapsed since the previous update.
+ * Moves or turns the player based on their current intentions, speed
+ * and so on, and on the time elapsed since the previous update.
  */
 Player.prototype.updatePosition = function(game) {
+    switch(this._intentionsState.action) {
+        case PlayerState_Intentions.Action.TURN:
+            this.updatePosition_Turn(game);
+            break;
 
+        case PlayerState_Intentions.Action.MOVE:
+            this.updatePosition_Move(game);
+            break;
+    }
+};
+
+/**
+ * updatePosition_Turn
+ * -------------------
+ * Turns the player towards their desired direction.
+ */
+Player.prototype.updatePosition_Turn = function(game) {
+    // We work out whether we should be turning left or right...
+    var currentDirection = this._dynamicState.direction;
+    var desiredDirection = this._intentionsState.direction;
+    var angleToTurn = desiredDirection - currentDirection;
+    if(angleToTurn > 180) {
+        // We are turning more than 180 degrees to the right,
+        // so this is really a turn to the left...
+        angleToTurn = angleToTurn - 360;
+    }
+    if(angleToTurn < -180) {
+        // We are turning more than 180 degrees to the left,
+        // so this is really a turn to the right...
+        angleToTurn = 360 + angleToTurn;
+    }
+
+    // We change this to an abs(angle) and a direction...
+    var directionToTurn = 1.0;
+    if(angleToTurn < 0) {
+        angleToTurn = -1.0 * angleToTurn;
+        directionToTurn = -1.0;
+    }
+
+    // We find the maximum angle that can be turned in the interval
+    // since the last update. We may need to cap the angle we move...
+    var maxAngle = Player.MAX_TURNING_RATE * game.getCalculationInterval();
+    if(angleToTurn > maxAngle) {
+        angleToTurn = maxAngle;
+    }
+
+    // We turn by the amount, and check if we've gone past 360 degrees...
+    var newDirection = currentDirection + angleToTurn * directionToTurn;
+    if(newDirection > 360.0) {
+        newDirection -= 360.0;
+    }
+    if(newDirection < 0) {
+        newDirection += 360.0;
+    }
+
+    // We set the direction...
+    this._dynamicState.direction = newDirection;
 };
 
 // Exports...

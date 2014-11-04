@@ -1,0 +1,36 @@
+Turning
+-------
+
+Ex 1: Start at 20 turn to 50
+      50 - 20 = +30
+      So turn to the right by 30
+      30 < turn-amount (60), so cap the turn at 30
+      Add angle because turning to the right
+
+Ex 2: Start at 50 turn to 20
+      20 - 50 = -30
+      So turn to the left by 30 (ie abs of -30)
+      30 < turn-amount (60), so cap the turn at 30
+      Subtract angle because turning to the left.
+
+Ex 3: Start at 20 turn to 250
+      250 - 20 = 230 (to the right)
+      This is > 180, so 230 to the right right = 360-230 = 130 to the left
+      a. 20 - 60 = -40 = 320
+      b. 250 - 320 = -70
+         ie 70 to the left
+         320 - 60 = 260
+      c. 250 - 260 = -10
+         ie, 10 to the left
+         260 - 10 = 250 DONE
+
+Ex 4. Start at 280 move to 30
+      30 - 280 = -250
+      This is < -180, so 250 to the left = 360 - 250 = 110 to the right
+      a. 280 + 60 = 340
+      b. 30 - 340 = -310
+         < -180, so 310 to the left = 360 - 310 = 50 to the right
+         Cap at +50
+         340 + 50 = 390 = 30 DONE
+
+

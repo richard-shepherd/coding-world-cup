@@ -1,0 +1,7 @@
+TODO: Test turn then move, ie move towards a point you are not initially facing.
+
+TODO: Test moving along a diagonal (not 45 degrees)
+
+TODO: Test that you can't move off the pitch
+
+

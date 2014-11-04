@@ -141,7 +141,7 @@ Player.prototype.updatePosition_Turn = function(game) {
  * Moves the player towards their desired position.
  */
 Player.prototype.updatePosition_Move = function(game) {
-    // Is the player already at the destination?
+    // We check if the player is already at the destination...
     var position = this._dynamicState.position;
     var destination = this._intentionsState.destination;
     if(position.approxEqual(destination)) {
@@ -160,7 +160,7 @@ Player.prototype.updatePosition_Move = function(game) {
     }
 
     // We are facing the right direction, so we can move towards
-    // the destination.
+    // the destination at the player's current speed...
     var distanceToDestination = position.distanceTo(destination);
     var distanceToMove = this.getSpeed() * game.getCalculationInterval();
     if(distanceToDestination < distanceToMove) {

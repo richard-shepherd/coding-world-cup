@@ -14,7 +14,7 @@
  * Players may not always want to move at maximum speed as this will
  * use up their energy faster.
  */
-var Position = require('./Position');
+var Position = require('./../utils/Position');
 
 /**
  * @constructor

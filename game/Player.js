@@ -15,6 +15,8 @@
 var PlayerState_Dynamic = require('./PlayerState_Dynamic');
 var PlayerState_Static = require('./PlayerState_Static');
 var PlayerState_Intentions = require('./PlayerState_Intentions');
+var UtilsLib = require('../utils');
+var Utils = UtilsLib.Utils;
 
 /**
  * @constructor
@@ -129,8 +131,41 @@ Player.prototype.updatePosition_Turn = function(game) {
         newDirection += 360.0;
     }
 
-    // We set the direction...
+    // We set the new direction...
     this._dynamicState.direction = newDirection;
+};
+
+/**
+ * updatePosition_Move
+ * -------------------
+ * Moves the player towards their desired position.
+ */
+Player.prototype.updatePosition_Move = function(game) {
+    // Is the player already at the destination?
+    var position = this._dynamicState.position;
+    var destination = this._intentionsState.destination;
+    if(position.approxEqual(destination)) {
+        // The player is already at the destination...
+        return;
+    }
+
+    // We check if the player is facing the right way...
+    var currentDirection = this._dynamicState.direction;
+    var directionToDestination = Utils.angleBetween(position, destination);
+    if(!Utils.approxEqual(currentDirection, directionToDestination)) {
+        // We are not currently facing the right way, so we turn first...
+        this._intentionsState.direction = directionToDestination;
+        this.updatePosition_Turn(game);
+        return;
+    }
+
+    // We are facing the right direction, so we can move towards
+    // the destination.
+    //
+    // We find the distance to the destination, and the maximum distance that
+    // the player can travel in this current time interval. The player may only
+    // be able to travel part of the way to the destination in this time slice...
+
 };
 
 // Exports...

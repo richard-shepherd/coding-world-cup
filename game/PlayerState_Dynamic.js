@@ -4,7 +4,7 @@
  * Player state - such as position - which changes as the game
  * is played.
  */
-var Position = require('./Position');
+var Position = require('./../utils/Position');
 
 /**
  * @constructor

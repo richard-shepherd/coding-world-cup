@@ -20,8 +20,8 @@ exports['Simple movement right'] = function(test) {
 
     // The player should be moving at 10m/s, so should have moved
     // 10 metres to the right...
-    //test.approx(player._dynamicState.position.x, 60.0);
-    //test.approx(player._dynamicState.position.y, 25.0);
+    test.approx(player._dynamicState.position.x, 60.0);
+    test.approx(player._dynamicState.position.y, 25.0);
 
     test.done();
 };

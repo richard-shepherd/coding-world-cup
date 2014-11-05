@@ -44,7 +44,7 @@ Position.prototype.distanceTo = function(other) {
 };
 
 /**
- * vectorTo
+ * vectorFromDirection
  * --------
  * Returns the vector from this position to the one passed in.
  */

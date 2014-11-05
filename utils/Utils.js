@@ -51,18 +51,18 @@ function angleBetween(p1, p2) {
 }
 
 /**
- * vectorTo
- * --------
+ * vectorFromDirection
+ * -------------------
  * Returns a vector (with unit length) that points
  * in the direction passed in.
  *
  * The direction is in degrees measured clockwise from vertical.
  */
-function vectorTo(direction) {
+function vectorFromDirection(direction) {
     var angle = 90.0 - direction;
     var radians = angle * Math.PI / 180.0;
-    var x = Math.sin(radians);
-    var y = Math.cos(radians);
+    var x = Math.cos(radians);
+    var y = -1.0 * Math.sin(radians);
     return new Vector(x, y);
 }
 
@@ -70,4 +70,4 @@ function vectorTo(direction) {
 exports.setApproxTolerance = setApproxTolerance;
 exports.approxEqual = approxEqual;
 exports.angleBetween = angleBetween;
-
+exports.vectorFromDirection = vectorFromDirection;

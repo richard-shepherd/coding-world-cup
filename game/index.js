@@ -1,3 +1,5 @@
+exports.Ball = require('./Ball');
+exports.BallState = require('./BallState');
 exports.Game = require('./Game');
 exports.GameState = require('./GameState');
 exports.Player = require('./Player');

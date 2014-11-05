@@ -11,7 +11,7 @@ var Position = require('./../utils/Position');
  */
 function PlayerState_Dynamic() {
     // The player's position...
-    this.position = new Position();
+    this.position = new Position(0.0, 0.0);
 
     // Whether the player has the ball or not...
     this.hasBall = false;

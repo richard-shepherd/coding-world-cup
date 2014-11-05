@@ -3,6 +3,8 @@
  * -----
  * Miscellaneous utility functions.
  */
+var Vector = require('./Vector');
+
 
 /**
  * The tolerance for the approxEqual function.
@@ -46,6 +48,22 @@ function angleBetween(p1, p2) {
     angle += 270;
     angle %= 360;
     return angle;
+}
+
+/**
+ * vectorTo
+ * --------
+ * Returns a vector (with unit length) that points
+ * in the direction passed in.
+ *
+ * The direction is in degrees measured clockwise from vertical.
+ */
+function vectorTo(direction) {
+    var angle = 90.0 - direction;
+    var radians = angle * Math.PI / 180.0;
+    var x = Math.sin(radians);
+    var y = Math.cos(radians);
+    return new Vector(x, y);
 }
 
 // Exports...

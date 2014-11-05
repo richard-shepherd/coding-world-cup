@@ -12,9 +12,9 @@ var Vector = require('./Vector');
 /**
  * @constructor
  */
-function Position() {
-    this.x = 0.0;
-    this.y = 0.0;
+function Position(x, y) {
+    this.x = x;
+    this.y = y;
 }
 
 /**

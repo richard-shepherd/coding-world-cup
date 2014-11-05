@@ -12,4 +12,10 @@ TODO: Create and serialize the DTO
 
 TODO: Create a "random walk" engine for testing the GUI
 
+TODO: Decide whether speed & kicking strength decreases as energy goes down. Or it could remain at full strength until energy runs out.
 
+TODO: If speed goes down with energy, then need to calculate energy (and thus speed) at start and end of a calculation interval and "integrate".
+
+TODO: Have a parameter for rate of energy decrease. So simple tests will set this to 0 to make the calculations easier.
+
+TODO: With energy decrease, distance is just the average using speed@start and speed@end.

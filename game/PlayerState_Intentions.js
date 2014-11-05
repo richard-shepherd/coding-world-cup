@@ -24,7 +24,7 @@ function PlayerState_Intentions() {
     this.action = PlayerState_Intentions.Action.NONE;
 
     // For the MOVE intention...
-    this.destination = new Position();
+    this.destination = new Position(0.0, 0.0);
     this.speed = 0.0; // As a percentage of the player's max speed.
 
     // For the TURN intention...

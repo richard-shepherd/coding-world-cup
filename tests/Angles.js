@@ -52,6 +52,18 @@ exports['Angle between #4'] = function(test) {
 };
 
 /**
+ * Tests that the angle between two points (from vertical)
+ * is calculated correctly.
+ */
+exports['Angle between #4'] = function(test) {
+    var p1 = new Position(50, 25);
+    var p2 = new Position(30, 5);
+    var angle = Utils.angleBetween(p1, p2);
+    test.approx(angle, 315.0);
+    test.done();
+};
+
+/**
  * Tests that we correctly calculate a unit vector from an angle.
  */
 exports['Direction to vector #1'] = function(test) {

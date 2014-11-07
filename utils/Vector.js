@@ -16,11 +16,10 @@ function Vector(x, y) {
 /**
  * scale
  * -----
- * Scales the vector by the factor provided.
+ * Returns a new vector, from this one scaled by the factor provided.
  */
 Vector.prototype.scale = function(factor) {
-    this.x *= factor;
-    this.y *= factor;
+    return new Vector(this.x * factor, this.y * factor);
 };
 
 // Exports...

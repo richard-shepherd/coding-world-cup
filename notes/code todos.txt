@@ -19,3 +19,7 @@ TODO: If speed goes down with energy, then need to calculate energy (and thus sp
 TODO: Have a parameter for rate of energy decrease. So simple tests will set this to 0 to make the calculations easier.
 
 TODO: With energy decrease, distance is just the average using speed@start and speed@end.
+
+TODO: Make sure you can't score a goal by hitting it diagonally by the side of the goal, but so that it ends up behind the goal. In this case, it should have bounced off the side earlier.
+TODO: So we should make an "accurate" bounce, where we find the intersection of the ball's path with the border of the pitch, and "reflect" from there.
+

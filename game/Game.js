@@ -88,11 +88,11 @@ Game.prototype.calculate = function() {
 };
 
 /**
- * getCalculationInterval
- * ----------------------
+ * getCalculationIntervalSeconds
+ * -----------------------------
  * Returns the time in (game) seconds since the previous calculation.
  */
-Game.prototype.getCalculationInterval = function() {
+Game.prototype.getCalculationIntervalSeconds = function() {
     // TODO: Write this!
 };
 

@@ -13,7 +13,7 @@
 function MockGame_CalculationInterval(interval) {
     this._interval = interval;
 }
-MockGame_CalculationInterval.prototype.getCalculationInterval = function() {
+MockGame_CalculationInterval.prototype.getCalculationIntervalSeconds = function() {
     return this._interval;
 };
 

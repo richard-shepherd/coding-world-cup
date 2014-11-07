@@ -117,7 +117,7 @@ Player.prototype.updatePosition_Turn = function(game) {
 
     // We find the maximum angle that can be turned in the interval
     // since the last update. We may need to cap the angle we move...
-    var maxAngle = Player.MAX_TURNING_RATE * game.getCalculationInterval();
+    var maxAngle = Player.MAX_TURNING_RATE * game.getCalculationIntervalSeconds();
     if(angleToTurn > maxAngle) {
         angleToTurn = maxAngle;
     }
@@ -162,7 +162,7 @@ Player.prototype.updatePosition_Move = function(game) {
     // We are facing the right direction, so we can move towards
     // the destination at the player's current speed...
     var distanceToDestination = position.distanceTo(destination);
-    var distanceToMove = this.getSpeed() * game.getCalculationInterval();
+    var distanceToMove = this.getSpeed() * game.getCalculationIntervalSeconds();
     if(distanceToDestination < distanceToMove) {
         distanceToMove = distanceToDestination;
     }
@@ -171,10 +171,10 @@ Player.prototype.updatePosition_Move = function(game) {
     // distance to move...
     var vectorToDestination = position.vectorTo(destination);
     var scaleFactor = distanceToMove / distanceToDestination;
-    vectorToDestination.scale(scaleFactor);
+    var scaledVector = vectorToDestination.scale(scaleFactor);
 
     // We move the player...
-    position.addVector(vectorToDestination);
+    position.addVector(scaledVector);
 };
 
 /**

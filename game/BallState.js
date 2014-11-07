@@ -15,13 +15,16 @@ function BallState() {
     this.position = new Position(0.0, 0.0);
 
     // The direction the ball is travelling.
-    // Note: The size of the vector is not important, as this
-    //       is controlled by the speed. It is just holding the
-    //       direction of travel.
+    // Note: This is a unit vector.
     this.vector = new Vector();
 
     // The speed in m/s...
     this.speed = 0.0;
+
+    // The number of the player controlling the ball, or -1 if
+    // no player is controlling it. The ball does not move independently
+    // if it is being controlled by a player...
+    this.controllingPlayerNumber = -1;
 }
 
 // Exports...

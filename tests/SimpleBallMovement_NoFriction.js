@@ -17,9 +17,9 @@ exports['Move left'] = function(test) {
     position.y = 30.0;
 
     // Set its movement vector and speed, in m/s...
-    ball._state.vector.x = -0.7;
+    ball._state.vector.x = -1;
     ball._state.vector.y = 0.0;
-    ball._state.speed = 10.0;
+    ball._state.speed = 7.0;
 
     // We move it over 0.5 second...
     var game = new GameMocks.MockGame_CalculationInterval(0.5);
@@ -45,9 +45,9 @@ exports['Move right'] = function(test) {
     position.y = 30.0;
 
     // Set its movement vector and speed, in m/s...
-    ball._state.vector.x = 0.4;
+    ball._state.vector.x = 1.0;
     ball._state.vector.y = 0.0;
-    ball._state.speed = 10.0;
+    ball._state.speed = 4.0;
 
     // We move it over 0.5 second...
     var game = new GameMocks.MockGame_CalculationInterval(0.6);
@@ -74,8 +74,8 @@ exports['Move up'] = function(test) {
 
     // Set its movement vector and speed, in m/s...
     ball._state.vector.x = 0.0;
-    ball._state.vector.y = -0.9;
-    ball._state.speed = 10.0;
+    ball._state.vector.y = -1.0;
+    ball._state.speed = 9.0;
 
     // We move it over 0.5 second...
     var game = new GameMocks.MockGame_CalculationInterval(0.8);
@@ -102,8 +102,8 @@ exports['Move down'] = function(test) {
 
     // Set its movement vector and speed, in m/s...
     ball._state.vector.x = 0.0;
-    ball._state.vector.y = 0.3;
-    ball._state.speed = 10.0;
+    ball._state.vector.y = 1.0;
+    ball._state.speed = 3.0;
 
     // We move it over 0.5 second...
     var game = new GameMocks.MockGame_CalculationInterval(0.2);

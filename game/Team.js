@@ -34,6 +34,23 @@ Team.prototype.updatePositions = function(game) {
     });
 };
 
+/**
+ * getStateForDTO
+ * --------------
+ * Returns the state of this object and its players.
+ *
+ * If publicOnly is true, then only public (dynamic) data about
+ * the players will be included.
+ */
+Team.prototype.getStateForDTO = function(publicOnly) {
+    var state = {};
+    state.teamState = this._state;
+    state.playersState = this._players.map(function(player) {
+        return player.getStateForDTO(publicOnly);
+    });
+    return state;
+};
+
 // The number of _players on each team (not including the goalkeeper)...
 Team.NUMBER_OF_PLAYERS = 5;
 

@@ -190,6 +190,25 @@ Player.prototype.getSpeed = function() {
     return speed;
 };
 
+/**
+ * getStateForDTO
+ * --------------
+ * Returns an object holding the player's state.
+ *
+ * If publicOnly is true, then only the dynamic state is
+ * returned. If false, all the state is returned.
+ */
+Player.prototype.getStateForDTO = function(publicOnly) {
+    var state = {};
+    state.dynamicState = this._dynamicState;
+    if(!publicOnly) {
+        // We want to include the private data as well...
+        state.staticState = this._staticState;
+        state.intentionsState = this._intentionsState;
+    }
+    return state;
+};
+
 // Exports...
 module.exports = Player;
 

@@ -21,9 +21,15 @@ ball._state.vector.y = -1.0 * Math.sqrt(0.5);
 
 // We run a game loop...
 var start = process.hrtime();
-for(var i=0; i<240000; ++i) {
+for(var i=0; i<10; ++i) {
     // We update the game state...
     game.calculate();
+
+    var dto = game.getStateForDTO();
+    var dtoJSON = JSON.stringify(dto, function(key, val) {
+        return val.toFixed ? Number(val.toFixed(3)) : val;
+    });
+    Logger.log(dtoJSON, Logger.LogLevel.INFO);
 
     // We log the time, and the ball position...
     var interval = process.hrtime(start);

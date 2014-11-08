@@ -38,8 +38,8 @@ function PlayerState_Static(playerNumber, playerType) {
  * An enum for types of player.
  */
 PlayerState_Static.PlayerType = {
-    PLAYER: 0,
-    GOALKEEPER: 1
+    PLAYER: 'P',
+    GOALKEEPER: 'G'
 };
 
 // Exports...

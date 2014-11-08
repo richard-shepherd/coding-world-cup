@@ -16,11 +16,16 @@ var Team = require('./Team');
 var Player = require('./Player');
 var PlayerState_Static = require('./PlayerState_Static');
 var Ball = require('./Ball');
+var GameState = require('./GameState');
+
 
 /**
  * @constructor
  */
 function Game() {
+    // The game state...
+    this._state = new GameState();
+
     // The ball...
     this._ball = new Ball();
 
@@ -105,6 +110,28 @@ Game.prototype.getCalculationIntervalSeconds = function() {
     return 0.01;
 };
 
+/**
+ * getStateForDTO
+ * --------------
+ * Gets the DTO which we pass to the GUI.
+ */
+Game.prototype.getStateForDTO = function() {
+    var DTO = {
+        gameState: this._state,
+        ballState: this._ball._state,
+        team1State: this._team1.getStateForDTO(true),
+        team2State: this._team2.getStateForDTO(true)
+    };
+    return DTO;
+};
+
+
+/**
+ *
+ */
+Game.prototype.getDTO_Player = function() {
+
+};
 
 // Exports...
 module.exports = Game;

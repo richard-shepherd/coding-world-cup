@@ -1,13 +1,16 @@
 var UtilsLib = require('./utils');
+var Logger = UtilsLib.Logger;
+var LogHandler_Console = UtilsLib.LogHandler_Console;
+var LogHandler_File = UtilsLib.LogHandler_File;
+var Utils = UtilsLib.Utils;
 var GameLib = require('./game');
 var Game = GameLib.Game;
-var Logger = UtilsLib.Logger;
 var NanoTimer = require('nanotimer');
 var util = require('util');
 
 // We set up logging...
-Logger.addHandler(new UtilsLib.LogHandler_Console(Logger.LogLevel.INFO_PLUS));
-Logger.addHandler(new UtilsLib.LogHandler_File('./log/log.txt', Logger.LogLevel.INFO));
+Logger.addHandler(new LogHandler_Console(Logger.LogLevel.INFO_PLUS));
+Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.INFO));
 
 // We create a game, and set the ball moving...
 var game = new Game();
@@ -21,21 +24,15 @@ ball._state.vector.y = -1.0 * Math.sqrt(0.5);
 
 // We run a game loop...
 var start = process.hrtime();
-for(var i=0; i<10; ++i) {
+for(var i=0; i<1000; ++i) {
     // We update the game state...
     game.calculate();
 
-    var dto = game.getStateForDTO();
-    var dtoJSON = JSON.stringify(dto, function(key, val) {
-        return val.toFixed ? Number(val.toFixed(3)) : val;
-    });
-    Logger.log(dtoJSON, Logger.LogLevel.INFO);
-
-    // We log the time, and the ball position...
-    var interval = process.hrtime(start);
-    var intervalSeconds = interval[0] + interval[1] / 1000000000.0;
-    var ballJSON = JSON.stringify(ball._state.position);
-    var message = util.format('%d: %s', intervalSeconds.toFixed(4), ballJSON);
-    Logger.log(message, Logger.LogLevel.INFO);
+    // We log the game state...
+    var dto = JSON.stringify(game.getStateForDTO(), Utils.decimalPlaceReplacer(4));
+    Logger.log(dto, Logger.LogLevel.INFO);
 }
+
+// We log the time taken...
+Logger.log("Time taken (s)=" + Utils.secondsSince(start), Logger.LogLevel.INFO);
 

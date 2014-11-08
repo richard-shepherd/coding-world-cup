@@ -43,6 +43,117 @@ exports['Bounce off top - straight'] = function(test) {
 /**
  * Tests the ball bouncing off the side of the pitch.
  */
+exports['Bounce off left - straight'] = function(test) {
+    // We create a ball...
+    var ball = new Ball();
+    ball.friction = 0.0;
+
+    // Set its position...
+    var position = ball._state.position;
+    position.x = 3.0;
+    position.y = 20.0;
+
+    // We set it's direction and speed...
+    var vector = ball._state.vector;
+    vector.x = -1.0;
+    vector.y = 0.0;
+    ball._state.speed = 10.0;
+
+    // We move it...
+    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    ball.updatePosition(game);
+    test.approx(position.x, 7.0);
+    test.approx(position.y, 20.0);
+    test.approx(vector.x, 1.0);
+    test.approx(vector.y, 0.0);
+
+    // Move again...
+    ball.updatePosition(game);
+    test.approx(position.x, 17.0);
+    test.approx(position.y, 20.0);
+    test.approx(vector.x, 1.0);
+    test.approx(vector.y, 0.0);
+
+    test.done();
+};
+
+/**
+ * Tests the ball bouncing off the side of the pitch.
+ */
+exports['Bounce off right - straight'] = function(test) {
+    // We create a ball...
+    var ball = new Ball();
+    ball.friction = 0.0;
+
+    // Set its position...
+    var position = ball._state.position;
+    position.x = 93.0;
+    position.y = 35.0;
+
+    // We set it's direction and speed...
+    var vector = ball._state.vector;
+    vector.x = 1.0;
+    vector.y = 0.0;
+    ball._state.speed = 10.0;
+
+    // We move it...
+    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    ball.updatePosition(game);
+    test.approx(position.x, 97.0);
+    test.approx(position.y, 35.0);
+    test.approx(vector.x, -1.0);
+    test.approx(vector.y, 0.0);
+
+    // Move again...
+    ball.updatePosition(game);
+    test.approx(position.x, 87.0);
+    test.approx(position.y, 35.0);
+    test.approx(vector.x, -1.0);
+    test.approx(vector.y, 0.0);
+
+    test.done();
+};
+
+/**
+ * Tests the ball bouncing off the side of the pitch.
+ */
+exports['Bounce off bottom - straight'] = function(test) {
+    // We create a ball...
+    var ball = new Ball();
+    ball.friction = 0.0;
+
+    // Set its position...
+    var position = ball._state.position;
+    position.x = 44.0;
+    position.y = 48.0;
+
+    // We set it's direction and speed...
+    var vector = ball._state.vector;
+    vector.x = 0.0;
+    vector.y = 1.0;
+    ball._state.speed = 10.0;
+
+    // We move it...
+    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    ball.updatePosition(game);
+    test.approx(position.x, 44.0);
+    test.approx(position.y, 42.0);
+    test.approx(vector.x, 0.0);
+    test.approx(vector.y, -1.0);
+
+    // Move again...
+    ball.updatePosition(game);
+    test.approx(position.x, 44.0);
+    test.approx(position.y, 32.0);
+    test.approx(vector.x, 0.0);
+    test.approx(vector.y, -1.0);
+
+    test.done();
+};
+
+/**
+ * Tests the ball bouncing off the side of the pitch.
+ */
 exports['Bounce off top - diagonal'] = function(test) {
     // We create a ball...
     var ball = new Ball();

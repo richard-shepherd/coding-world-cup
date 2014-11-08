@@ -102,7 +102,7 @@ Game.prototype.calculate = function() {
  */
 Game.prototype.getCalculationIntervalSeconds = function() {
     // TODO: Write this properly!
-    return 0.1;
+    return 0.01;
 };
 
 

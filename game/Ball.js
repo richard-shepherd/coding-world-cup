@@ -60,12 +60,22 @@ Ball.prototype.updatePosition = function (game) {
     position.addVector(vectorMoved);
 
     // Did the ball bounce?
-    if(position.x < 0.0 || position.x > Pitch.WIDTH) {
+    if(position.x < 0.0) {
         position.x *= -1.0;
         vector.x *= -1.0;
     }
-    if(position.y < 0.0 || position.y > Pitch.HEIGHT) {
+    if(position.x > Pitch.WIDTH) {
+        position.x = Pitch.WIDTH - (position.x - Pitch.WIDTH);
+        vector.x *= -1.0;
+    }
+
+    if(position.y < 0.0) {
         position.y *= -1.0;
+        vector.y *= -1.0;
+    }
+
+    if(position.y > Pitch.HEIGHT) {
+        position.y = Pitch.HEIGHT - (position.y - Pitch.HEIGHT);
         vector.y *= -1.0;
     }
 

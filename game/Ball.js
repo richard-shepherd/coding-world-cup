@@ -4,6 +4,7 @@
  * Manages the movement of the ball.
  */
 var BallState = require('./BallState');
+var Pitch = require('./Pitch');
 
 /**
  * @constructor
@@ -53,8 +54,20 @@ Ball.prototype.updatePosition = function (game) {
 
     // We find the distance travelled, and move the ball...
     var distance = averageSpeed * intervalSeconds;
-    var vector = this._state.vector.scale(distance);
-    this._state.position.addVector(vector);
+    var vector = this._state.vector;
+    var vectorMoved = this._state.vector.scale(distance);
+    var position = this._state.position;
+    position.addVector(vectorMoved);
+
+    // Did the ball bounce?
+    if(position.x < 0.0 || position.x > Pitch.WIDTH) {
+        position.x *= -1.0;
+        vector.x *= -1.0;
+    }
+    if(position.y < 0.0 || position.y > Pitch.HEIGHT) {
+        position.y *= -1.0;
+        vector.y *= -1.0;
+    }
 
     // We change the speed of the ball...
     this._state.speed = speedAtEnd;

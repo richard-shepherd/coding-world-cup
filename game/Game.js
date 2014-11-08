@@ -15,11 +15,15 @@
 var Team = require('./Team');
 var Player = require('./Player');
 var PlayerState_Static = require('./PlayerState_Static');
+var Ball = require('./Ball');
 
 /**
  * @constructor
  */
 function Game() {
+    // The ball...
+    this._ball = new Ball();
+
     // We create the teams and the _players...
     this.createTeams();
 
@@ -79,10 +83,14 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
  */
 Game.prototype.calculate = function() {
     // To calculate the next game state, we:
-    // 1. Turn and/or move players to their new positions.
-    // 2. Perform actions (tackling, kicking).
+    // 1. Move the ball.
+    // 2. Turn and/or move players to their new positions.
+    // 3. Perform actions (tackling, kicking).
 
-    // 1. We move the _players...
+    // 1. We move the ball...
+    this._ball.updatePosition(this);
+
+    // 2. We move the players...
     this._team1.updatePositions(this);
     this._team2.updatePositions(this);
 };
@@ -93,7 +101,8 @@ Game.prototype.calculate = function() {
  * Returns the time in (game) seconds since the previous calculation.
  */
 Game.prototype.getCalculationIntervalSeconds = function() {
-    // TODO: Write this!
+    // TODO: Write this properly!
+    return 0.1;
 };
 
 

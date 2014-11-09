@@ -37,9 +37,9 @@ function PlayerState_Intentions() {
  * An enum for the desired action.
  */
 PlayerState_Intentions.Action = {
-    NONE: 0,
-    TURN: 1,
-    MOVE: 2
+    NONE: '-',
+    TURN: 'T',
+    MOVE: 'M'
 };
 
 // Exports...

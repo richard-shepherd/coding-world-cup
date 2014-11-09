@@ -13,6 +13,9 @@
  * @constructor
  */
 function TeamState() {
+    // The team's name...
+    this.name = '';
+
     // The goals scored by this team...
     this.score = 0;
 }

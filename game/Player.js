@@ -200,11 +200,11 @@ Player.prototype.getSpeed = function() {
  */
 Player.prototype.getStateForDTO = function(publicOnly) {
     var state = {};
-    state.dynamicState = this._dynamicState;
+    state.dynamic = this._dynamicState;
+    state.config = this._staticState;
     if(!publicOnly) {
         // We want to include the private data as well...
-        state.staticState = this._staticState;
-        state.intentionsState = this._intentionsState;
+        state.intentions = this._intentionsState;
     }
     return state;
 };

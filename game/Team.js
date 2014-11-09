@@ -44,8 +44,8 @@ Team.prototype.updatePositions = function(game) {
  */
 Team.prototype.getStateForDTO = function(publicOnly) {
     var state = {};
-    state.teamState = this._state;
-    state.playersState = this._players.map(function(player) {
+    state.team = this._state;
+    state.players = this._players.map(function(player) {
         return player.getStateForDTO(publicOnly);
     });
     return state;

@@ -65,4 +65,12 @@ Client API
 ----------
 
 
+Parts of the state (in the DTO)
+-------------------------------
+- What should we call the various parts of the state?
+  - One problem is that lots of names are reserved works
+  - Such as "static", "dynamic", "public"
 
+- Also: Where should the player number and player type live?
+  - At the moment they are in the static state.
+  - But should they be passed to all players?

@@ -117,10 +117,10 @@ Game.prototype.getCalculationIntervalSeconds = function() {
  */
 Game.prototype.getStateForDTO = function() {
     var DTO = {
-        gameState: this._state,
-        ballState: this._ball._state,
-        team1State: this._team1.getStateForDTO(true),
-        team2State: this._team2.getStateForDTO(true)
+        game: this._state,
+        ball: this._ball._state,
+        team1: this._team1.getStateForDTO(false),
+        team2: this._team2.getStateForDTO(false)
     };
     return DTO;
 };

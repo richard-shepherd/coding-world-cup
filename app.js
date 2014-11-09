@@ -12,8 +12,12 @@ var util = require('util');
 Logger.addHandler(new LogHandler_Console(Logger.LogLevel.INFO_PLUS));
 Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.INFO));
 
-// We create a game, and set the ball moving...
+// We create a game, and set up the teams...
 var game = new Game();
+game._team1._state.name = 'Robots United';
+game._team2._state.name = 'AI City';
+
+// We set the ball moving...
 var ball = game._ball;
 ball._state.position.x = 50;
 ball._state.position.y = 25;
@@ -24,7 +28,7 @@ ball._state.vector.y = -1.0 * Math.sqrt(0.5);
 
 // We run a game loop...
 var start = process.hrtime();
-for(var i=0; i<1000; ++i) {
+for(var i=0; i<100; ++i) {
     // We update the game state...
     game.calculate();
 

@@ -74,3 +74,48 @@ Parts of the state (in the DTO)
 - Also: Where should the player number and player type live?
   - At the moment they are in the static state.
   - But should they be passed to all players?
+
+
+Interactions with AIs
+---------------------
+- Get team name and colors.
+  - Send: n/a
+  - Response: name and colors
+
+- Get distribution of abilities between players.
+  - Send: Total ability available in each category.
+  - Response: abilities per player
+
+- Start of one half.
+  - Send: First or second half; direction for each team.
+  - Response: Initial position for each player.
+    - May be called again, e.g. after a goal has been scored.
+    - No need for players to move to these positions - they just get put there.
+
+- End of game
+  - Send: final score
+  - Response: n/a
+
+- In-play update
+  - Send: Game state (score, time remaining); ball position & owner; player positions and directions.
+  - Response: List of intentions per player (may be empty)
+
+
+How do game events work? (async)
+--------------------------------
+- The engine sends a messages to the AIs
+  - For example, the in-play update. Gets sent to both AIs.
+  - We have a general callback for each player's messages. (In the Team object?)
+  - All responses are JSON. We end the game on invalid JSON.
+  - The callback looks for the "event" field in the object.
+    - Routes the update to a specific handler.
+    -
+
+- Maybe have a specific AI object that manages one AI
+  - Spawns the process
+  - Gets the callbacks
+  - Can shut it down.
+  - Maybe the Team object "has" an AI?
+
+- QUESTION: How do we get all responses before moving on to the next turn / action?
+  - Maybe we have a sort-of "state machine".

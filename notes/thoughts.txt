@@ -207,5 +207,20 @@ Players pass through each other?
   - e.g. tackling, fouling etc.
 
 
+Kick off rules
+--------------
+From Wikipedia:
+"The kick-off is taken from the center spot. All players must be in their own half of
+the field of play, and all opposing players must remain at least 10 yards (9.16m) from
+the ball (a distance marked on the pitch by the centre circle), until the ball is in play.
 
+The ball is initially stationary until it is put into play. The ball is in play when it
+is kicked and moves forward. The player who has first kicked the ball may not touch it
+again until it has been touched by another player. Because of this, play is almost
+always started with two players at the center spot - one to kick the ball forward a few
+inches, and the second to pass the ball backwards to the rest of the team."
+
+- Do we want to do the same?
+  - I think we do want to have the thing about opponents being 10m away.
+  - Not so sure about the first player to kick rule.
 

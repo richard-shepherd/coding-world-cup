@@ -119,3 +119,4 @@ How do game events work? (async)
 
 - QUESTION: How do we get all responses before moving on to the next turn / action?
   - Maybe we have a sort-of "state machine".
+  - We want it to seem sequential to the code, even though it is not.

@@ -8,7 +8,10 @@ var TeamState = require('./TeamState');
 /**
  * @constructor
  */
-function Team() {
+function Team(ai) {
+    // The AIWrapper for the AI managing this team...
+    this._ai = ai;
+
     // The team state (score etc)...
     this._state = new TeamState();
 

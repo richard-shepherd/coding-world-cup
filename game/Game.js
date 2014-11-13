@@ -22,7 +22,7 @@ var GameState = require('./GameState');
 /**
  * @constructor
  */
-function Game() {
+function Game(ai1, ai2) {
     // The game state...
     this._state = new GameState();
 
@@ -30,7 +30,7 @@ function Game() {
     this._ball = new Ball();
 
     // We create the teams and the _players...
-    this.createTeams();
+    this.createTeams(ai1, ai2);
 
     // The interval in seconds between calculation updates.
     // This includes the 'physics' of player and ball movement
@@ -49,10 +49,10 @@ function Game() {
 /**
  * Creates the teams and the _players.
  */
-Game.prototype.createTeams = function() {
+Game.prototype.createTeams = function(ai1, ai2) {
     // We create the two teams...
-    this._team1 = new Team();
-    this._team2 = new Team();
+    this._team1 = new Team(ai1);
+    this._team2 = new Team(ai2);
 
     // We create the _players and assign them to the teams...
     this._players = [];

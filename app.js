@@ -33,7 +33,7 @@ Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.INFO));
 //    game.calculate();
 //
 //    // We log the game state...
-//    var dto = JSON.stringify(game.getStateForDTO(), Utils.decimalPlaceReplacer(4));
+//    var dto = JSON.stringify(game.getDTO(), Utils.decimalPlaceReplacer(4));
 //    Logger.log(dto, Logger.LogLevel.INFO);
 //}
 //

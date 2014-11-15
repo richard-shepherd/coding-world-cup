@@ -38,21 +38,28 @@ Team.prototype.updatePositions = function(game) {
 };
 
 /**
- * getStateForDTO
+ * getDTO
  * --------------
  * Returns the state of this object and its players.
  *
  * If publicOnly is true, then only public (dynamic) data about
  * the players will be included.
  */
-Team.prototype.getStateForDTO = function(publicOnly) {
+Team.prototype.getDTO = function(publicOnly) {
     var state = {};
     state.team = this._state;
     state.players = this._players.map(function(player) {
-        return player.getStateForDTO(publicOnly);
+        return player.getDTO(publicOnly);
     });
     return state;
 };
+
+/**
+ * Returns the AI (wrapper) for this team.
+ */
+Team.prototype.getAI = function() {
+    return this._ai;
+}
 
 // The number of _players on each team (not including the goalkeeper)...
 Team.NUMBER_OF_PLAYERS = 5;

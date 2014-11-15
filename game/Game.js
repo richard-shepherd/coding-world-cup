@@ -111,26 +111,34 @@ Game.prototype.getCalculationIntervalSeconds = function() {
 };
 
 /**
- * getStateForDTO
+ * getDTO
  * --------------
  * Gets the DTO which we pass to the GUI.
  */
-Game.prototype.getStateForDTO = function() {
+Game.prototype.getDTO = function(publicOnly) {
     var DTO = {
         game: this._state,
         ball: this._ball._state,
-        team1: this._team1.getStateForDTO(false),
-        team2: this._team2.getStateForDTO(false)
+        team1: this._team1.getDTO(publicOnly),
+        team2: this._team2.getDTO(publicOnly)
     };
     return DTO;
 };
 
+/**
+ * getTeam1
+ * --------
+ */
+Game.prototype.getTeam1 = function() {
+    return this._team1;
+};
 
 /**
- *
+ * getTeam2
+ * --------
  */
-Game.prototype.getDTO_Player = function() {
-
+Game.prototype.getTeam2 = function() {
+    return this._team2;
 };
 
 // Exports...

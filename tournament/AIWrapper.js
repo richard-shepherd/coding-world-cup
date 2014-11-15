@@ -14,5 +14,13 @@ function AIWrapper() {
 }
 module.exports = AIWrapper;
 
+/**
+ * sendUpdate
+ * ----------
+ * Sends an to the AI we're managing.
+ */
+AIWrapper.prototype.sendUpdate = function(data) {
+
+};
 
 

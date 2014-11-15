@@ -191,14 +191,14 @@ Player.prototype.getSpeed = function() {
 };
 
 /**
- * getStateForDTO
+ * getDTO
  * --------------
  * Returns an object holding the player's state.
  *
  * If publicOnly is true, then only the dynamic state is
  * returned. If false, all the state is returned.
  */
-Player.prototype.getStateForDTO = function(publicOnly) {
+Player.prototype.getDTO = function(publicOnly) {
     var state = {};
     state.dynamic = this._dynamicState;
     state.config = this._staticState;

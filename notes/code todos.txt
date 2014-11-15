@@ -20,3 +20,5 @@ TODO: Make sure you can't score a goal by hitting it diagonally by the side of t
 TODO: So we should make an "accurate" bounce, where we find the intersection of the ball's path with the border of the pitch, and "reflect" from there.
 
 TODO: Think about timeouts for AI responses
+
+TODO: Add processing time allowances to the Teams. Process in GSM_Base??

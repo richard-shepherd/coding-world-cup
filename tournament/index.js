@@ -1,2 +1,0 @@
-exports.AIWrapper = require('./AIWrapper');
-

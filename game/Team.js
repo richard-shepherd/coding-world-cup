@@ -42,7 +42,7 @@ Team.prototype.updatePositions = function(game) {
  * --------------
  * Returns the state of this object and its players.
  *
- * If publicOnly is true, then only public (dynamic) data about
+ * If publicOnly is true, then only public (dynamic) jsonData about
  * the players will be included.
  */
 Team.prototype.getDTO = function(publicOnly) {

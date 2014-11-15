@@ -91,6 +91,31 @@ function secondsSince(time) {
     return elapsedSeconds;
 }
 
+/**
+ * callIfExists
+ * ------------
+ * Calls target.function(args) if functionName is the name of
+ * a function on target. Any arguments after target and functionName
+ * are passed to the function.
+ *
+ * You call it like this:
+ *   callIfExists(this, 'go', 3, 4, 5);
+ */
+function callIfExists(target, functionName) {
+    // We get the array of arguments...
+    var args = Array.prototype.slice.call(arguments);
+
+    // We remove target and functionName...
+    args.shift();
+    args.shift();
+
+    // We check if the function exists...
+    var fn = target[functionName];
+    if (typeof fn === 'function') {
+        fn.apply(target, args);
+    }
+}
+
 // Exports...
 exports.setApproxTolerance = setApproxTolerance;
 exports.approxEqual = approxEqual;
@@ -98,4 +123,4 @@ exports.angleBetween = angleBetween;
 exports.vectorFromDirection = vectorFromDirection;
 exports.decimalPlaceReplacer = decimalPlaceReplacer;
 exports.secondsSince = secondsSince;
-
+exports.callIfExists = callIfExists;

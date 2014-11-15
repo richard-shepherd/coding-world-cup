@@ -203,7 +203,7 @@ Player.prototype.getDTO = function(publicOnly) {
     state.dynamic = this._dynamicState;
     state.config = this._staticState;
     if(!publicOnly) {
-        // We want to include the private data as well...
+        // We want to include the private jsonData as well...
         state.intentions = this._intentionsState;
     }
     return state;

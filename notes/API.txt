@@ -1,0 +1,16 @@
+
+Messages sent to AIs
+--------------------
+- Contain a field: messageType
+  - REQUEST
+  - ERROR
+
+
+Errors
+------
+
+
+Requests
+--------
+- "messageType":"REQUEST"
+

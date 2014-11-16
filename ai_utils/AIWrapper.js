@@ -23,12 +23,42 @@ function AIWrapper(teamNumber, gsmManager) {
 module.exports = AIWrapper;
 
 /**
- * sendUpdate
- * ----------
- * Sends an to the AI we're managing.
+ * sendRequest
+ * -----------
+ * Sends a request to the AI we're managing.
  */
-AIWrapper.prototype.sendUpdate = function(data) {
+AIWrapper.prototype.sendRequest = function(request) {
+    // We add the REQUEST type to the message...
+    request.messageType = "REQUEST";
+    this.sendData(request);
+};
 
+/**
+ * sendError
+ * ---------
+ * Sends an error message to the AI.
+ */
+AIWrapper.prototype.sendError = function(message) {
+    // We log the error...
+    Logger.log(ex.message, Logger.LogLevel.ERROR);
+
+    // We create an error message to send to the AI...
+    var errorMessage = {
+        messageType: "ERROR",
+        error: ex.message
+    };
+    var errorMessageJSON = JSON.stringify(errorMessage);
+    this.sendData(errorMessageJSON);
+};
+
+/**
+ * sendData
+ * --------
+ * Sends the data passed in to the AI.
+ * The data should be a JSON string.
+ */
+AIWrapper.prototype.sendData = function(data) {
+    // TODO: Write this!
 };
 
 /**
@@ -49,17 +79,8 @@ AIWrapper.prototype.onResponseReceived = function(data) {
                 break;
         }
     } catch(ex) {
-        // Something went wrong with the parsing or processing
-        // of the response. We log the error and send the error
-        // message to the AI...
-        Logger.log(ex.message, Logger.LogLevel.ERROR);
-
-        var errorMessage = {
-            messageType: "ERROR",
-            error: ex.message
-        };
-        var errorMessageJSON = JSON.stringify(errorMessage);
-        this.sendUpdate(errorMessageJSON);
+        // Something went wrong processing the responses...
+        this.sendError(ex.message);
     }
 };
 

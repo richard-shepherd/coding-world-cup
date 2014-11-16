@@ -60,8 +60,8 @@ GSM_Base.prototype.sendPlayUpdateToBothAIs = function() {
 
     // We get the DTO and pass it to the AIs...
     var data = this._game.getDTO(true);
-    this._AI1.sendUpdate(data);
-    this._AI2.sendUpdate(data);
+    this._AI1.sendRequest(data);
+    this._AI2.sendRequest(data);
 };
 
 /**

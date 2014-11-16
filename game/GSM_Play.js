@@ -45,6 +45,7 @@ GSM_Play.prototype._processResponse = function(data, team) {
         team.processPlayResponse(data);
     } else {
         // We got an unexpected response...
+        // TODO: send this back to the AI
         Logger.log(util.format('Unexpected response from team: %s, data:%s', team.getName(), data), Logger.LogLevel.ERROR);
     }
 };

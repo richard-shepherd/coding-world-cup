@@ -17,6 +17,8 @@ var PlayerState_Static = require('./PlayerState_Static');
 var PlayerState_Intentions = require('./PlayerState_Intentions');
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
+var CWCError = UtilsLib.CWCError;
+
 
 /**
  * @constructor
@@ -208,6 +210,38 @@ Player.prototype.getDTO = function(publicOnly) {
     }
     return state;
 };
+
+/**
+ * getPlayerNumber
+ * ---------------
+ * Helper function to get the player number.
+ */
+Player.prototype.getPlayerNumber = function() {
+    return this._staticState.playerNumber;
+};
+
+/**
+ * setAction
+ * ---------
+ * Sets the current action from the data passed in (which usually
+ * originated from an AI).
+ */
+Player.prototype.setAction = function(action) {
+    // The action should have an "action" member specifying
+    // which action to perform. We look for a function called
+    // _setAction_[action] to parse the specific parameters for
+    // this action...
+    if(!('action' in action)) {
+        throw new CWCError('Expected "action" field in response');
+    }
+    var setActionMethodName = '_setAction_' + action.action;
+    if(!(setActionMethodName in this)) {
+        throw new CWCError('No method found to process action: ' + action.action);
+    }
+    this[setActionMethodName](action);
+};
+
+
 
 // Exports...
 module.exports = Player;

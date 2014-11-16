@@ -10,4 +10,6 @@ TODO: Test that energy does not go below zero (and player does not go backwards!
 
 TODO: Test recuperation of energy
 
+TODO: Test that errors in parsing responses get sent to the correct AI. If the only try...catch is at the handler level, then the second handler may get all errors (as it is only then that parsing takes place).
+
 

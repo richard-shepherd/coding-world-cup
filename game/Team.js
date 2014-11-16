@@ -4,6 +4,9 @@
  * Manages one team, including the collection of players in it.
  */
 var TeamState = require('./TeamState');
+var UtilsLib = require('../utils');
+var CWCError = UtilsLib.CWCError;
+
 
 /**
  * @constructor
@@ -68,6 +71,50 @@ Team.prototype.getAI = function() {
  */
 Team.prototype.getName = function() {
     return this._state.name;
+};
+
+/**
+ * processPlayResponse
+ * -------------------
+ * Processes a response from an AI for general 'play' updates
+ * involving moving of players, kicking and so on.
+ */
+Team.prototype.processPlayResponse = function(data) {
+    // The data should have an 'actions' section...
+    if(!('actions' in data)) {
+        throw new CWCError('Expected an "actions" array in response.');
+    }
+
+    // We process each action...
+    data.actions.forEach(function(action) {
+        var player = this._getPlayer(action.playerNumber);
+        player.setAction(action);
+    });
+};
+
+/**
+ * _getPlayer
+ * ----------
+ * Returns the Player object for the player-number passed in.
+ * Throws an exception if the player is not part of this team.
+ */
+Team.prototype._getPlayer = function(playerNumber) {
+    // The player numbers are consecutive, so we can do a bit
+    // of index arithmetic to find the player for the number
+    // passed in...
+    var players = this._players;
+    if(players.length === 0) {
+        throw new CWCError('No players in team.');
+    }
+
+    var firstPlayerNumber = players[0].getPlayerNumber();
+    var index = playerNumber - firstPlayerNumber;
+    if(index >= players.length) {
+        throw new CWCError('Player not found: ' + playerNumber);
+
+    }
+
+    return players[index];
 };
 
 // The number of _players on each team (not including the goalkeeper)...

@@ -5,7 +5,7 @@
  */
 var GSM_Base = require('./GSM_Base');
 var UtilsLib = require('../utils');
-var Logger = UtilsLib.Logger;
+var CWCError = UtilsLib.CWCError;
 var util = require('util');
 
 
@@ -19,7 +19,7 @@ function GSM_Play(game) {
     // We send the current state to the AIs, and wait for responses...
     this.sendPlayUpdateToBothAIs();
 }
-GSM_Play.prototype = new GSM_Base(); // Inherits from GSM_Base...
+GSM_Play.prototype = new GSM_Base(); // Derived from GSM_Base.
 module.exports = GSM_Play;
 
 /**
@@ -40,13 +40,16 @@ GSM_Play.prototype.onAIResponsesReceived = function() {
  * team to process.
  */
 GSM_Play.prototype._processResponse = function(data, team) {
-    if(data.request === 'PLAY') {
+    try {
+        // We check that we got a PLAY response...
+        if(data.request !== 'PLAY') {
+            throw new CWCError('Expected a PLAY response.')
+        }
         // We got a PLAY response, so we pass it to the Team to process...
         team.processPlayResponse(data);
-    } else {
-        // We got an unexpected response...
-        // TODO: send this back to the AI
-        Logger.log(util.format('Unexpected response from team: %s, data:%s', team.getName(), data), Logger.LogLevel.ERROR);
+    } catch(ex) {
+        // We log the error and report it back to the AI...
+        team.getAI().sendError(ex.message);
     }
 };
 

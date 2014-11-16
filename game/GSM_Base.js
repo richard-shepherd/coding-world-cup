@@ -36,6 +36,10 @@ function GSM_Base(game) {
     // The game...
     this._game = game;
 
+    // The teams...
+    this._team1 = game.getTeam1();
+    this._team2 = game.getTeam2();
+
     // The two AIs...
     this._AI1 = game.getTeam1().getAI();
     this._AI2 = game.getTeam2().getAI();

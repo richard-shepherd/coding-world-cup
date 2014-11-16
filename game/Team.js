@@ -59,7 +59,16 @@ Team.prototype.getDTO = function(publicOnly) {
  */
 Team.prototype.getAI = function() {
     return this._ai;
-}
+};
+
+/**
+ * getName
+ * -------
+ * Helper function to get the team's name.
+ */
+Team.prototype.getName = function() {
+    return this._state.name;
+};
 
 // The number of _players on each team (not including the goalkeeper)...
 Team.NUMBER_OF_PLAYERS = 5;

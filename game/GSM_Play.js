@@ -10,7 +10,7 @@ var GSM_Base = require('./GSM_Base');
  * @constructor
  */
 function GSM_Play(game) {
-    // We all the base class constructor...
+    // We call the base class constructor...
     GSM_Base.call(this, game);
 
     // We send the current state to the AIs, and wait for responses...
@@ -22,10 +22,10 @@ module.exports = GSM_Play;
 /**
  * onAIResponsesReceived
  * ---------------------
- *
+ * Called when we have received responses from both AIs.
  */
 GSM_Play.prototype.onAIResponsesReceived = function() {
-
+    //
 };
 
 

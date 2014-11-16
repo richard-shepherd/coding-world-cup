@@ -1,0 +1,47 @@
+- What do AI responses look like?
+  - It depends on the request that was made.
+
+Enum for requests
+-----------------
+- We need an enum for requests.
+  - PLAY, KICKOFF etc
+
+
+Play
+----
+- Most of the game is in the 'play' state
+- We send a snapshot of the state of play.
+- AIs send back *intentions*
+  - Player number
+  - Action (move, turn etc)
+  - Other data that goes with the action
+
+{
+   "messageType":"REQUEST",
+   "request":"PLAY",
+   "actions":[
+      {
+         "playerNumber":6,
+         "action":"MOVE",
+         "destination":{
+            "x":40.3,
+            "y":20.2
+         },
+         "speed":80.0
+      },
+      {
+         "playerNumber":7,
+         "action":"TURN",
+         "direction":220.4
+      }
+   ]
+}
+
+- Q: Where should this be parsed?
+  - The current state checks the request.
+
+
+
+
+
+

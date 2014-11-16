@@ -38,8 +38,8 @@ function PlayerState_Intentions() {
  */
 PlayerState_Intentions.Action = {
     NONE: '-',
-    TURN: 'T',
-    MOVE: 'M'
+    TURN: 'TURN',
+    MOVE: 'MOVE'
 };
 
 // Exports...

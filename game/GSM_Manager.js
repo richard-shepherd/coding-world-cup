@@ -24,21 +24,21 @@ function GSM_Manager(game) {
 module.exports = GSM_Manager;
 
 /**
- * onUpdate_AI1
- * ------------
- * Called when we get an update from AI1.
+ * onResponse_AI1
+ * --------------
+ * Called when we get a response from AI1.
  */
-GSM_Manager.prototype.onUpdate_AI1 = function(data) {
-    this._state = this._state.onUpdate_AI1(data);
+GSM_Manager.prototype.onResponse_AI1 = function(data) {
+    this._state = this._state.onResponse_AI1(data);
 };
 
 /**
- * onUpdate_AI2
- * ------------
- * Called when we get an update from AI2.
+ * onResponse_AI2
+ * --------------
+ * Called when we get a response from AI2.
  */
-GSM_Manager.prototype.onUpdate_AI2 = function(data) {
-    this._state = this._state.onUpdate_AI2(data);
+GSM_Manager.prototype.onResponse_AI2 = function(data) {
+    this._state = this._state.onResponse_AI2(data);
 };
 
 

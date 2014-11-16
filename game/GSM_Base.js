@@ -61,35 +61,35 @@ GSM_Base.prototype.sendPlayUpdateToBothAIs = function() {
 };
 
 /**
- * onUpdate_AI1
- * ------------
- * Called when we get an update from AI1.
+ * onResponse_AI1
+ * --------------
+ * Called when we get a response from AI1.
  */
-GSM_Base.prototype.onUpdate_AI1 = function(jsonData) {
+GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
     // We store the jsonData and check whether we have received both updates...
     this._aiResponses.AI1 = this._getAIResponse(jsonData);
-    return this._checkUpdates();
+    return this._checkResponses();
 };
 
 /**
- * onUpdate_AI2
- * ------------
- * Called when we get an update from AI2.
+ * onResponse_AI2
+ * --------------
+ * Called when we get a response from AI2.
  */
-GSM_Base.prototype.onUpdate_AI2 = function(jsonData) {
+GSM_Base.prototype.onResponse_AI2 = function(jsonData) {
     // We store the jsonData and check whether we have received both updates...
     this._aiResponses.AI2 = this._getAIResponse(jsonData);
-    return this._checkUpdates();
+    return this._checkResponses();
 };
 
 /**
- * _checkUpdates
- * -------------
- * Checks whether we have received updates from both AIs.
+ * _checkResponses
+ * ---------------
+ * Checks whether we have received responses from both AIs.
  * Returns the new state to move to (or 'this' to remain
  * in the current state).
  */
-GSM_Base.prototype._checkUpdates = function() {
+GSM_Base.prototype._checkResponses = function() {
     // We check if we have jsonData from both AIs in our
     // collection of responses...
     if(!('AI1' in this._aiResponses)) return this;

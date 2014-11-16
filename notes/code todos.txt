@@ -22,3 +22,7 @@ TODO: So we should make an "accurate" bounce, where we find the intersection of 
 TODO: Think about timeouts for AI responses
 
 TODO: Add processing time allowances to the Teams. Process in GSM_Base??
+
+TODO: Rename Intentions to Actions?
+
+TODO: Have an Error message that can be sent to AIs - and logged as well.

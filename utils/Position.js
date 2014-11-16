@@ -18,6 +18,16 @@ function Position(x, y) {
 }
 
 /**
+ * copyFrom
+ * --------
+ * Copies from 'other' into this object.
+ */
+Position.prototype.copyFrom = function(other) {
+    this.x = other.x;
+    this.y = other.y;
+};
+
+/**
  * approxEqual
  * -----------
  * True if this position is the same as 'other' to the precision

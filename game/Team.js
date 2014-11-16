@@ -111,9 +111,7 @@ Team.prototype._getPlayer = function(playerNumber) {
     var index = playerNumber - firstPlayerNumber;
     if(index >= players.length) {
         throw new CWCError('Player not found: ' + playerNumber);
-
     }
-
     return players[index];
 };
 

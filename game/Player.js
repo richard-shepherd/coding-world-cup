@@ -241,7 +241,23 @@ Player.prototype.setAction = function(action) {
     this[setActionMethodName](action);
 };
 
-
+/**
+ * _setAction_MOVE
+ * ---------------
+ * Processes a MOVE action.
+ */
+Player.prototype._setAction_MOVE = function(action) {
+    // We expect the action to have "destination" and "speed" fields...
+    if(!('destination' in action)) {
+        throw new CWCError('Expected "destination" field in MOVE action');
+    }
+    if(!('speed' in action)) {
+        throw new CWCError('Expected "speed" field in MOVE action');
+    }
+    this._intentionsState.action = PlayerState_Intentions.Action.MOVE;
+    this._intentionsState.destination.copyFrom(action.destination);
+    this._intentionsState.speed = action.speed;
+};
 
 // Exports...
 module.exports = Player;

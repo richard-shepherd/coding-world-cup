@@ -22,8 +22,22 @@ AIWrapper_RandomMovement.prototype = new AIWrapper(); // Derived from AIWrapper.
 /**
  * sendData
  * --------
+ * This is called when the game sends data to the AI, so in this
+ * dummy AI it is where we receive updates.
  */
 AIWrapper_RandomMovement.prototype.sendData = function(data) {
-    // TODO: Write this!
+    // We call functions depending on the message-type...
+    var messageHandler = '_onMessage_' + data.messageType;
+    this[messageHandler](data);
 };
 
+/**
+ * _onMessage_REQUEST
+ * ------------------
+ * Called when we receive a
+ * @param data
+ * @private
+ */
+AIWrapper_RandomMovement.prototype._onMessage_REQUEST = function(data) {
+
+};

@@ -3,14 +3,33 @@ Messages sent to AIs
 --------------------
 - Contain a field: messageType
   - REQUEST
+  - EVENT
   - ERROR
 
 
-Errors
-------
+ERROR
+-----
+- No response is expected
+- Fields
+  - "messageType":"ERROR"
+  - "error":"(error message string)]"
 
 
-Requests
---------
+EVENT
+-----
+- No response is expected
+- Called with information at various points in the tournament or game.
+- Fields
+  - "messageType":"EVENT"
+
+  - "event":"TEAM_INFO"
+    - Called near the start of a game to give you team info.
+    - "teamNumber":(1 or 2)
+    - "direction":("RIGHT" or "LEFT")
+    - "players":[{"playerNumber":(number), "playerType":("P" or "G")}, ...]
+
+
+REQUEST
+-------
 - "messageType":"REQUEST"
 

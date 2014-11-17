@@ -259,6 +259,21 @@ Player.prototype._setAction_MOVE = function(action) {
     this._intentionsState.speed = action.speed;
 };
 
+/**
+ * _setAction_TURN
+ * ---------------
+ * Processes a TURN action.
+ */
+Player.prototype._setAction_TURN = function(action) {
+    // We expect the action to have a "direction" field...
+    if(!('direction' in action)) {
+        throw new CWCError('Expected "direction" field in TURN action');
+    }
+    this._intentionsState.action = PlayerState_Intentions.Action.TURN;
+    this._intentionsState.direction = action.direction;
+};
+
+
 // Exports...
 module.exports = Player;
 

@@ -28,8 +28,8 @@ module.exports = GSM_Manager;
  * --------------
  * Called when we get a response from AI1.
  */
-GSM_Manager.prototype.onResponse_AI1 = function(data) {
-    this._state = this._state.onResponse_AI1(data);
+GSM_Manager.prototype.onResponse_AI1 = function(jsonData) {
+    this._state = this._state.onResponse_AI1(jsonData);
 };
 
 /**

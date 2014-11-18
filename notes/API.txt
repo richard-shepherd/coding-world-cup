@@ -17,10 +17,14 @@ ERROR
 
 EVENT
 -----
-- No response is expected
+- No response is expected.
 - Called with information at various points in the tournament or game.
 - Fields
   - "messageType":"EVENT"
+
+  - "event":"GAME_START"
+    - Called at the start of a new game.
+    - "pitch":{"width":(metres), "height":(metres), "goals":{"y1":(value), "y2":(value)}}
 
   - "event":"TEAM_INFO"
     - Called near the start of a game to give you team info.
@@ -31,5 +35,20 @@ EVENT
 
 REQUEST
 -------
-- "messageType":"REQUEST"
+- A response is expected. It should echo the "request" field.
+- Fields
+  - "messageType":"REQUEST"
+
+  - "request":"PLAY"
+    - Called during the normal course of play to get player movements and actions.
+    - "game":{game-state}
+
+
+
+AI Responses
+------------
+- Response to PLAY request
+  - "request":"PLAY"
+  - "actions":[{"action":("MOVE", "TURN" etc), "action-specific-data":xyz}, {"action":...]
+
 

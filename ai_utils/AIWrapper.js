@@ -58,24 +58,26 @@ AIWrapper.prototype.sendError = function(message) {
  * The data should be a JSON string.
  */
 AIWrapper.prototype.sendData = function(data) {
-    // TODO: Write this!
+    // TODO: Write this! (Convert to JSON and send to AI.)
 };
 
 /**
  * onResponseReceived
  * ------------------
  * Called when we receive a response from the AI.
+ * 'data' is an object, ie it has already been parsed from the JSON
+ * string sent by the AI.
  */
-AIWrapper.prototype.onResponseReceived = function(data) {
+AIWrapper.prototype.onResponseReceived = function(jsonData) {
     try {
         // We forward the response to the GSM...
         switch(this._teamNumber) {
             case 1:
-                this._gsmManager.onResponse_AI1(data);
+                this._gsmManager.onResponse_AI1(jsonData);
                 break;
 
             case 2:
-                this._gsmManager.onResponse_AI2(data);
+                this._gsmManager.onResponse_AI2(jsonData);
                 break;
         }
     } catch(ex) {

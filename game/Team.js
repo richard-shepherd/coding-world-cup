@@ -11,7 +11,10 @@ var CWCError = UtilsLib.CWCError;
 /**
  * @constructor
  */
-function Team(ai) {
+function Team(ai, teamNumber) {
+    // The team's number (1 or 2)...
+    this._teamNumber = teamNumber;
+
     // The AIWrapper for the AI managing this team...
     this._ai = ai;
 
@@ -22,6 +25,9 @@ function Team(ai) {
     // (The player objects are created in the Game, and passed to us later)...
     this._players = [];
 }
+
+// The number of _players on each team (not including the goalkeeper)...
+Team.NUMBER_OF_PLAYERS = 5;
 
 /**
  * Adds a player to this team.
@@ -115,8 +121,31 @@ Team.prototype._getPlayer = function(playerNumber) {
     return players[index];
 };
 
-// The number of _players on each team (not including the goalkeeper)...
-Team.NUMBER_OF_PLAYERS = 5;
+/**
+ * sendEvent_TeamInfo
+ * ------------------
+ * Sends information about this team to the team's AI.
+ */
+Team.prototype.sendEvent_TeamInfo = function() {
+    // We create the info for the event...
+    var info = {
+        event:"TEAM_INFO",
+        teamNumber:this._teamNumber,
+        players:[]
+    };
+
+    // Add the players...
+    this._players.forEach(function(player) {
+        var playerInfo = {
+            playerNumber:player.staticState.playerNumber,
+            playerType:player.staticState.playerType
+        };
+        info.players.push(player);
+    });
+
+    // And send it to the team's AI...
+    this._ai.sendEvent(info);
+};
 
 // Exports...
 module.exports = Team;

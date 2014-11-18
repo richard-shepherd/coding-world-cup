@@ -25,12 +25,23 @@ module.exports = AIWrapper;
 /**
  * sendRequest
  * -----------
- * Sends a request to the AI we're managing.
+ * Sends a request message to the AI we're managing.
  */
 AIWrapper.prototype.sendRequest = function(request) {
     // We add the REQUEST type to the message...
     request.messageType = "REQUEST";
     this.sendData(request);
+};
+
+/**
+ * sendEvent
+ * ---------
+ * Sends an event message to the AI we're managing.
+ */
+AIWrapper.prototype.sendEvent = function(event) {
+    // We add the EVENT type to the message...
+    event.messageType = "EVENT";
+    this.sendData(event);
 };
 
 /**

@@ -25,13 +25,13 @@ var CWCError = UtilsLib.CWCError;
  */
 function Player(playerNumber, playerType) {
     // Dynamic state (position etc)...
-    this._dynamicState = new PlayerState_Dynamic();
+    this.dynamicState = new PlayerState_Dynamic();
 
     // Static state (skills, abilities etc)...
-    this._staticState = new PlayerState_Static(playerNumber, playerType);
+    this.staticState = new PlayerState_Static(playerNumber, playerType);
 
     // Intentions (direction, speed etc)...
-    this._intentionsState = new PlayerState_Intentions();
+    this.intentionsState = new PlayerState_Intentions();
 }
 
 /**
@@ -59,7 +59,7 @@ Player.MAX_TURNING_RATE = 600.0;
  * Returns true if this player is a player (ie, not a goalkeeper).
  */
 Player.prototype.isPlayer = function() {
-    return this._staticState.playerType === PlayerState_Static.PlayerType.PLAYER;
+    return this.staticState.playerType === PlayerState_Static.PlayerType.PLAYER;
 };
 
 /**
@@ -68,7 +68,7 @@ Player.prototype.isPlayer = function() {
  * Returns true if this player is a goalkeeper.
  */
 Player.prototype.isGoalkeeper = function() {
-    return this._staticState.playerType === PlayerState_Static.PlayerType.GOALKEEPER;
+    return this.staticState.playerType === PlayerState_Static.PlayerType.GOALKEEPER;
 };
 
 /**
@@ -78,7 +78,7 @@ Player.prototype.isGoalkeeper = function() {
  * and so on, and on the time elapsed since the previous update.
  */
 Player.prototype.updatePosition = function(game) {
-    switch(this._intentionsState.action) {
+    switch(this.intentionsState.action) {
         case PlayerState_Intentions.Action.TURN:
             this.updatePosition_Turn(game);
             break;
@@ -96,8 +96,8 @@ Player.prototype.updatePosition = function(game) {
  */
 Player.prototype.updatePosition_Turn = function(game) {
     // We work out whether we should be turning left or right...
-    var currentDirection = this._dynamicState.direction;
-    var desiredDirection = this._intentionsState.direction;
+    var currentDirection = this.dynamicState.direction;
+    var desiredDirection = this.intentionsState.direction;
     var angleToTurn = desiredDirection - currentDirection;
     if(angleToTurn > 180) {
         // We are turning more than 180 degrees to the right,
@@ -134,7 +134,7 @@ Player.prototype.updatePosition_Turn = function(game) {
     }
 
     // We set the new direction...
-    this._dynamicState.direction = newDirection;
+    this.dynamicState.direction = newDirection;
 };
 
 /**
@@ -144,19 +144,19 @@ Player.prototype.updatePosition_Turn = function(game) {
  */
 Player.prototype.updatePosition_Move = function(game) {
     // We check if the player is already at the destination...
-    var position = this._dynamicState.position;
-    var destination = this._intentionsState.destination;
+    var position = this.dynamicState.position;
+    var destination = this.intentionsState.destination;
     if(position.approxEqual(destination)) {
         // The player is already at the destination...
         return;
     }
 
     // We check if the player is facing the right way...
-    var currentDirection = this._dynamicState.direction;
+    var currentDirection = this.dynamicState.direction;
     var directionToDestination = Utils.angleBetween(position, destination);
     if(!Utils.approxEqual(currentDirection, directionToDestination)) {
         // We are not currently facing the right way, so we turn first...
-        this._intentionsState.direction = directionToDestination;
+        this.intentionsState.direction = directionToDestination;
         this.updatePosition_Turn(game);
         return;
     }
@@ -186,8 +186,8 @@ Player.prototype.updatePosition_Move = function(game) {
  * This is a function of the player's max speed and current energy.
  */
 Player.prototype.getSpeed = function() {
-    var runningAbility = this._staticState.runningAbility / 100.0;
-    var energy = this._dynamicState.energy / 100.0;
+    var runningAbility = this.staticState.runningAbility / 100.0;
+    var energy = this.dynamicState.energy / 100.0;
     var speed = runningAbility * energy * Player.MAX_SPEED;
     return speed;
 };
@@ -202,11 +202,11 @@ Player.prototype.getSpeed = function() {
  */
 Player.prototype.getDTO = function(publicOnly) {
     var state = {};
-    state.dynamic = this._dynamicState;
-    state.config = this._staticState;
+    state.dynamic = this.dynamicState;
+    state.config = this.staticState;
     if(!publicOnly) {
         // We want to include the private jsonData as well...
-        state.intentions = this._intentionsState;
+        state.intentions = this.intentionsState;
     }
     return state;
 };
@@ -217,7 +217,7 @@ Player.prototype.getDTO = function(publicOnly) {
  * Helper function to get the player number.
  */
 Player.prototype.getPlayerNumber = function() {
-    return this._staticState.playerNumber;
+    return this.staticState.playerNumber;
 };
 
 /**
@@ -254,9 +254,9 @@ Player.prototype._setAction_MOVE = function(action) {
     if(!('speed' in action)) {
         throw new CWCError('Expected "speed" field in MOVE action');
     }
-    this._intentionsState.action = PlayerState_Intentions.Action.MOVE;
-    this._intentionsState.destination.copyFrom(action.destination);
-    this._intentionsState.speed = action.speed;
+    this.intentionsState.action = PlayerState_Intentions.Action.MOVE;
+    this.intentionsState.destination.copyFrom(action.destination);
+    this.intentionsState.speed = action.speed;
 };
 
 /**
@@ -269,8 +269,8 @@ Player.prototype._setAction_TURN = function(action) {
     if(!('direction' in action)) {
         throw new CWCError('Expected "direction" field in TURN action');
     }
-    this._intentionsState.action = PlayerState_Intentions.Action.TURN;
-    this._intentionsState.direction = action.direction;
+    this.intentionsState.action = PlayerState_Intentions.Action.TURN;
+    this.intentionsState.direction = action.direction;
 };
 
 

@@ -20,6 +20,16 @@ Pitch.WIDTH = 100.0;
  */
 Pitch.HEIGHT = 50.0;
 
+/**
+ * The position of the 'top' goalpost.
+ */
+Pitch.GOAL_Y1 = Pitch.HEIGHT/2.0 - 4.0;
+
+/**
+ * The position of the 'bottom' goalpost.
+ */
+Pitch.GOAL_Y2 = Pitch.HEIGHT/2.0 + 4.0;
+
 
 // Exports...
 module.exports = Pitch;

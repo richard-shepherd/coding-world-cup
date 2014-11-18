@@ -13,12 +13,12 @@ var Player = GameLib.Player;
  */
 function createPlayerAt(x, y, direction) {
     var player = new Player();
-    player._dynamicState.position.x = x;
-    player._dynamicState.position.y = y;
-    player._dynamicState.direction = direction;
-    player._dynamicState.energy = Player.MAX_ENERGY;
-    player._staticState.passingAbility = 100.0;
-    player._staticState.runningAbility = 100.0;
+    player.dynamicState.position.x = x;
+    player.dynamicState.position.y = y;
+    player.dynamicState.direction = direction;
+    player.dynamicState.energy = Player.MAX_ENERGY;
+    player.staticState.passingAbility = 100.0;
+    player.staticState.runningAbility = 100.0;
     return player;
 };
 

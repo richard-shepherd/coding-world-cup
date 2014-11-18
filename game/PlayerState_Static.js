@@ -30,8 +30,6 @@ function PlayerState_Static(playerNumber, playerType) {
 
     // How fast the player can run...
     this.runningAbility = 0.0;
-
-
 }
 
 /**

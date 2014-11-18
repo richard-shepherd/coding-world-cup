@@ -17,6 +17,7 @@ var Player = require('./Player');
 var PlayerState_Static = require('./PlayerState_Static');
 var Ball = require('./Ball');
 var GameState = require('./GameState');
+var Pitch = require('./Pitch');
 
 
 /**
@@ -44,6 +45,10 @@ function Game(ai1, ai2) {
 
     // The length of the game in seconds...
     this._gameLengthSeconds = 90.0 * 60.0;
+
+    // We send some events to the AIs at the start of the game...
+    this._sendEvent_GameStart();
+    this._sendEvent_TeamInfo();
 }
 
 /**
@@ -51,8 +56,8 @@ function Game(ai1, ai2) {
  */
 Game.prototype.createTeams = function(ai1, ai2) {
     // We create the two teams...
-    this._team1 = new Team(ai1);
-    this._team2 = new Team(ai2);
+    this._team1 = new Team(ai1, 1);
+    this._team2 = new Team(ai2, 2);
 
     // We create the _players and assign them to the teams...
     this._players = [];
@@ -140,6 +145,36 @@ Game.prototype.getTeam1 = function() {
 Game.prototype.getTeam2 = function() {
     return this._team2;
 };
+
+/**
+ * _sendEvent_GameStart
+ * --------------------
+ * Sends the game-start event to both AIs.
+ */
+Game.prototype._sendEvent_GameStart = function() {
+    var info = {
+        event:"GAME_START",
+        pitch: {
+            width:Pitch.WIDTH,
+            height:Pitch.HEIGHT,
+            goalY1:Pitch.GOAL_Y1,
+            goalY2:Pitch.GOAL_Y2
+        }
+    };
+    this._team1.getAI().sendEvent(info);
+    this._team2.getAI().sendEvent(info);
+};
+
+/**
+ * _sendEvent_TeamInfo
+ * -------------------
+ * Sends team-info to the AIs. Each AI gets info about their own team.
+ */
+Game.prototype._sendEvent_TeamInfo = function() {
+    this._team1.sendEvent_TeamInfo();
+    this._team2.sendEvent_TeamInfo();
+};
+
 
 // Exports...
 module.exports = Game;

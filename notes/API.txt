@@ -24,13 +24,16 @@ EVENT
 
   - "event":"GAME_START"
     - Called at the start of a new game.
-    - "pitch":{"width":(metres), "height":(metres), "goals":{"y1":(value), "y2":(value)}}
+    - "pitch":{"width":(metres), "height":(metres), "goalY1":(value), "goalY2":(value)}
 
   - "event":"TEAM_INFO"
     - Called near the start of a game to give you team info.
     - "teamNumber":(1 or 2)
-    - "direction":("RIGHT" or "LEFT")
     - "players":[{"playerNumber":(number), "playerType":("P" or "G")}, ...]
+
+  - "event":"START_OF_HALF"
+    - Called at the start of each half of the game.
+    - "direction":("RIGHT" or "LEFT")
 
 
 REQUEST
@@ -45,10 +48,10 @@ REQUEST
 
 
 
-AI Responses
-------------
-- Response to PLAY request
-  - "request":"PLAY"
-  - "actions":[{"action":("MOVE", "TURN" etc), "action-specific-data":xyz}, {"action":...]
+AI Response to PLAY request
+---------------------------
+- "request":"PLAY"
+- "actions":[{"action":("MOVE", "TURN" etc), "action-specific-data":xyz}, {"action":...]
+
 
 

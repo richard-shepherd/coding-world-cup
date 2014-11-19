@@ -224,3 +224,50 @@ inches, and the second to pass the ball backwards to the rest of the team."
   - I think we do want to have the thing about opponents being 10m away.
   - Not so sure about the first player to kick rule.
 
+
+
+Game ticks and the State Machine
+--------------------------------
+- When does the state machine change state?
+  - On all events (updates from AIs etc)
+  - Or just on *time*
+
+- Might be easier on time
+
+- The current state manages the current tick
+  - It knows when it has received both AI responses (if required)
+  - So the current state knows when it is possible to move to the next tick.
+
+- GSM_Manager has an onTimerTick method.
+  - This is the only method that changes the state
+  - Other methods are just updates for internal processing.
+  - First thing a State does here is check the game for relevant changes
+    - Such as goals etc
+    - Returns a new State if necessary
+
+- Other events can call Game.nextTick()
+  - This triggers a timer (nanotimer)
+  - OR: process.nextTick() if in simulation mode
+
+- Game has a GSM_Manager
+  - It can call into it when the timer ticks
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

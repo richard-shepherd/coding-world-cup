@@ -5,8 +5,8 @@
  */
 var GSM_Base = require('./GSM_Base');
 var UtilsLib = require('../utils');
+var Utils = UtilsLib.Utils;
 var CWCError = UtilsLib.CWCError;
-var util = require('util');
 
 
 /**
@@ -15,11 +15,8 @@ var util = require('util');
 function GSM_Play(game) {
     // We call the base class constructor...
     GSM_Base.call(this, game);
-
-    // We send the current state to the AIs, and wait for responses...
-    this.sendPlayUpdateToBothAIs();
 }
-GSM_Play.prototype = new GSM_Base(); // Derived from GSM_Base.
+Utils.extend(GSM_Base, GSM_Play); // Derived from GSM_Base.
 module.exports = GSM_Play;
 
 /**
@@ -32,6 +29,30 @@ GSM_Play.prototype.onAIResponsesReceived = function() {
     this._processResponse(this._aiResponses.AI1.data, this._team1);
     this._processResponse(this._aiResponses.AI2.data, this._team2);
 };
+
+/**
+ * checkState
+ * ----------
+ * Called by the game loop after updates have been made, to check
+ * if we want to change the state.
+ */
+GSM_Play.prototype.checkState = function() {
+    return this;
+};
+
+/**
+ * onTurn
+ * ------
+ * Called by the game loop after the game-state update has been sent to
+ * the AIs. We request PLAY updates from the AIs.
+ */
+GSM_Play.prototype.onTurn = function() {
+    // TODO request PLAY update
+
+    // We send the current state to the AIs, and wait for responses...
+    this.sendPlayUpdateToBothAIs();
+};
+
 
 /**
  * _processResponse

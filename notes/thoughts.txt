@@ -252,7 +252,61 @@ Game ticks and the State Machine
 - Game has a GSM_Manager
   - It can call into it when the timer ticks
 
+- Really what we are trying to make is a game loop.
+  - But it needs to be asynchronous to fit with the node.js ethos
+  - If it was a "real" game loop we would:
+    - Perform actions based on current positions (kicking, tackling, taking possession etc)
+    - Update positions of players and the ball
+    - Send update to the GUI
+    - Send game state to the AIs
+    - Get AI responses, based on current positions etc
+    - Sleep / advance game time
+    - Loop round
 
+  - In an event / callback model this looks like:
+    - Game.onTurn (ie, each "turn" of the game, ie each time slice)
+      - Perform actions
+      - Update positions
+      - Check game events (half-time, goal etc)
+      - Call into GSM.checkState
+      - Send update to the GUI
+      - Send update to the AIs (event:START_OF_TURN), ie the game state, but not a request
+      - Call into GSM.onTurn
+
+    - GSM.checkState
+      - This is handled by the specific State objects
+      - Checks state and returns new state if necessary
+
+    - GSM.onTurn
+      - This is handled by the specific State objects (which might have changed since the call the checkState)
+      - Sends a request to the AIs
+        - As the info has been sent by the Game, this can be quite short maybe just "request":"PLAY"
+
+    - [Async wait for AIs to respond]
+
+    - GSM.onResponsesReceived
+      - Handled by the specific State objects.
+      - Updates the game objects (teams, players etc)
+      - Call into Game.playNextTurn
+        - Advances game time
+        - This either sets a timer, or process.nextTick to call Game.onTurn
+
+
+
+- When do we change state?
+  - Is it the State that knows when state changes?
+  - (If not, then why have states at all?)
+  - Let's say it is the State
+  - What about Half Time, or End of Game?
+    - These are handled by Game.onTurn
+  - GSM.checkState
+    - Checks for change of state and returns the new state to Manager
+    - Then Game.onTurn calls GSM.onTurn
+
+
+- Note: Some GSM states will send an event when we enter them to tell the
+        AIs that we have moved into a new state, e.g. started penalties,
+        started free-kick etc. Including "start normal play"
 
 
 

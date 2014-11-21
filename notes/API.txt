@@ -35,6 +35,10 @@ EVENT
     - Called at the start of each half of the game.
     - "direction":("RIGHT" or "LEFT")
 
+  - "event":"START_OF_TURN"
+    - Called at the start of each turn / time-slice
+    - "game":{game-state}
+
 
 REQUEST
 -------
@@ -44,7 +48,6 @@ REQUEST
 
   - "request":"PLAY"
     - Called during the normal course of play to get player movements and actions.
-    - "game":{game-state}
 
 
 

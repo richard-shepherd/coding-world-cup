@@ -10,19 +10,19 @@
  */
 var AIUtilsLib = require('../ai_utils');
 var AIWrapper = AIUtilsLib.AIWrapper;
+var UtilsLib = require('../utils');
+var Utils = UtilsLib.Utils;
+
 
 /**
  * @constructor
  */
-function AIWrapper_RandomMovement(teamNumber, gsmManager) {
+function AIWrapper_RandomMovement() {
     // We call the base class constructor...
-    AIWrapper.call(this, teamNumber, gsmManager);
+    AIWrapper.call(this);
 
     // Data about the pitch (width, height, position of goals)...
     this._pitch = {width:0, height:0};
-
-    // The team number...
-    this._teamNumber = -1;
 
     // The direction we're playing...
     this._direction = "";
@@ -30,12 +30,17 @@ function AIWrapper_RandomMovement(teamNumber, gsmManager) {
     // The collection of players {playerNumber, playerType}...
     this._players = [];
 
+    // The game state for the current turn.
+    // Note: This means the info / data about the game (positions of players etc)
+    //       not the state of the state-machine.
+    this._gameState = {};
+
     // The last time (in game-time) that we changed the movement of
     // players. We only update every few seconds...
     this._lastTimeWeChangedMovements = 0.0;
     this._changeInterval = 10.0;
 }
-AIWrapper_RandomMovement.prototype = new AIWrapper(); // Derived from AIWrapper.
+Utils.extend(AIWrapper, AIWrapper_RandomMovement);  // Derived from AIWrapper.
 
 /**
  * sendData
@@ -108,6 +113,16 @@ AIWrapper_RandomMovement.prototype._onEVENT_TEAM_INFO = function(data) {
 };
 
 /**
+ * _onEVENT_START_OF_TURN
+ * ----------------------
+ * Called at the start of turn with the current game state.
+ */
+AIWrapper_RandomMovement.prototype._onEVENT_START_OF_TURN = function(data) {
+    // We store the current game state, to use later when we get requests...
+    this._gameState = data.game;
+};
+
+/**
  * _onREQUEST_PLAY
  * ---------------
  * Called when we receive a request for a PLAY update, ie instructions
@@ -121,7 +136,7 @@ AIWrapper_RandomMovement.prototype._onREQUEST_PLAY = function(data) {
 
     // We only update player movements if some time has elapsed...
     var nextChange = this._lastTimeWeChangedMovements + this._changeInterval;
-    if(data.game.currentTimeSeconds >= nextChange) {
+    if(this._gameState.currentTimeSeconds >= nextChange) {
         // We change the movements of our players.
         // For each player, we choose a random place on the pitch
         // for them to move towards...
@@ -142,4 +157,7 @@ AIWrapper_RandomMovement.prototype._onREQUEST_PLAY = function(data) {
     var jsonReply = JSON.stringify(reply);
     this.onResponseReceived(jsonReply);
 };
+
+// Exports...
+module.exports = AIWrapper_RandomMovement;
 

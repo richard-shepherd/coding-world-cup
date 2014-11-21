@@ -116,6 +116,25 @@ function callIfExists(target, functionName) {
     }
 }
 
+/**
+ * extend
+ * ------
+ * Derives one 'class' from another.
+ * From: http://stackoverflow.com/questions/4152931/javascript-inheritance-call-super-constructor-or-use-prototype-chain
+ */
+function extend(base, sub) {
+    var origProto = sub.prototype;
+    sub.prototype = Object.create(base.prototype);
+    for (var key in origProto)  {
+        sub.prototype[key] = origProto[key];
+    }
+    sub.prototype.constructor = sub;
+    Object.defineProperty(sub.prototype, 'constructor', {
+        enumerable: false,
+        value: sub
+    });
+}
+
 // Exports...
 exports.setApproxTolerance = setApproxTolerance;
 exports.approxEqual = approxEqual;
@@ -124,3 +143,4 @@ exports.vectorFromDirection = vectorFromDirection;
 exports.decimalPlaceReplacer = decimalPlaceReplacer;
 exports.secondsSince = secondsSince;
 exports.callIfExists = callIfExists;
+exports.extend = extend;

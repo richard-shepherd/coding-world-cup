@@ -18,6 +18,12 @@ var PlayerState_Static = require('./PlayerState_Static');
 var Ball = require('./Ball');
 var GameState = require('./GameState');
 var Pitch = require('./Pitch');
+var GSM_Manager = require('./GSM_Manager');
+var GSM_Play = require('./GSM_Play');
+var UtilsLib = require('../utils');
+var Logger = UtilsLib.Logger;
+var Utils = UtilsLib.Utils;
+var NanoTimer = require('nanotimer');
 
 
 /**
@@ -33,18 +39,30 @@ function Game(ai1, ai2) {
     // We create the teams and the _players...
     this.createTeams(ai1, ai2);
 
+    // The game-state-machine (GSM) that manages game events and transitions.
+    // Note: This has to be done after creating the teams.
+    this._gsmManager = new GSM_Manager();
+    this._gsmManager.setState(new GSM_Play(this));
+    ai1.setGSMManager(this._gsmManager);
+    ai2.setGSMManager(this._gsmManager);
+
     // The interval in seconds between calculation updates.
     // This includes the 'physics' of player and ball movement
     // as well as player interactions (such as tackling) and other
     // game events...
-    this._calculationIntervalSeconds = 0.1;
+    this._calculationIntervalSeconds = 0.01;
 
     // The interval in seconds between updates / requests being
     // sent to the AIs...
-    this._aiUpdateIntervalSeconds = 1.0;
+    this._aiUpdateIntervalSeconds = 0.1;
 
     // The length of the game in seconds...
-    this._gameLengthSeconds = 90.0 * 60.0;
+    this._gameLengthSeconds = 30.0 * 60.0;
+
+    // If we are in simulation mode, we run the game loop as a
+    // tight(ish) loop. If it is false, we use a timer so the game
+    // runs more in real time...
+    this.simulationMode = true;
 
     // We send some events to the AIs at the start of the game...
     this._sendEvent_GameStart();
@@ -86,6 +104,69 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
 };
 
 /**
+ * onTurn
+ * ------
+ * This is the main function of the "game loop", and is called for
+ * each turn or time-slice of the game.
+ */
+Game.prototype.onTurn = function() {
+    // We update the game state - kicking, moving the ball and players etc...
+    this.calculate();
+
+    // We check game events - goals, end-of-half etc...
+    this._checkGameEvents();
+
+    // Now that we've updated positions and events, we see if this
+    // has changed the game state...
+    this._gsmManager.checkState();
+
+    // We send an update the the GUI...
+    this._sendUpdateToGUI();
+
+    // We send the start-of-turn event to the AIs. This includes
+    // the game-state (player positions, ball position etc)...
+    this._sendEvent_StartOfTurn();
+
+    // We perform actions specific to the current state.
+    // This includes sending requests to the AIs...
+    this._gsmManager.onTurn();
+};
+
+/**
+ * playNextTurn
+ * ------------
+ * Called (usually by one of the GSM states) when we can play the next turn.
+ */
+Game.prototype.playNextTurn = function() {
+    if(this.simulationMode) {
+        // We are in simulation mde, so we play the next turn
+        // as soon as possible...
+        process.nextTick(function() {
+            this.onTurn();
+        });
+    } else {
+        // We are in real-time mode, so we play the next turn after an interval...
+        var timer = new NanoTimer();
+        var timeout = this._aiUpdateIntervalSeconds + 's';
+        timer.setTimeout(function() {
+            this.onTurn();
+        }, '', timeout);
+    }
+};
+
+/**
+ * _sendUpdateToGUI
+ * ----------------
+ * Sends an update of the current game state to the GUI.
+ */
+Game.prototype._sendUpdateToGUI = function() {
+    // TODO: Write this properly!
+    var dto = this.getDTO();
+    var jsonDTO = JSON.stringify(this.getDTO(), Utils.decimalPlaceReplacer(4));
+    Logger.log(jsonDTO, Logger.LogLevel.INFO);
+};
+
+/**
  * calculate
  * ---------
  * Calculates new positions of _players and takes actions, based
@@ -93,16 +174,40 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
  */
 Game.prototype.calculate = function() {
     // To calculate the next game state, we:
-    // 1. Move the ball.
-    // 2. Turn and/or move players to their new positions.
-    // 3. Perform actions (tackling, kicking).
+    // - Perform actions (tackling, kicking).
+    // - Move the ball.
+    // - Turn and/or move players to their new positions.
+    // - Check game event (goals, half-time etc)
 
-    // 1. We move the ball...
-    this._ball.updatePosition(this);
+    // We calculate multiple times to smooth out the movement, and
+    // make it more likely for players to be able to tackle and take
+    // possession of the ball...
+    var calculationTime = 0.0;
+    while(calculationTime < this._aiUpdateIntervalSeconds) {
+        // We update the game time and calculation time...
+        this._state.currentTimeSeconds += this._calculationIntervalSeconds;
+        calculationTime += this._calculationIntervalSeconds;
 
-    // 2. We move the players...
-    this._team1.updatePositions(this);
-    this._team2.updatePositions(this);
+        // We move the ball...
+        this._ball.updatePosition(this);
+
+        // We move the players...
+        this._team1.updatePositions(this);
+        this._team2.updatePositions(this);
+
+        // We check for game events...
+        this._checkGameEvents();
+    }
+};
+
+/**
+ * _checkGameEvents
+ * ----------------
+ * Checks game events such as goals being scored, end of half-time
+ * and so on, and updates the game-state accordingly.
+ */
+Game.prototype._checkGameEvents = function() {
+    // TODO: Write this!
 };
 
 /**
@@ -111,8 +216,7 @@ Game.prototype.calculate = function() {
  * Returns the time in (game) seconds since the previous calculation.
  */
 Game.prototype.getCalculationIntervalSeconds = function() {
-    // TODO: Write this properly!
-    return 0.01;
+    return this._calculationIntervalSeconds;
 };
 
 /**
@@ -173,6 +277,19 @@ Game.prototype._sendEvent_GameStart = function() {
 Game.prototype._sendEvent_TeamInfo = function() {
     this._team1.sendEvent_TeamInfo();
     this._team2.sendEvent_TeamInfo();
+};
+
+/**
+ * _sendEvent_StartOfTurn
+ * ----------------------
+ * Sends the game-state to the AIs.
+ */
+Game.prototype._sendEvent_StartOfTurn = function() {
+    // We get the DTO and pass it to the AIs...
+    var info = this._game.getDTO(true);
+    info.event = "START_OF_TURN";
+    this._team1.getAI().sendEvent(info);
+    this._team2.getAI().sendEvent(info);
 };
 
 

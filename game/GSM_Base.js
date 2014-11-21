@@ -72,7 +72,7 @@ GSM_Base.prototype.sendPlayUpdateToBothAIs = function() {
 GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
     // We store the jsonData and check whether we have received both updates...
     this._aiResponses.AI1 = this._getAIResponse(jsonData);
-    return this._checkResponses();
+    this._checkResponses();
 };
 
 /**
@@ -83,21 +83,19 @@ GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
 GSM_Base.prototype.onResponse_AI2 = function(jsonData) {
     // We store the jsonData and check whether we have received both updates...
     this._aiResponses.AI2 = this._getAIResponse(jsonData);
-    return this._checkResponses();
+    this._checkResponses();
 };
 
 /**
  * _checkResponses
  * ---------------
  * Checks whether we have received responses from both AIs.
- * Returns the new state to move to (or 'this' to remain
- * in the current state).
  */
 GSM_Base.prototype._checkResponses = function() {
     // We check if we have jsonData from both AIs in our
     // collection of responses...
-    if(!('AI1' in this._aiResponses)) return this;
-    if(!('AI2' in this._aiResponses)) return this;
+    if(!('AI1' in this._aiResponses)) return;
+    if(!('AI2' in this._aiResponses)) return;
 
     // We've got updates from both AIs.
     var ai1 = this._aiResponses.AI1;
@@ -108,7 +106,7 @@ GSM_Base.prototype._checkResponses = function() {
     ai2.data = JSON.parse(ai2.jsonData);
 
     // We call into the derived class to handle the responses...
-    return this.onAIResponsesReceived();
+    this.onAIResponsesReceived();
 };
 
 /**

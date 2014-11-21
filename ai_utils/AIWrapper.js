@@ -13,14 +13,22 @@ var Logger = UtilsLib.Logger;
 /**
  * @constructor
  */
-function AIWrapper(teamNumber, gsmManager) {
+function AIWrapper() {
     // The team number...
-    this._teamNumber = teamNumber;
+    this._teamNumber = -1;
 
     // The game state machine...
-    this._gsmManager = gsmManager;
+    this._gsmManager = null;
 }
 module.exports = AIWrapper;
+
+/**
+ * setGSMManager
+ * -------------
+ */
+AIWrapper.prototype.setGSMManager = function(gsmManager) {
+    this._gsmManager = gsmManager;
+};
 
 /**
  * sendRequest

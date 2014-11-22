@@ -1,4 +1,3 @@
-exports.ArrayUtils = require('./ArrayUtils');
 exports.CWCError = require('./CWCError');
 exports.Logger = require('./Logger');
 exports.LogHandler_Console = require('./LogHandler_Console');

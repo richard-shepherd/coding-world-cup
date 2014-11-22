@@ -4,10 +4,6 @@ TODO: Method to set direction in degrees
 
 TODO: Method to set direction facing a destination
 
-TODO: Create the game loop
-
-TODO: Create a "random walk" engine for testing the GUI
-
 TODO: Decide whether speed & kicking strength decreases as energy goes down. Or it could remain at full strength until energy runs out.
 
 TODO: If speed goes down with energy, then need to calculate energy (and thus speed) at start and end of a calculation interval and "integrate".

@@ -1,4 +1,5 @@
-require('../utils');
+var UtilsLib = require('../utils');
+var Utils = UtilsLib.Utils;
 var GameLib = require('../game');
 var Game = GameLib.Game;
 
@@ -10,11 +11,11 @@ exports['Expected number of players created'] = function(test) {
     var game = new Game();
 
     // We check the number of _players...
-    var numberOfPlayers = game._players.countIf(function(player) { return player.isPlayer(); });
+    var numberOfPlayers = Utils.countIf(game._players, function(player) { return player.isPlayer(); });
     test.equal(numberOfPlayers , 10);
 
     // We check that there are two goalkeepers...
-    var numberOfKeepers = game._players.countIf(function(player) { return player.isGoalkeeper(); });
+    var numberOfKeepers = Utils.countIf(game._players, function(player) { return player.isGoalkeeper(); });
     test.equal(numberOfKeepers, 2);
     test.done();
 };

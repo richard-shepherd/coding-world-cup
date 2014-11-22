@@ -20,7 +20,7 @@ var ai2 = new AIWrapper_RandomMovement();
 var game = new Game(ai1, ai2);
 
 // And we start to play...
-game.onTurn();
+//game.onTurn();
 
 
 

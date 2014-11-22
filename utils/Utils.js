@@ -135,6 +135,20 @@ function extend(base, sub) {
     });
 }
 
+/**
+ * countIf
+ * -------
+ * Returns the number of items in the array which match the condition,
+ * which should be a function like:
+ *   function(item) { return item === whatever; }
+ */
+function countIf(array, condition) {
+    return array.reduce(function(count, item) {
+        return condition(item) ? count+1 : count;
+    }, 0);
+};
+
+
 // Exports...
 exports.setApproxTolerance = setApproxTolerance;
 exports.approxEqual = approxEqual;
@@ -144,3 +158,4 @@ exports.decimalPlaceReplacer = decimalPlaceReplacer;
 exports.secondsSince = secondsSince;
 exports.callIfExists = callIfExists;
 exports.extend = extend;
+exports.countIf = countIf;

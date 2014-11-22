@@ -98,6 +98,7 @@ Player.prototype.updatePosition_Turn = function(game) {
     // We work out whether we should be turning left or right...
     var currentDirection = this.dynamicState.direction;
     var desiredDirection = this.actionState.direction;
+
     var angleToTurn = desiredDirection - currentDirection;
     if(angleToTurn > 180) {
         // We are turning more than 180 degrees to the right,
@@ -135,6 +136,11 @@ Player.prototype.updatePosition_Turn = function(game) {
 
     // We set the new direction...
     this.dynamicState.direction = newDirection;
+
+    // If we are now facing in the desired direction, we stop turning...
+    if(Utils.approxEqual(newDirection, desiredDirection)) {
+        this.actionState.action = PlayerState_Action.Action.NONE;
+    }
 };
 
 /**

@@ -32,6 +32,9 @@ exports['Simple movement right'] = function(test) {
     test.approx(player.dynamicState.position.x, 73.0);
     test.approx(player.dynamicState.position.y, 25.0);
 
+    // The player should have stopped moving...
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
+
     // The player should not move any more...
     player.updatePosition(game);
     test.approx(player.dynamicState.position.x, 73.0);
@@ -58,6 +61,9 @@ exports['Simple movement up'] = function(test) {
     test.approx(player.dynamicState.position.x, 50.0);
     test.approx(player.dynamicState.position.y, 15.0);
 
+    // The player has not reached the destination, so should still be moving...
+    test.equal(player.actionState.action, PlayerState_Action.Action.MOVE);
+
     test.done();
 };
 
@@ -74,10 +80,13 @@ exports['Simple movement down'] = function(test) {
     // We set the calculation interval to 1 second...
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
 
-    // The player should be moving at 10m/s, so should have moved 10 metres to the right...
+    // The player should be moving at 10m/s, so should have moved 10 metres downwards...
     player.updatePosition(game);
     test.approx(player.dynamicState.position.x, 50.0);
     test.approx(player.dynamicState.position.y, 35.0);
+
+    // The player has not reached the destination, so should still be moving...
+    test.equal(player.actionState.action, PlayerState_Action.Action.MOVE);
 
     test.done();
 };
@@ -95,10 +104,13 @@ exports['Simple movement left'] = function(test) {
     // We set the calculation interval to 1 second...
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
 
-    // The player should be moving at 10m/s, so should have moved 10 metres to the right...
+    // The player should be moving at 10m/s, so should have moved 10 metres to the left...
     player.updatePosition(game);
     test.approx(player.dynamicState.position.x, 40.0);
     test.approx(player.dynamicState.position.y, 25.0);
+
+    // The player has not reached the destination, so should still be moving...
+    test.equal(player.actionState.action, PlayerState_Action.Action.MOVE);
 
     test.done();
 };

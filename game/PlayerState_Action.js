@@ -37,7 +37,7 @@ function PlayerState_Action() {
  * An enum for the desired action.
  */
 PlayerState_Action.Action = {
-    NONE: '-',
+    NONE: 'NONE',
     TURN: 'TURN',
     MOVE: 'MOVE'
 };

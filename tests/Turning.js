@@ -2,6 +2,7 @@ var TestUtilsLib = require('../test_utils');
 var CreatePlayers = TestUtilsLib.CreatePlayers;
 var GameMocks = TestUtilsLib.GameMocks;
 var GameLib = require('../game');
+var PlayerState_Action = GameLib.PlayerState_Action;
 
 
 /**
@@ -22,6 +23,7 @@ exports['Short turn to the right'] = function(test) {
 
     // We confirm that we're facing the new direction...
     test.approx(player.dynamicState.direction, 55.0);
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     // We update and test again, to make sure the player has not
     // turned any more...
@@ -49,6 +51,7 @@ exports['Short turn to the left'] = function(test) {
 
     // We confirm that we're facing the new direction...
     test.approx(player.dynamicState.direction, 120.0);
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     test.done();
 };
@@ -73,6 +76,7 @@ exports['Long turn to the right'] = function(test) {
     test.approx(player.dynamicState.direction, 140.0);
     player.updatePosition(game);
     test.approx(player.dynamicState.direction, 165.0);
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     test.done();
 };
@@ -97,6 +101,7 @@ exports['Long turn to the right past 360'] = function(test) {
     test.approx(player.dynamicState.direction, 40.0);
     player.updatePosition(game);
     test.approx(player.dynamicState.direction, 48.0);
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     test.done();
 };
@@ -121,6 +126,7 @@ exports['Long turn to the left'] = function(test) {
     test.approx(player.dynamicState.direction, 135.0);
     player.updatePosition(game);
     test.approx(player.dynamicState.direction, 80.0);
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     test.done();
 };
@@ -142,6 +148,7 @@ exports['Short turn to the right past 360'] = function(test) {
 
     // We confirm that we're facing the new direction...
     test.approx(player.dynamicState.direction, 33.0);
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     test.done();
 };
@@ -163,6 +170,7 @@ exports['Short turn to the left past 0'] = function(test) {
 
     // We confirm that we're facing the new direction...
     test.approx(player.dynamicState.direction, 354.0);
+    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     test.done();
 };

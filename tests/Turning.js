@@ -2,7 +2,6 @@ var TestUtilsLib = require('../test_utils');
 var CreatePlayers = TestUtilsLib.CreatePlayers;
 var GameMocks = TestUtilsLib.GameMocks;
 var GameLib = require('../game');
-var PlayerState_Intentions = GameLib.PlayerState_Intentions;
 
 
 /**

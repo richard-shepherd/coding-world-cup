@@ -9,7 +9,7 @@
  *
  * Most, but not all, of the data is serialized and passed to AIs
  * each turn of the game. Some data - in particular the player's
- * "intentions" are private, and are only available to the AI which
+ * actions are private, and are only available to the AI which
  * is controlling the player.
  */
 var PlayerState_Dynamic = require('./PlayerState_Dynamic');
@@ -74,7 +74,7 @@ Player.prototype.isGoalkeeper = function() {
 /**
  * updatePosition
  * --------------
- * Moves or turns the player based on their current intentions, speed
+ * Moves or turns the player based on their current action, speed
  * and so on, and on the time elapsed since the previous update.
  */
 Player.prototype.updatePosition = function(game) {
@@ -206,7 +206,7 @@ Player.prototype.getDTO = function(publicOnly) {
     state.config = this.staticState;
     if(!publicOnly) {
         // We want to include the private jsonData as well...
-        state.intentions = this.actionState;
+        state.action = this.actionState;
     }
     return state;
 };

@@ -59,12 +59,12 @@ AIWrapper.prototype.sendEvent = function(event) {
  */
 AIWrapper.prototype.sendError = function(message) {
     // We log the error...
-    Logger.log(ex.message, Logger.LogLevel.ERROR);
+    Logger.log(message, Logger.LogLevel.ERROR);
 
     // We create an error message to send to the AI...
     var errorMessage = {
         messageType: "ERROR",
-        error: ex.message
+        error: message
     };
     var errorMessageJSON = JSON.stringify(errorMessage);
     this.sendData(errorMessageJSON);
@@ -87,8 +87,9 @@ AIWrapper.prototype.sendData = function(data) {
  * 'data' is an object, ie it has already been parsed from the JSON
  * string sent by the AI.
  */
-AIWrapper.prototype.onResponseReceived = function(jsonData) {
-    try {
+AIWrapper.prototype.onResponseReceived = function (jsonData) {
+    // TODO: Put the try...catch back
+    //try {
         // We forward the response to the GSM...
         switch(this._teamNumber) {
             case 1:
@@ -99,10 +100,10 @@ AIWrapper.prototype.onResponseReceived = function(jsonData) {
                 this._gsmManager.onResponse_AI2(jsonData);
                 break;
         }
-    } catch(ex) {
-        // Something went wrong processing the responses...
-        this.sendError(ex.message);
-    }
+    //} catch(ex) {
+    //    // Something went wrong processing the responses...
+    //    this.sendError(ex.message);
+    //}
 };
 
 

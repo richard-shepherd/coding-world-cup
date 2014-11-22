@@ -71,7 +71,7 @@ Logger.log = function(message, level) {
     var formattedMessage = indent + prefix + message;
     Logger._handlers.forEach(function(handler) {
         handler.log(formattedMessage, level);
-    });
+    }, this);
 };
 
 /**

@@ -30,6 +30,9 @@ var NanoTimer = require('nanotimer');
  * @constructor
  */
 function Game(ai1, ai2) {
+    // Atimer for use with the game loop...    
+    this._timer = new NanoTimer();
+    
     // The game state...
     this._state = new GameState();
 
@@ -137,19 +140,19 @@ Game.prototype.onTurn = function() {
  * ------------
  * Called (usually by one of the GSM states) when we can play the next turn.
  */
-Game.prototype.playNextTurn = function() {
+Game.prototype.playNextTurn = function () {
+    var that = this;
     if(this.simulationMode) {
         // We are in simulation mde, so we play the next turn
         // as soon as possible...
         process.nextTick(function() {
-            this.onTurn();
+            that.onTurn();
         });
     } else {
         // We are in real-time mode, so we play the next turn after an interval...
-        var timer = new NanoTimer();
         var timeout = this._aiUpdateIntervalSeconds + 's';
-        timer.setTimeout(function() {
-            this.onTurn();
+        this._timer.setTimeout(function () {
+            that.onTurn();
         }, '', timeout);
     }
 };
@@ -286,7 +289,7 @@ Game.prototype._sendEvent_TeamInfo = function() {
  */
 Game.prototype._sendEvent_StartOfTurn = function() {
     // We get the DTO and pass it to the AIs...
-    var info = this._game.getDTO(true);
+    var info = this.getDTO(true);
     info.event = "START_OF_TURN";
     this._team1.getAI().sendEvent(info);
     this._team2.getAI().sendEvent(info);

@@ -16,7 +16,7 @@ function BallState() {
 
     // The direction the ball is travelling.
     // Note: This is a unit vector.
-    this.vector = new Vector();
+    this.vector = new Vector(0.0, 0.0);
 
     // The speed in m/s...
     this.speed = 0.0;

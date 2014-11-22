@@ -58,10 +58,11 @@ AIWrapper_RandomMovement.prototype.sendData = function(data) {
     // We process the data next time around the event loop as if
     // the AI was calling back asynchronously (and to make sure the
     // code is not re-entrant)...
+    var that = this;
     process.nextTick(function() {
         // We call functions depending on the message-type...
         var messageHandler = '_on' + data.messageType;
-        this[messageHandler](data);
+        that[messageHandler](data);
     });
 };
 
@@ -142,15 +143,15 @@ AIWrapper_RandomMovement.prototype._onREQUEST_PLAY = function(data) {
         // for them to move towards...
         this._players.forEach(function(player) {
             var action = {};
-            action.playerNumber = player.playerNumber;
+            action.playerNumber = player.staticState.playerNumber;
             action.action = "MOVE";
             action.destination = {x:Math.random() * this._pitch.width, y:Math.random() * this._pitch.height};
             action.speed = 100.0;
             reply.actions.push(action);
-        });
+        }, this);
 
         // We store the current time...
-        this._lastTimeWeChangedMovements = data.game.currentTimeSeconds;
+        this._lastTimeWeChangedMovements = this._gameState.currentTimeSeconds;
     }
 
     // We send the data back to the game...

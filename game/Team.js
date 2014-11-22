@@ -42,8 +42,8 @@ Team.prototype.addPlayer = function(player) {
  */
 Team.prototype.updatePositions = function(game) {
     this._players.forEach(function(player){
-        player.updatePosition();
-    });
+        player.updatePosition(game);
+    }, this);
 };
 
 /**
@@ -95,7 +95,7 @@ Team.prototype.processPlayResponse = function(data) {
     data.actions.forEach(function(action) {
         var player = this._getPlayer(action.playerNumber);
         player.setAction(action);
-    });
+    }, this);
 };
 
 /**
@@ -141,7 +141,7 @@ Team.prototype.sendEvent_TeamInfo = function() {
             playerType:player.staticState.playerType
         };
         info.players.push(player);
-    });
+    }, this);
 
     // And send it to the team's AI...
     this._ai.sendEvent(info);

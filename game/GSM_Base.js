@@ -49,19 +49,21 @@ function GSM_Base(game) {
 }
 
 /**
- * sendPlayUpdateToBothAIs
- * -----------------------
- * Sends a standard in-play update of the game state to the AIs.
+ * sendPlayRequestToBothAIs
+ * ------------------------
+ * Sends a PLAY request to the AIs.
  */
-GSM_Base.prototype.sendPlayUpdateToBothAIs = function() {
+GSM_Base.prototype.sendPlayRequestToBothAIs = function() {
     // We note the time before sending the update, so that we
     // an time how long the AIs take to process it...
     this._updateSentTime = process.hrtime();
 
-    // We get the DTO and pass it to the AIs...
-    var data = this._game.getDTO(true);
-    this._AI1.sendRequest(data);
-    this._AI2.sendRequest(data);
+    // We create the request, and send it to the AIs...
+    var request = {
+        request:"PLAY"
+    };
+    this._AI1.sendRequest(request);
+    this._AI2.sendRequest(request);
 };
 
 /**

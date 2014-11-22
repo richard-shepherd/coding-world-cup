@@ -29,7 +29,8 @@ function PlayerState_Static(playerNumber, playerType) {
     this.passingAbility = 0.0;
 
     // How fast the player can run...
-    this.runningAbility = 0.0;
+    // TODO: Change this back to zero.
+    this.runningAbility = 100.0;
 }
 
 /**

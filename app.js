@@ -9,7 +9,7 @@ var AIWrapper_RandomMovement = TestUtilsLib.AIWrapper_RandomMovement;
 
 
 // We set up logging...
-Logger.addHandler(new LogHandler_Console(Logger.LogLevel.DEBUG));
+Logger.addHandler(new LogHandler_Console(Logger.LogLevel.INFO_PLUS));
 Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.DEBUG));
 
 // We create two RandomMovement AIs for the teams...

@@ -28,6 +28,9 @@ GSM_Play.prototype.onAIResponsesReceived = function() {
     // We process the two responses...
     this._processResponse(this._aiResponses.AI1.data, this._team1);
     this._processResponse(this._aiResponses.AI2.data, this._team2);
+
+    // We play the next turn...
+    this._game.playNextTurn();
 };
 
 /**
@@ -47,10 +50,8 @@ GSM_Play.prototype.checkState = function() {
  * the AIs. We request PLAY updates from the AIs.
  */
 GSM_Play.prototype.onTurn = function() {
-    // TODO request PLAY update
-
-    // We send the current state to the AIs, and wait for responses...
-    this.sendPlayUpdateToBothAIs();
+    // We request PLAY responses from the AIs...
+    this.sendPlayRequestToBothAIs();
 };
 
 
@@ -60,18 +61,19 @@ GSM_Play.prototype.onTurn = function() {
  * Checks that the response is the right type, and passes it to the
  * team to process.
  */
-GSM_Play.prototype._processResponse = function(data, team) {
-    try {
+GSM_Play.prototype._processResponse = function (data, team) {
+    // TODO: Put try...catch back later.
+    //try {
         // We check that we got a PLAY response...
         if(data.request !== 'PLAY') {
             throw new CWCError('Expected a PLAY response.')
         }
         // We got a PLAY response, so we pass it to the Team to process...
         team.processPlayResponse(data);
-    } catch(ex) {
-        // We log the error and report it back to the AI...
-        team.getAI().sendError(ex.message);
-    }
+    //} catch(ex) {
+    //    // We log the error and report it back to the AI...
+    //    team.getAI().sendError(ex.message);
+    //}
 };
 
 

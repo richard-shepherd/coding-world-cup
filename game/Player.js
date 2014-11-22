@@ -14,7 +14,7 @@
  */
 var PlayerState_Dynamic = require('./PlayerState_Dynamic');
 var PlayerState_Static = require('./PlayerState_Static');
-var PlayerState_Intentions = require('./PlayerState_Intentions');
+var PlayerState_Action = require('./PlayerState_Action');
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
 var CWCError = UtilsLib.CWCError;
@@ -30,8 +30,8 @@ function Player(playerNumber, playerType) {
     // Static state (skills, abilities etc)...
     this.staticState = new PlayerState_Static(playerNumber, playerType);
 
-    // Intentions (direction, speed etc)...
-    this.intentionsState = new PlayerState_Intentions();
+    // Current action (moving, kicking etc)...
+    this.actionState = new PlayerState_Action();
 }
 
 /**
@@ -78,12 +78,12 @@ Player.prototype.isGoalkeeper = function() {
  * and so on, and on the time elapsed since the previous update.
  */
 Player.prototype.updatePosition = function(game) {
-    switch(this.intentionsState.action) {
-        case PlayerState_Intentions.Action.TURN:
+    switch(this.actionState.action) {
+        case PlayerState_Action.Action.TURN:
             this.updatePosition_Turn(game);
             break;
 
-        case PlayerState_Intentions.Action.MOVE:
+        case PlayerState_Action.Action.MOVE:
             this.updatePosition_Move(game);
             break;
     }
@@ -97,7 +97,7 @@ Player.prototype.updatePosition = function(game) {
 Player.prototype.updatePosition_Turn = function(game) {
     // We work out whether we should be turning left or right...
     var currentDirection = this.dynamicState.direction;
-    var desiredDirection = this.intentionsState.direction;
+    var desiredDirection = this.actionState.direction;
     var angleToTurn = desiredDirection - currentDirection;
     if(angleToTurn > 180) {
         // We are turning more than 180 degrees to the right,
@@ -145,7 +145,7 @@ Player.prototype.updatePosition_Turn = function(game) {
 Player.prototype.updatePosition_Move = function(game) {
     // We check if the player is already at the destination...
     var position = this.dynamicState.position;
-    var destination = this.intentionsState.destination;
+    var destination = this.actionState.destination;
     if(position.approxEqual(destination)) {
         // The player is already at the destination...
         return;
@@ -156,7 +156,7 @@ Player.prototype.updatePosition_Move = function(game) {
     var directionToDestination = Utils.angleBetween(position, destination);
     if(!Utils.approxEqual(currentDirection, directionToDestination)) {
         // We are not currently facing the right way, so we turn first...
-        this.intentionsState.direction = directionToDestination;
+        this.actionState.direction = directionToDestination;
         this.updatePosition_Turn(game);
         return;
     }
@@ -206,7 +206,7 @@ Player.prototype.getDTO = function(publicOnly) {
     state.config = this.staticState;
     if(!publicOnly) {
         // We want to include the private jsonData as well...
-        state.intentions = this.intentionsState;
+        state.intentions = this.actionState;
     }
     return state;
 };
@@ -254,9 +254,9 @@ Player.prototype._setAction_MOVE = function(action) {
     if(!('speed' in action)) {
         throw new CWCError('Expected "speed" field in MOVE action');
     }
-    this.intentionsState.action = PlayerState_Intentions.Action.MOVE;
-    this.intentionsState.destination.copyFrom(action.destination);
-    this.intentionsState.speed = action.speed;
+    this.actionState.action = PlayerState_Action.Action.MOVE;
+    this.actionState.destination.copyFrom(action.destination);
+    this.actionState.speed = action.speed;
 };
 
 /**
@@ -269,8 +269,8 @@ Player.prototype._setAction_TURN = function(action) {
     if(!('direction' in action)) {
         throw new CWCError('Expected "direction" field in TURN action');
     }
-    this.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    this.intentionsState.direction = action.direction;
+    this.actionState.action = PlayerState_Action.Action.TURN;
+    this.actionState.direction = action.direction;
 };
 
 

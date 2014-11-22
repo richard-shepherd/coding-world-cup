@@ -1,5 +1,3 @@
-TODO: Method to set destination
-
 TODO: Method to set direction in degrees
 
 TODO: Method to set direction facing a destination
@@ -21,4 +19,5 @@ TODO: Add processing time allowances to the Teams. Process in GSM_Base??
 
 TODO: Rename Intentions to Actions?
 
-TODO: Have an Error message that can be sent to AIs - and logged as well.
+TODO: Some intentions reset to None once complete. KICK, maybe also TURN. Maybe all do?
+

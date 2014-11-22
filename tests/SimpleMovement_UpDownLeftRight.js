@@ -13,10 +13,7 @@ exports['Simple movement right'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 90.0);
 
     // We set the player's intention to move to the right at full speed...
-    player.intentionsState.action = PlayerState_Intentions.Action.MOVE;
-    player.intentionsState.destination.x = 73.0;
-    player.intentionsState.destination.y = 25.0;
-    player.intentionsState.speed = 100.0;
+    player._setAction_MOVE({destination:{x:73.0, y:25.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
@@ -52,10 +49,7 @@ exports['Simple movement up'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 0.0);
 
     // We set the player's intention to move upwards at full speed...
-    player.intentionsState.action = PlayerState_Intentions.Action.MOVE;
-    player.intentionsState.destination.x = 50.0;
-    player.intentionsState.destination.y = 5.0;
-    player.intentionsState.speed = 100.0;
+    player._setAction_MOVE({destination:{x:50.0, y:5.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
@@ -76,10 +70,7 @@ exports['Simple movement down'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 180.0);
 
     // We set the player's intention to move downwards at full speed...
-    player.intentionsState.action = PlayerState_Intentions.Action.MOVE;
-    player.intentionsState.destination.x = 50.0;
-    player.intentionsState.destination.y = 45.0;
-    player.intentionsState.speed = 100.0;
+    player._setAction_MOVE({destination:{x:50.0, y:45.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
@@ -99,11 +90,8 @@ exports['Simple movement left'] = function(test) {
     // We create a player at the centre of the pitch...
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 270.0);
 
-    // We set the player's intention to move downwards at full speed...
-    player.intentionsState.action = PlayerState_Intentions.Action.MOVE;
-    player.intentionsState.destination.x = 30.0;
-    player.intentionsState.destination.y = 25.0;
-    player.intentionsState.speed = 100.0;
+    // We set the player's intention to move left at full speed...
+    player._setAction_MOVE({destination:{x:30.0, y:25.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
     var game = new GameMocks.MockGame_CalculationInterval(1.0);

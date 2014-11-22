@@ -1,9 +1,9 @@
 /**
- * PlayerState_Intentions
- * ----------------------
- * Holds the current intentions of the player.
+ * PlayerState_Action
+ * ------------------
+ * Holds the current action (intention) of the player.
  *
- * These include:
+ * Types of action include:
  * - Running towards a given point on the pitch.
  * - The speed the player should move at.
  * - Tackling or fouling a player.
@@ -19,9 +19,9 @@ var Position = require('./../utils/Position');
 /**
  * @constructor
  */
-function PlayerState_Intentions() {
+function PlayerState_Action() {
     // The currently intention...
-    this.action = PlayerState_Intentions.Action.NONE;
+    this.action = PlayerState_Action.Action.NONE;
 
     // For the MOVE intention...
     this.destination = new Position(0.0, 0.0);
@@ -36,11 +36,11 @@ function PlayerState_Intentions() {
  * ------
  * An enum for the desired action.
  */
-PlayerState_Intentions.Action = {
+PlayerState_Action.Action = {
     NONE: '-',
     TURN: 'TURN',
     MOVE: 'MOVE'
 };
 
 // Exports...
-module.exports = PlayerState_Intentions;
+module.exports = PlayerState_Action;

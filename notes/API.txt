@@ -54,7 +54,15 @@ REQUEST
 AI Response to PLAY request
 ---------------------------
 - "request":"PLAY"
-- "actions":[{"action":("MOVE", "TURN" etc), "action-specific-data":xyz}, {"action":...]
+- "actions":[{"playerNumber":(value), "action":("MOVE", "TURN" etc), "action-specific-data":xyz}, ...]
 
+- "action":"MOVE"
+  - "destination":{"x":(value), "y":(value)}
+  - "speed":(value) // Percentage of the player's max speed
 
+- "action":"TURN"
+  - "direction":(value) // Degrees clockwise from vertical
 
+- "action":"KICK"
+  - "destination":{"x":(value), "y":(value)}
+  - "speed":(value) // Percentage of max ball speed

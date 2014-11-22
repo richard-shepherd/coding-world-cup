@@ -14,8 +14,7 @@ exports['Short turn to the right'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 20.0);
 
     // We set the intention to turn...
-    player.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    player.intentionsState.direction = 55.0;
+    player._setAction_TURN({direction:55.0});
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...
@@ -42,8 +41,7 @@ exports['Short turn to the left'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 155.0);
 
     // We set the intention to turn...
-    player.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    player.intentionsState.direction = 120.0;
+    player._setAction_TURN({direction:120.0});
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...
@@ -65,8 +63,7 @@ exports['Long turn to the right'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 20.0);
 
     // We set the intention to turn...
-    player.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    player.intentionsState.direction = 165.0;
+    player._setAction_TURN({direction:165.0});
 
     // We simulate 0.1 second intervals and check how far we've turned
     // each time....
@@ -90,8 +87,7 @@ exports['Long turn to the right past 360'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 280.0);
 
     // We set the intention to turn...
-    player.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    player.intentionsState.direction = 48.0;
+    player._setAction_TURN({direction:48.0});
 
     // We simulate 0.1 second intervals and check how far we've turned
     // each time....
@@ -115,8 +111,7 @@ exports['Long turn to the left'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 255.0);
 
     // We set the intention to turn...
-    player.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    player.intentionsState.direction = 80.0;
+    player._setAction_TURN({direction:80.0});
 
     // We simulate 0.1 second intervals and check how far we've turned
     // each time....
@@ -139,8 +134,7 @@ exports['Short turn to the right past 360'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 350.0);
 
     // We set the intention to turn...
-    player.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    player.intentionsState.direction = 33.0;
+    player._setAction_TURN({direction:33.0});
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...
@@ -161,8 +155,7 @@ exports['Short turn to the left past 0'] = function(test) {
     var player = CreatePlayers.createPlayerAt(50.0, 25.0, 5.0);
 
     // We set the intention to turn...
-    player.intentionsState.action = PlayerState_Intentions.Action.TURN;
-    player.intentionsState.direction = 354.0;
+    player._setAction_TURN({direction:354.0});
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...

@@ -141,11 +141,17 @@ Game.prototype.onTurn = function() {
  * Called (usually by one of the GSM states) when we can play the next turn.
  */
 Game.prototype.playNextTurn = function () {
+    // Has the game ended?
+    if(this._state.currentTimeSeconds >= this._gameLengthSeconds) {
+        Logger.log("Game over!", Logger.LogLevel.INFO);
+        return;
+    }
+
     var that = this;
     if(this.simulationMode) {
         // We are in simulation mde, so we play the next turn
         // as soon as possible...
-        process.nextTick(function() {
+        setImmediate(function() {
             that.onTurn();
         });
     } else {

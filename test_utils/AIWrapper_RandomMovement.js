@@ -59,7 +59,7 @@ AIWrapper_RandomMovement.prototype.sendData = function(data) {
     // the AI was calling back asynchronously (and to make sure the
     // code is not re-entrant)...
     var that = this;
-    process.nextTick(function() {
+    setImmediate(function() {
         // We call functions depending on the message-type...
         var messageHandler = '_on' + data.messageType;
         that[messageHandler](data);

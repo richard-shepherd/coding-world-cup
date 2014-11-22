@@ -109,6 +109,9 @@ GSM_Base.prototype._checkResponses = function() {
 
     // We call into the derived class to handle the responses...
     this.onAIResponsesReceived();
+
+    // We clear the responses...
+    this._aiResponses = {};
 };
 
 /**

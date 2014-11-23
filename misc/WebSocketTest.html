@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>WebSocket Test</title>
+</head>
+<body>
+
+    Look in the Javascript console for data: (Ctrl+Shift+J in Chrome)
+
+    <!-- Connects to the server's websocket and logs data to the console -->
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://localhost:12345");
+        ws.onmessage = function(message) {
+            console.log("Received message: " + message.data);
+        };
+    </script>
+
+</body>
+</html>

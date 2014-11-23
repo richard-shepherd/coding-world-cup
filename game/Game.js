@@ -60,7 +60,7 @@ function Game(ai1, ai2, guiWebSocket) {
 
     // The interval in seconds between updates / requests being
     // sent to the AIs...
-    this._aiUpdateIntervalSeconds = 0.1;
+    this._aiUpdateIntervalSeconds = 0.0999999;
 
     // The length of the game in seconds...
     this._gameLengthSeconds = 2.0 * 60.0;
@@ -117,7 +117,7 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
  */
 Game.prototype.onTurn = function() {
     // We log the game time...
-    Logger.log("Time (seconds): " + this._state.currentTimeSeconds.toFixed(2), Logger.LogLevel.INFO_PLUS);
+    Logger.log("Time (seconds): " + this._state.currentTimeSeconds.toFixed(4), Logger.LogLevel.INFO_PLUS);
 
     // We update the game state - kicking, moving the ball and players etc...
     this.calculate();

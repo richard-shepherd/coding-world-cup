@@ -63,7 +63,7 @@ function Game(ai1, ai2, guiWebSocket) {
     this._aiUpdateIntervalSeconds = 0.0999999;
 
     // The length of the game in seconds...
-    this._gameLengthSeconds = 2.0 * 60.0;
+    this._gameLengthSeconds = 30.0 * 60.0;
 
     // If we are in simulation mode, we run the game loop as a
     // tight(ish) loop. If it is false, we use a timer so the game

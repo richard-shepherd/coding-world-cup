@@ -72,29 +72,30 @@ Player.prototype.isGoalkeeper = function() {
 };
 
 /**
- * updatePosition
- * --------------
- * Moves or turns the player based on their current action, speed
- * and so on, and on the time elapsed since the previous update.
+ * processAction
+ * -------------
+ * Processes the current action for this player, including moving,
+ * turning, kicking the ball etc.
  */
-Player.prototype.updatePosition = function(game) {
-    switch(this.actionState.action) {
-        case PlayerState_Action.Action.TURN:
-            this.updatePosition_Turn(game, true);
-            break;
-
-        case PlayerState_Action.Action.MOVE:
-            this.updatePosition_Move(game, true);
-            break;
+Player.prototype.processAction = function(game) {
+    // Is there a current action for this player?
+    var action = this.actionState.action;
+    if(action === PlayerState_Action.Action.NONE) {
+        return;
     }
+
+    // We call the function for this action. They have names like
+    //     _processAction_MOVE(game, resetWhenComplete)
+    var functionName = '_processAction_' + this.actionState.action;
+    this[functionName](game, true);
 };
 
 /**
- * updatePosition_Turn
+ * _processAction_TURN
  * -------------------
  * Turns the player towards their desired direction.
  */
-Player.prototype.updatePosition_Turn = function(game, resetActionWhenComplete) {
+Player.prototype._processAction_TURN = function(game, resetActionWhenComplete) {
     // We work out whether we should be turning left or right...
     var currentDirection = this.dynamicState.direction;
     var desiredDirection = this.actionState.direction;
@@ -144,11 +145,11 @@ Player.prototype.updatePosition_Turn = function(game, resetActionWhenComplete) {
 };
 
 /**
- * updatePosition_Move
+ * _processAction_MOVE
  * -------------------
  * Moves the player towards their desired position.
  */
-Player.prototype.updatePosition_Move = function(game, resetActionWhenComplete) {
+Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
     var position = this.dynamicState.position;
     var destination = this.actionState.moveDestination;
 
@@ -158,7 +159,7 @@ Player.prototype.updatePosition_Move = function(game, resetActionWhenComplete) {
     if(!Utils.approxEqual(currentDirection, directionToDestination)) {
         // We are not currently facing the right way, so we turn first...
         this.actionState.direction = directionToDestination;
-        this.updatePosition_Turn(game, false);
+        this._processAction_TURN(game, false);
         return;
     }
 
@@ -183,6 +184,31 @@ Player.prototype.updatePosition_Move = function(game, resetActionWhenComplete) {
     if(position.approxEqual(destination) && resetActionWhenComplete === true) {
         this.actionState.action = PlayerState_Action.Action.NONE;
     }
+};
+
+/**
+ * _processAction_KICK
+ * -------------------
+ * The player kicks the ball in the desired direction.
+ * How accurate the kick is depends on the passing-ability of the player.
+ */
+Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
+    if(this.dynamicState.hasBall === false) {
+        // The player does not have the ball, so can't kick it...
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
+
+    // We find the direction to the desired destination for the ball...
+    var position = this.dynamicState.position;
+    var desiredBallDestination = this.actionState.kickDestination;
+    var angleToDestination = Utils.angleBetween(position, desiredBallDestination);
+
+    // The player may not kick the ball in exactly the direction requested.
+    // This depends on the angle to the destination and the skill of the player.
+    //
+    //
+
 };
 
 /**

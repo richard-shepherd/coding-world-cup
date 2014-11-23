@@ -19,17 +19,17 @@ exports['Simple movement right'] = function(test) {
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres to the right...
-    player.updatePosition(game);
+    player.processAction(game);
     test.approx(player.dynamicState.position.x, 60.0);
     test.approx(player.dynamicState.position.y, 25.0);
 
     // 10 more metres...
-    player.updatePosition(game);
+    player.processAction(game);
     test.approx(player.dynamicState.position.x, 70.0);
     test.approx(player.dynamicState.position.y, 25.0);
 
     // The remaining 3 metres...
-    player.updatePosition(game);
+    player.processAction(game);
     test.approx(player.dynamicState.position.x, 73.0);
     test.approx(player.dynamicState.position.y, 25.0);
 
@@ -37,7 +37,7 @@ exports['Simple movement right'] = function(test) {
     test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
 
     // The player should not move any more...
-    player.updatePosition(game);
+    player.processAction(game);
     test.approx(player.dynamicState.position.x, 73.0);
     test.approx(player.dynamicState.position.y, 25.0);
 
@@ -58,7 +58,7 @@ exports['Simple movement up'] = function(test) {
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres to the right...
-    player.updatePosition(game);
+    player.processAction(game);
     test.approx(player.dynamicState.position.x, 50.0);
     test.approx(player.dynamicState.position.y, 15.0);
 
@@ -82,7 +82,7 @@ exports['Simple movement down'] = function(test) {
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres downwards...
-    player.updatePosition(game);
+    player.processAction(game);
     test.approx(player.dynamicState.position.x, 50.0);
     test.approx(player.dynamicState.position.y, 35.0);
 
@@ -106,7 +106,7 @@ exports['Simple movement left'] = function(test) {
     var game = new GameMocks.MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres to the left...
-    player.updatePosition(game);
+    player.processAction(game);
     test.approx(player.dynamicState.position.x, 40.0);
     test.approx(player.dynamicState.position.y, 25.0);
 

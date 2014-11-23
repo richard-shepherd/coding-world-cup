@@ -1,0 +1,8 @@
+- How does kicking work?
+
+- We apply a random offset to the requested _angle_ based on
+  - passingAbility
+  - angle away from the direction the player is facing
+
+
+

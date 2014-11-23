@@ -30,6 +30,8 @@ function Team(ai, teamNumber) {
 Team.NUMBER_OF_PLAYERS = 5;
 
 /**
+ * addPlayer
+ * ---------
  * Adds a player to this team.
  */
 Team.prototype.addPlayer = function(player) {
@@ -37,18 +39,20 @@ Team.prototype.addPlayer = function(player) {
 };
 
 /**
- * Updates the positions of the _players using the current time
- * from the game.
+ * processActions
+ * --------------
+ * Processes the actions (moving, kicking etc) for each player
+ * in the team.
  */
-Team.prototype.updatePositions = function(game) {
+Team.prototype.processActions = function(game) {
     this._players.forEach(function(player){
-        player.updatePosition(game);
+        player.processAction(game);
     }, this);
 };
 
 /**
  * getDTO
- * --------------
+ * ------
  * Returns the state of this object and its players.
  *
  * If publicOnly is true, then only public (dynamic) jsonData about

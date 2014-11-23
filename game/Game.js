@@ -211,8 +211,8 @@ Game.prototype.calculate = function() {
         this._ball.updatePosition(this);
 
         // We move the players...
-        this._team1.updatePositions(this);
-        this._team2.updatePositions(this);
+        this._team1.processActions(this);
+        this._team2.processActions(this);
 
         // We check for game events...
         this._checkGameEvents();

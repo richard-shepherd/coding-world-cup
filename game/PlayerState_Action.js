@@ -25,15 +25,14 @@ function PlayerState_Action() {
 
     // For the MOVE action...
     this.moveDestination = new Position(0.0, 0.0);
-    this.moveSpeed = 0.0; // As a percentage of the player or ball's max speed.
+    this.moveSpeed = 0.0; // As a percentage of the player's max speed.
 
     // For the TURN action...
     this.direction = 0.0;
 
-    //// For the MOVE & KICK actions...
-    //this.moveDestination = new Position(0.0, 0.0);
-    //this.speed = 0.0; // As a percentage of the player or ball's max speed.
-
+    // For the KICK action...
+    this.kickDestination = new Position(0.0, 0.0);
+    this.kickSpeed = 0.0; // As a percentage of the ball's max speed.
 }
 
 /**

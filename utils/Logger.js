@@ -3,7 +3,9 @@
  * ------
  * The "logger" is really a log-broker.
  *
- * You register log-handler classes with it, which each implement
+ * It is the equivalent of a static class.
+ *
+ * You register log-handler objects with it, which each implement
  * a log(message) method. When you log to this class, it forwards
  * the message to the registered handlers.
  *

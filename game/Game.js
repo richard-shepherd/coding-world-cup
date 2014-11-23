@@ -29,8 +29,11 @@ var NanoTimer = require('nanotimer');
 /**
  * @constructor
  */
-function Game(ai1, ai2) {
-    // Atimer for use with the game loop...    
+function Game(ai1, ai2, guiWebSocket) {
+    // We store the GUIWebSocket, to send updates to the GUI...
+    this._guiWebSocket = guiWebSocket;
+
+    // A timer for use with the game loop...
     this._timer = new NanoTimer();
     
     // The game state...
@@ -60,12 +63,12 @@ function Game(ai1, ai2) {
     this._aiUpdateIntervalSeconds = 0.1;
 
     // The length of the game in seconds...
-    this._gameLengthSeconds = 30.0 * 60.0;
+    this._gameLengthSeconds = 2.0 * 60.0;
 
     // If we are in simulation mode, we run the game loop as a
     // tight(ish) loop. If it is false, we use a timer so the game
     // runs more in real time...
-    this.simulationMode = true;
+    this.simulationMode = false;
 
     // We send some events to the AIs at the start of the game...
     this._sendEvent_GameStart();
@@ -100,7 +103,7 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
     }
 
     // And the goalkeeper...
-    var player = new Player(playerNumber.value, PlayerState_Static.PlayerType.GOALKEEPER);
+    player = new Player(playerNumber.value, PlayerState_Static.PlayerType.GOALKEEPER);
     this._players.push(player);
     team.addPlayer(player);
     playerNumber.value++;
@@ -113,6 +116,9 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
  * each turn or time-slice of the game.
  */
 Game.prototype.onTurn = function() {
+    // We log the game time...
+    Logger.log("Time (seconds): " + this._state.currentTimeSeconds.toFixed(2), Logger.LogLevel.INFO_PLUS);
+
     // We update the game state - kicking, moving the ball and players etc...
     this.calculate();
 
@@ -169,10 +175,14 @@ Game.prototype.playNextTurn = function () {
  * Sends an update of the current game state to the GUI.
  */
 Game.prototype._sendUpdateToGUI = function() {
-    // TODO: Write this properly!
+    if(this._guiWebSocket === null) {
+        return;
+    }
+
+    // We get the DTO, and send it to the GUI...
     var dto = this.getDTO();
-    var jsonDTO = JSON.stringify(this.getDTO(), Utils.decimalPlaceReplacer(4));
-    Logger.log(jsonDTO, Logger.LogLevel.INFO);
+    var jsonDTO = JSON.stringify(dto, Utils.decimalPlaceReplacer(4));
+    this._guiWebSocket.broadcast(jsonDTO);
 };
 
 /**
@@ -260,6 +270,19 @@ Game.prototype.getTeam2 = function() {
 };
 
 /**
+ * giveAllPlayersMaxAbilities
+ * --------------------------
+ * Used when testing.
+ */
+Game.prototype.giveAllPlayersMaxAbilities = function() {
+    this._players.forEach(function(player) {
+        player.staticState.runningAbility = 100.0;
+        player.staticState.passingAbility = 100.0;
+        player.dynamicState.energy = 100.0;
+    });
+};
+
+/**
  * _sendEvent_GameStart
  * --------------------
  * Sends the game-start event to both AIs.
@@ -300,6 +323,7 @@ Game.prototype._sendEvent_StartOfTurn = function() {
     this._team1.getAI().sendEvent(info);
     this._team2.getAI().sendEvent(info);
 };
+
 
 
 // Exports...

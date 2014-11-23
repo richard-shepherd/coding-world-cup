@@ -80,11 +80,11 @@ Player.prototype.isGoalkeeper = function() {
 Player.prototype.updatePosition = function(game) {
     switch(this.actionState.action) {
         case PlayerState_Action.Action.TURN:
-            this.updatePosition_Turn(game);
+            this.updatePosition_Turn(game, true);
             break;
 
         case PlayerState_Action.Action.MOVE:
-            this.updatePosition_Move(game);
+            this.updatePosition_Move(game, true);
             break;
     }
 };
@@ -94,7 +94,7 @@ Player.prototype.updatePosition = function(game) {
  * -------------------
  * Turns the player towards their desired direction.
  */
-Player.prototype.updatePosition_Turn = function(game) {
+Player.prototype.updatePosition_Turn = function(game, resetActionWhenComplete) {
     // We work out whether we should be turning left or right...
     var currentDirection = this.dynamicState.direction;
     var desiredDirection = this.actionState.direction;
@@ -138,7 +138,7 @@ Player.prototype.updatePosition_Turn = function(game) {
     this.dynamicState.direction = newDirection;
 
     // If we are now facing in the desired direction, we stop turning...
-    if(Utils.approxEqual(newDirection, desiredDirection)) {
+    if(Utils.approxEqual(newDirection, desiredDirection) && resetActionWhenComplete === true) {
         this.actionState.action = PlayerState_Action.Action.NONE;
     }
 };
@@ -148,14 +148,9 @@ Player.prototype.updatePosition_Turn = function(game) {
  * -------------------
  * Moves the player towards their desired position.
  */
-Player.prototype.updatePosition_Move = function(game) {
-    // We check if the player is already at the destination...
+Player.prototype.updatePosition_Move = function(game, resetActionWhenComplete) {
     var position = this.dynamicState.position;
     var destination = this.actionState.destination;
-    if(position.approxEqual(destination)) {
-        // The player is already at the destination...
-        return;
-    }
 
     // We check if the player is facing the right way...
     var currentDirection = this.dynamicState.direction;
@@ -163,7 +158,7 @@ Player.prototype.updatePosition_Move = function(game) {
     if(!Utils.approxEqual(currentDirection, directionToDestination)) {
         // We are not currently facing the right way, so we turn first...
         this.actionState.direction = directionToDestination;
-        this.updatePosition_Turn(game);
+        this.updatePosition_Turn(game, false);
         return;
     }
 
@@ -183,6 +178,11 @@ Player.prototype.updatePosition_Move = function(game) {
 
     // We move the player...
     position.addVector(scaledVector);
+
+    // If the player is now at the destination, we stop him moving...
+    if(position.approxEqual(destination) && resetActionWhenComplete === true) {
+        this.actionState.action = PlayerState_Action.Action.NONE;
+    }
 };
 
 /**
@@ -279,6 +279,23 @@ Player.prototype._setAction_TURN = function(action) {
     this.actionState.direction = action.direction;
 };
 
+/**
+ * _setAction_KICK
+ * ---------------
+ * Sets the action to kick the ball.
+ */
+Player.prototype._setAction_KICK = function(action) {
+    // We expect the action to have "destination" and "speed" fields...
+    if(!('destination' in action)) {
+        throw new CWCError('Expected "destination" field in KICK action');
+    }
+    if(!('speed' in action)) {
+        throw new CWCError('Expected "speed" field in KICK action');
+    }
+    this.actionState.action = PlayerState_Action.Action.KICK;
+    this.actionState.destination.copyFrom(action.destination);
+    this.actionState.speed = action.speed;
+};
 
 // Exports...
 module.exports = Player;

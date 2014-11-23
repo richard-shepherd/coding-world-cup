@@ -6,6 +6,7 @@ var GameLib = require('./game');
 var Game = GameLib.Game;
 var TestUtilsLib = require('./test_utils');
 var AIWrapper_RandomMovement = TestUtilsLib.AIWrapper_RandomMovement;
+var GUIWebSocket = UtilsLib.GUIWebSocket;
 
 
 // We set up logging...
@@ -17,10 +18,12 @@ var ai1 = new AIWrapper_RandomMovement();
 var ai2 = new AIWrapper_RandomMovement();
 
 // We create a new game...
-var game = new Game(ai1, ai2);
+var guiWebSocket = new GUIWebSocket(12345);
+var game = new Game(ai1, ai2, guiWebSocket);
+game.giveAllPlayersMaxAbilities();
 
 // And we start to play...
-//game.onTurn();
+game.onTurn();
 
 
 

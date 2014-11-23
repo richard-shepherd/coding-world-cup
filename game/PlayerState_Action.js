@@ -23,9 +23,9 @@ function PlayerState_Action() {
     // The currently action...
     this.action = PlayerState_Action.Action.NONE;
 
-    // For the MOVE action...
+    // For the MOVE & KICK actions...
     this.destination = new Position(0.0, 0.0);
-    this.speed = 0.0; // As a percentage of the player's max speed.
+    this.speed = 0.0; // As a percentage of the player or ball's max speed.
 
     // For the TURN action...
     this.direction = 0.0;
@@ -39,7 +39,8 @@ function PlayerState_Action() {
 PlayerState_Action.Action = {
     NONE: 'NONE',
     TURN: 'TURN',
-    MOVE: 'MOVE'
+    MOVE: 'MOVE',
+    KICK: 'KICK'
 };
 
 // Exports...

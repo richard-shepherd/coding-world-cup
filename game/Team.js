@@ -19,7 +19,7 @@ function Team(ai, teamNumber) {
     this._ai = ai;
 
     // The team state (score etc)...
-    this._state = new TeamState();
+    this.state = new TeamState();
 
     // The collection of _players.
     // (The player objects are created in the Game, and passed to us later)...
@@ -60,7 +60,7 @@ Team.prototype.processActions = function(game) {
  */
 Team.prototype.getDTO = function(publicOnly) {
     var state = {};
-    state.team = this._state;
+    state.team = this.state;
     state.players = this._players.map(function(player) {
         return player.getDTO(publicOnly);
     });
@@ -80,7 +80,7 @@ Team.prototype.getAI = function() {
  * Helper function to get the team's name.
  */
 Team.prototype.getName = function() {
-    return this._state.name;
+    return this.state.name;
 };
 
 /**

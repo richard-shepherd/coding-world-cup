@@ -1,5 +1,3 @@
-TODO: Test turn then move, ie move towards a point you are not initially facing.
-
 TODO: Test moving along a diagonal (not 45 degrees)
 
 TODO: Test that you can't move off the pitch
@@ -12,4 +10,5 @@ TODO: Test recuperation of energy
 
 TODO: Test that errors in parsing responses get sent to the correct AI. If the only try...catch is at the handler level, then the second handler may get all errors (as it is only then that parsing takes place).
 
+TODO: Test that when a player has the ball, the ball's position changes as the player moves
 

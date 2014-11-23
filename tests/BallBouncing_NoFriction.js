@@ -12,15 +12,15 @@ exports['Bounce off top - straight'] = function(test) {
     ball.friction = 0.0;
 
     // Set its position...
-    var position = ball._state.position;
+    var position = ball.state.position;
     position.x = 60.0;
     position.y = 4.0;
 
     // We set it's direction and speed...
-    var vector = ball._state.vector;
+    var vector = ball.state.vector;
     vector.x = 0.0;
     vector.y = -1.0;
-    ball._state.speed = 10.0;
+    ball.state.speed = 10.0;
 
     // We move it...
     var game = new MockGame_CalculationInterval(1.0);
@@ -49,15 +49,15 @@ exports['Bounce off left - straight'] = function(test) {
     ball.friction = 0.0;
 
     // Set its position...
-    var position = ball._state.position;
+    var position = ball.state.position;
     position.x = 3.0;
     position.y = 20.0;
 
     // We set it's direction and speed...
-    var vector = ball._state.vector;
+    var vector = ball.state.vector;
     vector.x = -1.0;
     vector.y = 0.0;
-    ball._state.speed = 10.0;
+    ball.state.speed = 10.0;
 
     // We move it...
     var game = new MockGame_CalculationInterval(1.0);
@@ -86,15 +86,15 @@ exports['Bounce off right - straight'] = function(test) {
     ball.friction = 0.0;
 
     // Set its position...
-    var position = ball._state.position;
+    var position = ball.state.position;
     position.x = 93.0;
     position.y = 35.0;
 
     // We set it's direction and speed...
-    var vector = ball._state.vector;
+    var vector = ball.state.vector;
     vector.x = 1.0;
     vector.y = 0.0;
-    ball._state.speed = 10.0;
+    ball.state.speed = 10.0;
 
     // We move it...
     var game = new MockGame_CalculationInterval(1.0);
@@ -123,15 +123,15 @@ exports['Bounce off bottom - straight'] = function(test) {
     ball.friction = 0.0;
 
     // Set its position...
-    var position = ball._state.position;
+    var position = ball.state.position;
     position.x = 44.0;
     position.y = 48.0;
 
     // We set it's direction and speed...
-    var vector = ball._state.vector;
+    var vector = ball.state.vector;
     vector.x = 0.0;
     vector.y = 1.0;
-    ball._state.speed = 10.0;
+    ball.state.speed = 10.0;
 
     // We move it...
     var game = new MockGame_CalculationInterval(1.0);
@@ -160,16 +160,16 @@ exports['Bounce off top - diagonal'] = function(test) {
     ball.friction = 0.0;
 
     // Set its position...
-    var position = ball._state.position;
+    var position = ball.state.position;
     position.x = 20.0;
     position.y = 3.0;
 
     // We set it's direction and speed...
-    var vector = ball._state.vector;
+    var vector = ball.state.vector;
     var sqrtHalf = Math.sqrt(0.5);
     vector.x = -1.0 * sqrtHalf;
     vector.y = -1.0 * sqrtHalf;
-    ball._state.speed = 10.0;
+    ball.state.speed = 10.0;
 
     // We move it...
     var game = new MockGame_CalculationInterval(1.0);

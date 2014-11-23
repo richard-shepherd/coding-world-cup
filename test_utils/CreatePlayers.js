@@ -17,6 +17,7 @@ function createPlayerAt(x, y, direction) {
     player.dynamicState.position.y = y;
     player.dynamicState.direction = direction;
     player.dynamicState.energy = Player.MAX_ENERGY;
+    player.staticState.playerNumber = 123;
     player.staticState.passingAbility = 100.0;
     player.staticState.runningAbility = 100.0;
     return player;

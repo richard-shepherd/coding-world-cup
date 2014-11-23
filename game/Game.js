@@ -37,10 +37,10 @@ function Game(ai1, ai2, guiWebSocket) {
     this._timer = new NanoTimer();
     
     // The game state...
-    this._state = new GameState();
+    this.state = new GameState();
 
     // The ball...
-    this._ball = new Ball();
+    this.ball = new Ball();
 
     // We create the teams and the _players...
     this.createTeams(ai1, ai2);
@@ -117,7 +117,7 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
  */
 Game.prototype.onTurn = function() {
     // We log the game time...
-    Logger.log("Time (seconds): " + this._state.currentTimeSeconds.toFixed(4), Logger.LogLevel.INFO_PLUS);
+    Logger.log("Time (seconds): " + this.state.currentTimeSeconds.toFixed(4), Logger.LogLevel.INFO_PLUS);
 
     // We update the game state - kicking, moving the ball and players etc...
     this.calculate();
@@ -148,7 +148,7 @@ Game.prototype.onTurn = function() {
  */
 Game.prototype.playNextTurn = function () {
     // Has the game ended?
-    if(this._state.currentTimeSeconds >= this._gameLengthSeconds) {
+    if(this.state.currentTimeSeconds >= this._gameLengthSeconds) {
         Logger.log("Game over!", Logger.LogLevel.INFO);
         return;
     }
@@ -204,11 +204,11 @@ Game.prototype.calculate = function() {
     var calculationTime = 0.0;
     while(calculationTime < this._aiUpdateIntervalSeconds) {
         // We update the game time and calculation time...
-        this._state.currentTimeSeconds += this._calculationIntervalSeconds;
+        this.state.currentTimeSeconds += this._calculationIntervalSeconds;
         calculationTime += this._calculationIntervalSeconds;
 
         // We move the ball...
-        this._ball.updatePosition(this);
+        this.ball.updatePosition(this);
 
         // We move the players...
         this._team1.processActions(this);
@@ -245,8 +245,8 @@ Game.prototype.getCalculationIntervalSeconds = function() {
  */
 Game.prototype.getDTO = function(publicOnly) {
     var DTO = {
-        game: this._state,
-        ball: this._ball._state,
+        game: this.state,
+        ball: this.ball.state,
         team1: this._team1.getDTO(publicOnly),
         team2: this._team2.getDTO(publicOnly)
     };
@@ -322,6 +322,23 @@ Game.prototype._sendEvent_StartOfTurn = function() {
     info.event = "START_OF_TURN";
     this._team1.getAI().sendEvent(info);
     this._team2.getAI().sendEvent(info);
+};
+
+/**
+ * giveBallToPlayer
+ * ----------------
+ * Sets data in the player and game to give the player the ball.
+ */
+Game.prototype.giveBallToPlayer = function(player) {
+    var playerDynamicState = player.dynamicState;
+    var ballState = this.ball.state;
+
+    // We give the player the ball...
+    playerDynamicState.hasBall = true;
+
+    // We tell the ball that it is owned by the player...
+    ballState.controllingPlayerNumber = player.getPlayerNumber();
+    ballState.position.copyFrom(playerDynamicState.position);
 };
 
 

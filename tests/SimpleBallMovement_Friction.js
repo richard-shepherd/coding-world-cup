@@ -11,14 +11,14 @@ exports['Move left'] = function(test) {
     var ball = new Ball();
 
     // Set the ball's position...
-    var position = ball._state.position;
+    var position = ball.state.position;
     position.x = 30.0;
     position.y = 30.0;
 
     // Set its movement vector and speed, in m/s...
-    ball._state.vector.x = -1.0;
-    ball._state.vector.y = 0.0;
-    ball._state.speed = 7.0;
+    ball.state.vector.x = -1.0;
+    ball.state.vector.y = 0.0;
+    ball.state.speed = 7.0;
 
     // We move it over 0.5 second...
     // Slow from 7 m/s to 2 m/s over 0.5 sec, so average of 4.5 m/s...

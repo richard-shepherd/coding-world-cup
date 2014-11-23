@@ -11,7 +11,7 @@ var Pitch = require('./Pitch');
  */
 function Ball() {
     // Data about the ball...
-    this._state = new BallState();
+    this.state = new BallState();
 
     // How much the ball slows down as it moves, in m/s/s...
     this.friction = 10.0;
@@ -28,7 +28,7 @@ Ball.MAX_SPEED = 30.0;
  * Updates the position of the ball when it is has been kicked.
  */
 Ball.prototype.updatePosition = function (game) {
-    if(this._state.controllingPlayerNumber !== -1) {
+    if(this.state.controllingPlayerNumber !== -1) {
         // The ball is being controlled by a player so we
         // don't move it independently...
         return;
@@ -40,7 +40,7 @@ Ball.prototype.updatePosition = function (game) {
     // the start and at the end of the interval we are calculating
     // and move at the average speed...
     var intervalSeconds = game.getCalculationIntervalSeconds();
-    var speedAtStart = this._state.speed;
+    var speedAtStart = this.state.speed;
     var speedAtEnd = speedAtStart - this.friction * intervalSeconds;
     if(speedAtEnd < 0.0) {
         // The ball has come to a stop during this interval.
@@ -54,9 +54,9 @@ Ball.prototype.updatePosition = function (game) {
 
     // We find the distance travelled, and move the ball...
     var distance = averageSpeed * intervalSeconds;
-    var vector = this._state.vector;
-    var vectorMoved = this._state.vector.scale(distance);
-    var position = this._state.position;
+    var vector = this.state.vector;
+    var vectorMoved = this.state.vector.scale(distance);
+    var position = this.state.position;
     position.addVector(vectorMoved);
 
     // Did the ball bounce?
@@ -80,7 +80,16 @@ Ball.prototype.updatePosition = function (game) {
     }
 
     // We change the speed of the ball...
-    this._state.speed = speedAtEnd;
+    this.state.speed = speedAtEnd;
+};
+
+/**
+ * getMaxSpeed
+ * -----------
+ * Returns the maximum speed the ball can travel at.
+ */
+Ball.prototype.getMaxSpeed = function() {
+    return Ball.MAX_SPEED;
 };
 
 // Exports...

@@ -18,6 +18,7 @@ var PlayerState_Action = require('./PlayerState_Action');
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
 var CWCError = UtilsLib.CWCError;
+var Random = UtilsLib.Random;
 
 
 /**
@@ -32,6 +33,9 @@ function Player(playerNumber, playerType) {
 
     // Current action (moving, kicking etc)...
     this.actionState = new PlayerState_Action();
+
+    // Generates random numbers for some actions...
+    this._random = new Random();
 }
 
 /**
@@ -193,22 +197,60 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
  * How accurate the kick is depends on the passing-ability of the player.
  */
 Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
-    if(this.dynamicState.hasBall === false) {
+    var dynamicState = this.dynamicState;
+    if(dynamicState.hasBall === false) {
         // The player does not have the ball, so can't kick it...
         this.actionState.action = PlayerState_Action.Action.NONE;
         return;
     }
 
     // We find the direction to the desired destination for the ball...
-    var position = this.dynamicState.position;
-    var desiredBallDestination = this.actionState.kickDestination;
-    var angleToDestination = Utils.angleBetween(position, desiredBallDestination);
+    var position = dynamicState.position;
+    var actionState = this.actionState;
+    var desiredBallDestination = actionState.kickDestination;
+    var desiredDirection = Utils.angleBetween(position, desiredBallDestination);
 
     // The player may not kick the ball in exactly the direction requested.
     // This depends on the angle to the destination and the skill of the player.
     //
+    // 1. Skill of player
+    // ------------------
+    // If the player has 100% passing-ability, we have zero variation
+    // If the player has 0% passing-ability we have up to 360-degrees of variation
+    // The actual variation is a random number up to the maximum variation.
     //
+    // 2. Angle to destination
+    // -----------------------
+    // We find the difference in angle between the angle-to-ball-destination
+    // and the angle the player is currently facing.
+    // If there is 0 difference, we have zero variation.
+    // If there is 180-degrees difference, we have up to 90-degrees of variation.
+    // The actual variation is a random number up to the maximum variation.
 
+    // 1. Skill...
+    var maxSkillVariation = (100.0 - this.staticState.passingAbility) * 360.0;
+    var skillVariation = this._random.nextDouble() * maxSkillVariation - maxSkillVariation / 2.0;
+
+    // 2. Angle...
+    var differenceInAngle = Math.abs(desiredDirection - dynamicState.direction);
+    var maxAngleVariation = differenceInAngle / 180.0 * 90.0;
+    var angleVariation = this._random.nextDouble() * maxAngleVariation - maxAngleVariation / 2.0;
+
+    // We add the variations to the requested direction, and convert it to a unit vector...
+    var direction = desiredDirection + skillVariation + angleVariation;
+    var vector = Utils.vectorFromDirection(direction);
+
+    // We set the ball's vector and speed, and update its position...
+    var ball = game.ball;
+    var ballState = ball.state;
+    ballState.vector = vector;
+    ballState.speed = actionState.kickSpeed / 100.0 * ball.getMaxSpeed();
+    ballState.controllingPlayerNumber = -1;
+    ball.updatePosition(game);
+
+    // We're no longer managing the ball...
+    dynamicState.hasBall = false;
+    actionState.action = PlayerState_Action.Action.NONE;
 };
 
 /**
@@ -319,8 +361,8 @@ Player.prototype._setAction_KICK = function(action) {
         throw new CWCError('Expected "speed" field in KICK action');
     }
     this.actionState.action = PlayerState_Action.Action.KICK;
-    this.actionState.moveDestination.copyFrom(action.destination);
-    this.actionState.moveSpeed = action.speed;
+    this.actionState.kickDestination.copyFrom(action.destination);
+    this.actionState.kickSpeed = action.speed;
 };
 
 // Exports...

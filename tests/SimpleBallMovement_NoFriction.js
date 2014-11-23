@@ -1,7 +1,7 @@
 var GameLib = require('../game');
-var TestUtils = require('../test_utils');
+var TestUtilsLib = require('../test_utils');
 var Ball = GameLib.Ball;
-var GameMocks = TestUtils.GameMocks;
+var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 
 /**
  * Tests simple ball movement without friction.
@@ -22,7 +22,7 @@ exports['Move left'] = function(test) {
     ball._state.speed = 7.0;
 
     // We move it over 0.5 second...
-    var game = new GameMocks.MockGame_CalculationInterval(0.5);
+    var game = new MockGame_CalculationInterval(0.5);
     ball.updatePosition(game);
 
     test.approx(position.x, 26.5);
@@ -50,7 +50,7 @@ exports['Move right'] = function(test) {
     ball._state.speed = 4.0;
 
     // We move it over 0.5 second...
-    var game = new GameMocks.MockGame_CalculationInterval(0.6);
+    var game = new MockGame_CalculationInterval(0.6);
     ball.updatePosition(game);
 
     test.approx(position.x, 32.4);
@@ -78,7 +78,7 @@ exports['Move up'] = function(test) {
     ball._state.speed = 9.0;
 
     // We move it over 0.5 second...
-    var game = new GameMocks.MockGame_CalculationInterval(0.8);
+    var game = new MockGame_CalculationInterval(0.8);
     ball.updatePosition(game);
 
     test.approx(position.x, 30.0);
@@ -106,7 +106,7 @@ exports['Move down'] = function(test) {
     ball._state.speed = 3.0;
 
     // We move it over 0.5 second...
-    var game = new GameMocks.MockGame_CalculationInterval(0.2);
+    var game = new MockGame_CalculationInterval(0.2);
     ball.updatePosition(game);
 
     test.approx(position.x, 30.0);

@@ -1,6 +1,6 @@
 var TestUtilsLib = require('../test_utils');
 var CreatePlayers = TestUtilsLib.CreatePlayers;
-var GameMocks = TestUtilsLib.GameMocks;
+var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 var GameLib = require('../game');
 var PlayerState_Action = GameLib.PlayerState_Action;
 
@@ -18,7 +18,7 @@ exports['Short turn to the right'] = function(test) {
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...
-    var game = new GameMocks.MockGame_CalculationInterval(0.1);
+    var game = new MockGame_CalculationInterval(0.1);
     player.processAction(game);
 
     // We confirm that we're facing the new direction...
@@ -46,7 +46,7 @@ exports['Short turn to the left'] = function(test) {
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...
-    var game = new GameMocks.MockGame_CalculationInterval(0.1);
+    var game = new MockGame_CalculationInterval(0.1);
     player.processAction(game);
 
     // We confirm that we're facing the new direction...
@@ -69,7 +69,7 @@ exports['Long turn to the right'] = function(test) {
 
     // We simulate 0.1 second intervals and check how far we've turned
     // each time....
-    var game = new GameMocks.MockGame_CalculationInterval(0.1);
+    var game = new MockGame_CalculationInterval(0.1);
     player.processAction(game);
     test.approx(player.dynamicState.direction, 80.0);
     player.processAction(game);
@@ -94,7 +94,7 @@ exports['Long turn to the right past 360'] = function(test) {
 
     // We simulate 0.1 second intervals and check how far we've turned
     // each time....
-    var game = new GameMocks.MockGame_CalculationInterval(0.1);
+    var game = new MockGame_CalculationInterval(0.1);
     player.processAction(game);
     test.approx(player.dynamicState.direction, 340.0);
     player.processAction(game);
@@ -119,7 +119,7 @@ exports['Long turn to the left'] = function(test) {
 
     // We simulate 0.1 second intervals and check how far we've turned
     // each time....
-    var game = new GameMocks.MockGame_CalculationInterval(0.1);
+    var game = new MockGame_CalculationInterval(0.1);
     player.processAction(game);
     test.approx(player.dynamicState.direction, 195.0);
     player.processAction(game);
@@ -143,7 +143,7 @@ exports['Short turn to the right past 360'] = function(test) {
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...
-    var game = new GameMocks.MockGame_CalculationInterval(0.1);
+    var game = new MockGame_CalculationInterval(0.1);
     player.processAction(game);
 
     // We confirm that we're facing the new direction...
@@ -165,7 +165,7 @@ exports['Short turn to the left past 0'] = function(test) {
 
     // We simulate a 0.1 second interval, which should be more
     // than enough to turn this far...
-    var game = new GameMocks.MockGame_CalculationInterval(0.1);
+    var game = new MockGame_CalculationInterval(0.1);
     player.processAction(game);
 
     // We confirm that we're facing the new direction...

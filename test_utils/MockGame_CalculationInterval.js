@@ -19,6 +19,6 @@ MockGame_CalculationInterval.prototype.getCalculationIntervalSeconds = function(
 
 
 // Exports...
-exports.MockGame_CalculationInterval = MockGame_CalculationInterval;
+module.exports = MockGame_CalculationInterval;
 
 

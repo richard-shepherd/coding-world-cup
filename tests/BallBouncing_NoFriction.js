@@ -1,7 +1,7 @@
 var GameLib = require('../game');
-var TestUtils = require('../test_utils');
+var TestUtilsLib = require('../test_utils');
 var Ball = GameLib.Ball;
-var GameMocks = TestUtils.GameMocks;
+var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval
 
 /**
  * Tests the ball bouncing off the side of the pitch.
@@ -23,7 +23,7 @@ exports['Bounce off top - straight'] = function(test) {
     ball._state.speed = 10.0;
 
     // We move it...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
     ball.updatePosition(game);
     test.approx(position.x, 60.0);
     test.approx(position.y, 6.0);
@@ -60,7 +60,7 @@ exports['Bounce off left - straight'] = function(test) {
     ball._state.speed = 10.0;
 
     // We move it...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
     ball.updatePosition(game);
     test.approx(position.x, 7.0);
     test.approx(position.y, 20.0);
@@ -97,7 +97,7 @@ exports['Bounce off right - straight'] = function(test) {
     ball._state.speed = 10.0;
 
     // We move it...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
     ball.updatePosition(game);
     test.approx(position.x, 97.0);
     test.approx(position.y, 35.0);
@@ -134,7 +134,7 @@ exports['Bounce off bottom - straight'] = function(test) {
     ball._state.speed = 10.0;
 
     // We move it...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
     ball.updatePosition(game);
     test.approx(position.x, 44.0);
     test.approx(position.y, 42.0);
@@ -172,7 +172,7 @@ exports['Bounce off top - diagonal'] = function(test) {
     ball._state.speed = 10.0;
 
     // We move it...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
     ball.updatePosition(game);
 
     // By the time we hit the wall, we've moved 3 up, 3 to the left.

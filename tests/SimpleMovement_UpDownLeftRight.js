@@ -1,6 +1,6 @@
 var TestUtilsLib = require('../test_utils');
 var CreatePlayers = TestUtilsLib.CreatePlayers;
-var GameMocks = TestUtilsLib.GameMocks;
+var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 var GameLib = require('../game');
 var PlayerState_Action = GameLib.PlayerState_Action;
 
@@ -16,7 +16,7 @@ exports['Simple movement right'] = function(test) {
     player._setAction_MOVE({destination:{x:73.0, y:25.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres to the right...
     player.processAction(game);
@@ -55,7 +55,7 @@ exports['Simple movement up'] = function(test) {
     player._setAction_MOVE({destination:{x:50.0, y:5.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres to the right...
     player.processAction(game);
@@ -79,7 +79,7 @@ exports['Simple movement down'] = function(test) {
     player._setAction_MOVE({destination:{x:50.0, y:45.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres downwards...
     player.processAction(game);
@@ -103,7 +103,7 @@ exports['Simple movement left'] = function(test) {
     player._setAction_MOVE({destination:{x:30.0, y:25.0}, speed:100.0});
 
     // We set the calculation interval to 1 second...
-    var game = new GameMocks.MockGame_CalculationInterval(1.0);
+    var game = new MockGame_CalculationInterval(1.0);
 
     // The player should be moving at 10m/s, so should have moved 10 metres to the left...
     player.processAction(game);

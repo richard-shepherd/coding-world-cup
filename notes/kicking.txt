@@ -1,8 +1,23 @@
 - How does kicking work?
 
 - We apply a random offset to the requested _angle_ based on
-  - passingAbility
-  - angle away from the direction the player is facing
+  1. passingAbility
+  2. angle away from the direction the player is facing
 
+- So maybe two random factors - one for each of the points above.
 
+- passingAbility
+  - 100 = no deviation
+  - 0   = deviation up to (180 degrees * random factor)
 
+- Deviations can be plus or minus
+  - So 20 degrees, means rand() * 40 - 20
+
+- angle away from player direction
+  - If angle is 180 degrees, deviation = (20 degrees * random factor)
+
+- How does the random thing work
+  - Especially for mocking?
+  - Random class in utils
+  - Player holds one
+    - Can be replaced with Mock version

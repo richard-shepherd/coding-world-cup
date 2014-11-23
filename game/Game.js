@@ -180,7 +180,7 @@ Game.prototype._sendUpdateToGUI = function() {
     }
 
     // We get the DTO, and send it to the GUI...
-    var dto = this.getDTO();
+    var dto = this.getDTO(true);
     var jsonDTO = JSON.stringify(dto, Utils.decimalPlaceReplacer(4));
     this._guiWebSocket.broadcast(jsonDTO);
 };

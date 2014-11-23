@@ -23,12 +23,17 @@ function PlayerState_Action() {
     // The currently action...
     this.action = PlayerState_Action.Action.NONE;
 
-    // For the MOVE & KICK actions...
-    this.destination = new Position(0.0, 0.0);
-    this.speed = 0.0; // As a percentage of the player or ball's max speed.
+    // For the MOVE action...
+    this.moveDestination = new Position(0.0, 0.0);
+    this.moveSpeed = 0.0; // As a percentage of the player or ball's max speed.
 
     // For the TURN action...
     this.direction = 0.0;
+
+    //// For the MOVE & KICK actions...
+    //this.moveDestination = new Position(0.0, 0.0);
+    //this.speed = 0.0; // As a percentage of the player or ball's max speed.
+
 }
 
 /**

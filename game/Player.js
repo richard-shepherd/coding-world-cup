@@ -150,7 +150,7 @@ Player.prototype.updatePosition_Turn = function(game, resetActionWhenComplete) {
  */
 Player.prototype.updatePosition_Move = function(game, resetActionWhenComplete) {
     var position = this.dynamicState.position;
-    var destination = this.actionState.destination;
+    var destination = this.actionState.moveDestination;
 
     // We check if the player is facing the right way...
     var currentDirection = this.dynamicState.direction;
@@ -261,8 +261,8 @@ Player.prototype._setAction_MOVE = function(action) {
         throw new CWCError('Expected "speed" field in MOVE action');
     }
     this.actionState.action = PlayerState_Action.Action.MOVE;
-    this.actionState.destination.copyFrom(action.destination);
-    this.actionState.speed = action.speed;
+    this.actionState.moveDestination.copyFrom(action.destination);
+    this.actionState.moveSpeed = action.speed;
 };
 
 /**
@@ -293,8 +293,8 @@ Player.prototype._setAction_KICK = function(action) {
         throw new CWCError('Expected "speed" field in KICK action');
     }
     this.actionState.action = PlayerState_Action.Action.KICK;
-    this.actionState.destination.copyFrom(action.destination);
-    this.actionState.speed = action.speed;
+    this.actionState.moveDestination.copyFrom(action.destination);
+    this.actionState.moveSpeed = action.speed;
 };
 
 // Exports...

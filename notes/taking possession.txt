@@ -33,6 +33,13 @@ Taking possession of the ball
     - Add to dynamic state
     - Only has a value when moving (ie, set to zero when MOVE ends)
   - Some sort of vector combination?
+  - NO: See below
+
+- BUT: Should you run towards the ball at full speed if not near it?
+  - That might make the relative speed thing go a bit weird.
+  - Let's say Yes (you do run at full speed)
+    - And we just look at the speed of the ball
+
 
 
 

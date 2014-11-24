@@ -72,7 +72,6 @@ exports['Kick backwards'] = function(test) {
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...
-    // In this case to make the ball go where the player intended.
     var mockRandom = new MockRandom([0.5, 0.2]);
     player._random = mockRandom;
 
@@ -111,7 +110,6 @@ exports['Kick sideways'] = function(test) {
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...
-    // In this case to make the ball go where the player intended.
     var mockRandom = new MockRandom([0.5, 0.8]);
     player._random = mockRandom;
 

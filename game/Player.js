@@ -228,7 +228,7 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
     // The actual variation is a random number up to the maximum variation.
 
     // 1. Skill...
-    var maxSkillVariation = (100.0 - this.staticState.passingAbility) * 360.0;
+    var maxSkillVariation = (100.0 - this.staticState.passingAbility) / 100.0 * 360.0;
     var skillVariation = this._random.nextDouble() * maxSkillVariation - maxSkillVariation / 2.0;
 
     // 2. Angle...

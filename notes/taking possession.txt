@@ -1,0 +1,41 @@
+Taking possession of the ball
+-----------------------------
+
+- action:TAKE_POSSESSION
+
+- Only applies if the ball is moving freely.
+
+- If the ball is owned you must tackle the player
+  - Because then you specify how hard
+
+- You can only issue the command if you are within 5m of the ball
+  - Well: you can issue it any time, but it will be cancelled if you are over 5m away
+
+- The action is cancelled if:
+  - The ball moves over 5m away
+  - Another player takes possession of the ball
+
+- You can only actually take possession if you are within 0.5m of the ball
+  - When you are further away, the action makes you run towards the ball at full speed
+  - In the calculation loop
+    - The ball moves first
+    - Then player actions are performed
+
+- Whether you get the ball depends on:
+  - The player's ballControlAbility
+  - The relative speed of the player and the ball
+  - A random factor based on the above points
+
+- Relative speed
+  - Means we need to know the actual speed of the player and the ball
+  - We've got the speed of the ball
+  - We need it for the player
+    - Add to dynamic state
+    - Only has a value when moving (ie, set to zero when MOVE ends)
+  - Some sort of vector combination?
+
+
+
+
+
+

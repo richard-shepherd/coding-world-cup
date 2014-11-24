@@ -21,3 +21,8 @@ TODO: Rename Intentions to Actions?
 
 TODO: Some intentions reset to None once complete. KICK, maybe also TURN. Maybe all do?
 
+TODO: Do not allow players within (10 metres?) of the goal
+
+TODO: Only allow the goalkeeper to hold the ball for 5 seconds
+
+TODO: When the goalkeeper has the ball, he cannot be tackled

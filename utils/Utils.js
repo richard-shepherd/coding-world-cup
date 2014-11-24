@@ -4,6 +4,7 @@
  * Miscellaneous utility functions.
  */
 var Vector = require('./Vector');
+var Position = require('./Position');
 
 
 /**
@@ -64,6 +65,19 @@ function vectorFromDirection(direction) {
     var x = Math.cos(radians);
     var y = -1.0 * Math.sin(radians);
     return new Vector(x, y);
+}
+
+/**
+ * pointFromDirection
+ * ------------------
+ * Returns a point 'length' away from 'start' in the direction specified.
+ */
+function pointFromDirection(start, direction, length) {
+    var vector = vectorFromDirection(direction);
+    vector = vector.scale(length);
+    var result = new Position(start.x, start.y);
+    result.addVector(vector);
+    return result;
 }
 
 /**
@@ -154,6 +168,7 @@ exports.setApproxTolerance = setApproxTolerance;
 exports.approxEqual = approxEqual;
 exports.angleBetween = angleBetween;
 exports.vectorFromDirection = vectorFromDirection;
+exports.pointFromDirection = pointFromDirection;
 exports.decimalPlaceReplacer = decimalPlaceReplacer;
 exports.secondsSince = secondsSince;
 exports.callIfExists = callIfExists;

@@ -40,7 +40,16 @@ Taking possession of the ball
   - Let's say Yes (you do run at full speed)
     - And we just look at the speed of the ball
 
-
+- How dow we deal with two players wanting to take possession at the same time?
+  - It can't always be that first in the list wins.
+  - That would be unfair.
+  - A: This is processed in the Game object
+    - The Player just moves closer to the ball
+    - The Game checks all players for taking possession and gets
+      a collection of players who want to take possession, along with
+      their probability / factor of getting the ball.
+    - The Game then chooses between them.
+      - Chooses the player with the highest chance of getting the ball
 
 
 

@@ -44,7 +44,8 @@ PlayerState_Action.Action = {
     NONE: 'NONE',
     TURN: 'TURN',
     MOVE: 'MOVE',
-    KICK: 'KICK'
+    KICK: 'KICK',
+    TAKE_POSSESSION: "TAKE_POSSESSION"
 };
 
 // Exports...

@@ -5,7 +5,7 @@
  * a player with 70% passing ability.
  */
 var TestUtilsLib = require('../test_utils');
-var CreatePlayers = TestUtilsLib.CreatePlayers;
+var PlayerTestUtils = TestUtilsLib.PlayerTestUtils;
 var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 var MockRandom = TestUtilsLib.MockRandom;
 var GameLib = require('../game');
@@ -28,7 +28,7 @@ exports['Lucky'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 288.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 288.0);
     player.staticState.passingAbility = 70.0;
     game.giveBallToPlayer(player);
 
@@ -67,7 +67,7 @@ exports['70pc ability'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 77.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 77.0);
     player.staticState.passingAbility = 70.0;
     game.giveBallToPlayer(player);
 

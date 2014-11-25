@@ -110,6 +110,15 @@ Game.prototype.addPlayersToTeam = function(team, playerNumber) {
 };
 
 /**
+ * getPlayer
+ * ---------
+ * Returns the player with the number passed in.
+ */
+Game.prototype.getPlayer = function(playerNumber) {
+    return this._players[playerNumber];
+};
+
+/**
  * onTurn
  * ------
  * This is the main function of the "game loop", and is called for

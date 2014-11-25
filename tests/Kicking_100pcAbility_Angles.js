@@ -6,7 +6,7 @@
  * the direction the ball ends up travelling.
  */
 var TestUtilsLib = require('../test_utils');
-var CreatePlayers = TestUtilsLib.CreatePlayers;
+var PlayerTestUtils = TestUtilsLib.PlayerTestUtils;
 var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 var MockRandom = TestUtilsLib.MockRandom;
 var GameLib = require('../game');
@@ -29,7 +29,7 @@ exports['Kick backwards - Lucky'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 20.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 20.0);
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...
@@ -68,7 +68,7 @@ exports['Kick backwards'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 20.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 20.0);
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...
@@ -106,7 +106,7 @@ exports['Kick sideways'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 250.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 250.0);
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...

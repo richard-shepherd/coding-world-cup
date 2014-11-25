@@ -1,8 +1,9 @@
 /**
- * TestUtils
- * ---------
- * Some utility functions and classes used by tests.
+ * PlayerTestUtils
+ * ---------------
+ * Some utility functions, used in tests, for setting up players.
  */
+
 var GameLib = require('../game/index');
 var Player = GameLib.Player;
 
@@ -22,6 +23,7 @@ function createPlayerAt(x, y, direction) {
     player.staticState.runningAbility = 100.0;
     return player;
 };
+
 
 
 // Exports...

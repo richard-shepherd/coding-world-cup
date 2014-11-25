@@ -8,7 +8,7 @@
  * the direction the player is facing.
  */
 var TestUtilsLib = require('../test_utils');
-var CreatePlayers = TestUtilsLib.CreatePlayers;
+var PlayerTestUtils = TestUtilsLib.PlayerTestUtils;
 var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 var GameLib = require('../game');
 var PlayerState_Action = GameLib.PlayerState_Action;
@@ -28,7 +28,7 @@ exports['Kick up facing up'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 0.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 0.0);
     game.giveBallToPlayer(player);
 
     // The player kicks the ball...
@@ -61,7 +61,7 @@ exports['Kick up facing up'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 18.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 18.0);
     game.giveBallToPlayer(player);
 
     // The player kicks the ball...
@@ -94,7 +94,7 @@ exports['Kick up facing up'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 90.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 90.0);
     game.giveBallToPlayer(player);
 
     // The player kicks the ball...
@@ -127,7 +127,7 @@ exports['Kick up facing up'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 270.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 270.0);
     game.giveBallToPlayer(player);
 
     // The player kicks the ball...

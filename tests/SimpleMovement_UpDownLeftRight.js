@@ -1,5 +1,5 @@
 var TestUtilsLib = require('../test_utils');
-var CreatePlayers = TestUtilsLib.CreatePlayers;
+var PlayerTestUtils = TestUtilsLib.PlayerTestUtils;
 var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 var GameLib = require('../game');
 var PlayerState_Action = GameLib.PlayerState_Action;
@@ -10,7 +10,7 @@ var PlayerState_Action = GameLib.PlayerState_Action;
  */
 exports['Simple movement right'] = function(test) {
     // We create a player at the centre of the pitch...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 90.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 90.0);
 
     // We set the player's intention to move to the right at full speed...
     player._setAction_MOVE({destination:{x:73.0, y:25.0}, speed:100.0});
@@ -49,7 +49,7 @@ exports['Simple movement right'] = function(test) {
  */
 exports['Simple movement up'] = function(test) {
     // We create a player at the centre of the pitch...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 0.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 0.0);
 
     // We set the player's intention to move upwards at full speed...
     player._setAction_MOVE({destination:{x:50.0, y:5.0}, speed:100.0});
@@ -73,7 +73,7 @@ exports['Simple movement up'] = function(test) {
  */
 exports['Simple movement down'] = function(test) {
     // We create a player at the centre of the pitch...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 180.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 180.0);
 
     // We set the player's intention to move downwards at full speed...
     player._setAction_MOVE({destination:{x:50.0, y:45.0}, speed:100.0});
@@ -97,7 +97,7 @@ exports['Simple movement down'] = function(test) {
  */
 exports['Simple movement left'] = function(test) {
     // We create a player at the centre of the pitch...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 270.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 270.0);
 
     // We set the player's intention to move left at full speed...
     player._setAction_MOVE({destination:{x:30.0, y:25.0}, speed:100.0});

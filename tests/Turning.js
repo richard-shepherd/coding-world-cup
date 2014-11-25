@@ -1,5 +1,5 @@
 var TestUtilsLib = require('../test_utils');
-var CreatePlayers = TestUtilsLib.CreatePlayers;
+var PlayerTestUtils = TestUtilsLib.PlayerTestUtils;
 var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 var GameLib = require('../game');
 var PlayerState_Action = GameLib.PlayerState_Action;
@@ -11,7 +11,7 @@ var PlayerState_Action = GameLib.PlayerState_Action;
  */
 exports['Short turn to the right'] = function(test) {
     // We create a player and set their initial direction...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 20.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 20.0);
 
     // We set the intention to turn...
     player._setAction_TURN({direction:55.0});
@@ -39,7 +39,7 @@ exports['Short turn to the right'] = function(test) {
  */
 exports['Short turn to the left'] = function(test) {
     // We create a player and set their initial direction...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 155.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 155.0);
 
     // We set the intention to turn...
     player._setAction_TURN({direction:120.0});
@@ -62,7 +62,7 @@ exports['Short turn to the left'] = function(test) {
  */
 exports['Long turn to the right'] = function(test) {
     // We create a player and set their initial direction...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 20.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 20.0);
 
     // We set the intention to turn...
     player._setAction_TURN({direction:165.0});
@@ -87,7 +87,7 @@ exports['Long turn to the right'] = function(test) {
  */
 exports['Long turn to the right past 360'] = function(test) {
     // We create a player and set their initial direction...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 280.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 280.0);
 
     // We set the intention to turn...
     player._setAction_TURN({direction:48.0});
@@ -112,7 +112,7 @@ exports['Long turn to the right past 360'] = function(test) {
  */
 exports['Long turn to the left'] = function(test) {
     // We create a player and set their initial direction...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 255.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 255.0);
 
     // We set the intention to turn...
     player._setAction_TURN({direction:80.0});
@@ -136,7 +136,7 @@ exports['Long turn to the left'] = function(test) {
  */
 exports['Short turn to the right past 360'] = function(test) {
     // We create a player and set their initial direction...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 350.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 350.0);
 
     // We set the intention to turn...
     player._setAction_TURN({direction:33.0});
@@ -158,7 +158,7 @@ exports['Short turn to the right past 360'] = function(test) {
  */
 exports['Short turn to the left past 0'] = function(test) {
     // We create a player and set their initial direction...
-    var player = CreatePlayers.createPlayerAt(50.0, 25.0, 5.0);
+    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 5.0);
 
     // We set the intention to turn...
     player._setAction_TURN({direction:354.0});

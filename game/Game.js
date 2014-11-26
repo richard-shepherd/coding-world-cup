@@ -24,6 +24,7 @@ var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
 var Utils = UtilsLib.Utils;
 var NanoTimer = require('nanotimer');
+var Random = UtilsLib.Random;
 
 
 /**
@@ -35,6 +36,9 @@ function Game(ai1, ai2, guiWebSocket) {
 
     // A timer for use with the game loop...
     this._timer = new NanoTimer();
+
+    // Used with decisions that have a random element...
+    this._random = new Random();
     
     // The game state...
     this.state = new GameState();
@@ -250,16 +254,28 @@ Game.prototype.calculate_takePossession = function() {
 
     // We look through the players to find whether they want to take
     // possession, and their probability of doing so...
-    var probabilities = [];
+    var players = [];
     this._players.forEach(function(player) {
+        // We get the probability of taking possession...
         var probability = player.getProbabilityOfTakingPossession(this);
-        if(probability !== 0.0) {
-            probabilities.push({
-                player:player,
-                probability:probability
-            });
+
+        // And see if they actually could get it...
+        var random = this._random.nextDouble();
+        if(random <= probability) {
+            players.push(player);
         }
     }, this);
+
+    // Are there any players who can take possession?
+    if(players.length === 0) {
+        return;
+    }
+
+    // We've now got a collection of players who could take possession
+    // of the ball, so we pick one who actually gets it...
+    var index = Math.floor(this._random.nextDouble() * players.length);
+    var player = players[index];
+    this.giveBallToPlayer(player);
 };
 
 /**

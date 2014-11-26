@@ -316,11 +316,18 @@ Player.prototype.getProbabilityOfTakingPossession = function(game) {
     // - How close he is to the ball.
     // - His ball-control ability.
     // - The speed the ball is travelling
-    var distanceFactor = (0.5 - distance) / 0.5;
-    var ballControlFactor = this.staticState.ballControlAbility / 100.0;
-    var speedFactor = (Ball.MAX_SPEED - ball.state.speed) / Ball.MAX_SPEED;
-    var probability = distanceFactor * ballControlFactor * speedFactor;
-    return probability;
+    //
+    // This is calculated as 1 - probability-of-failing
+    //
+    // probability-of-failing is higher when:
+    // - The distance is greater
+    // - The ball is moving faster
+    // - The player's ability is low
+    var distanceFactor = distance / 0.5;
+    var ballControlFactor = 1.0 - this.staticState.ballControlAbility / 100.0;
+    var speedFactor = ball.state.speed / Ball.MAX_SPEED;
+    var probabilityOfFailing = distanceFactor * ballControlFactor * speedFactor;
+    return 1.0 - probabilityOfFailing;
 };
 
 /**

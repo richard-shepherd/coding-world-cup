@@ -25,7 +25,7 @@ function MockRandom(values) {
  */
 MockRandom.prototype.nextDouble = function() {
     if(this._index >= this._values.length) {
-        throw new CWCError('Index out of bounds in MockRandom.nextDouble');
+        this._index = 0;
     }
     var value = this._values[this._index];
     this._index++;

@@ -1,0 +1,21 @@
+Tackling
+--------
+- Is tackling like taking possession?
+
+- ie, The player just moves towards the other
+  - The game then decides between competing players
+
+- You can't tackle if
+  - The other player is more than 5m away
+  - You already have the ball
+  - The other player does not have the ball
+  - You are goalkeeper
+    - Goalkeeper is in his circle
+  - The other player is in your own team
+
+
+
+
+
+
+

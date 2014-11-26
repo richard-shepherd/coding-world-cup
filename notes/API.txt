@@ -69,3 +69,8 @@ AI Response to PLAY request
 
 - "action":"TAKE_POSSESSION"
   - (no parameters)
+
+- "action":"TACKLE"
+  - "player":(player-number of the player to tackle)
+  - "strength":(value between 0.0-100.0)
+

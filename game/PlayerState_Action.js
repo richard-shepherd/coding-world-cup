@@ -33,6 +33,10 @@ function PlayerState_Action() {
     // For the KICK action...
     this.kickDestination = new Position(0.0, 0.0);
     this.kickSpeed = 0.0; // As a percentage of the ball's max speed.
+
+    // For the TACKLE action...
+    this.tacklePlayerNumber = -1;
+    this.tackleStrength = 0.0;
 }
 
 /**
@@ -45,7 +49,8 @@ PlayerState_Action.Action = {
     TURN: 'TURN',
     MOVE: 'MOVE',
     KICK: 'KICK',
-    TAKE_POSSESSION: "TAKE_POSSESSION"
+    TAKE_POSSESSION: "TAKE_POSSESSION",
+    TACKLE: 'TACKLE'
 };
 
 // Exports...

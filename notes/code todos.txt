@@ -26,3 +26,6 @@ TODO: Do not allow players within (10 metres?) of the goal
 TODO: Only allow the goalkeeper to hold the ball for 5 seconds
 
 TODO: When the goalkeeper has the ball, he cannot be tackled
+
+TODO: Check that players do not go into the goal circle, and that the goalkeeper doesn't go outside
+

@@ -20,6 +20,8 @@ var Utils = UtilsLib.Utils;
 var CWCError = UtilsLib.CWCError;
 var Random = UtilsLib.Random;
 var Ball = require('./Ball');
+var Team = require('./Team');
+
 
 /**
  * @constructor
@@ -294,6 +296,26 @@ Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhen
 };
 
 /**
+ * _processAction_TACKLE
+ * ---------------------
+ * The player just moves towards the player to tackle when processing this
+ * action. The decision about who gets the ball is taken by the Game.
+ */
+Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete) {
+    // Is the target player in the same team?
+    var playerNumber = this.staticState.playerNumber;
+    var otherPlayerNumber = this.actionState.tacklePlayerNumber;
+    if((playerNumber <= Team.NUMBER_OF_PLAYERS && otherPlayerNumber <= Team.NUMBER_OF_PLAYERS) ||
+        (playerNumber > Team.NUMBER_OF_PLAYERS && otherPlayerNumber > Team.NUMBER_OF_PLAYERS)) {
+        // The players are on the same team...
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
+
+
+};
+
+/**
  * getProbabilityOfTakingPossession
  * --------------------------------
  * Returns the probability of this player taking possession of the ball.
@@ -460,6 +482,24 @@ Player.prototype._setAction_KICK = function(action) {
  */
 Player.prototype._setAction_TAKE_POSSESSION = function(action) {
     this.actionState.action = PlayerState_Action.Action.TAKE_POSSESSION;
+};
+
+/**
+ * _setAction_TACKLE
+ * -----------------
+ * Sets the action to tackle another player.
+ */
+Player.prototype._setAction_TACKLE = function(action) {
+    // We expect the action to have "player" and "strength" fields...
+    if(!('player' in action)) {
+        throw new CWCError('Expected "player" field in TACKLE action');
+    }
+    if(!('strength' in action)) {
+        throw new CWCError('Expected "strength" field in TACKLE action');
+    }
+    this.actionState.action = PlayerState_Action.Action.TACKLE;
+    this.actionState.tacklePlayerNumber = action.player;
+    this.actionState.tackleStrength = action.strength;
 };
 
 

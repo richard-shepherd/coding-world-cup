@@ -32,6 +32,7 @@ function setPlayerPosition(player, x, y, direction) {
     player.staticState.passingAbility = 100.0;
     player.staticState.runningAbility = 100.0;
     player.staticState.ballControlAbility = 100.0;
+    player.staticState.tacklingAbility = 100.0;
 }
 
 // Exports...

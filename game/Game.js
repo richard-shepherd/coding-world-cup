@@ -338,6 +338,7 @@ Game.prototype.giveAllPlayersMaxAbilities = function() {
         player.staticState.runningAbility = 100.0;
         player.staticState.passingAbility = 100.0;
         player.staticState.ballControlAbility = 100.0;
+        player.staticState.tacklingAbility = 100.0;
         player.dynamicState.energy = 100.0;
     });
 };

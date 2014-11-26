@@ -34,6 +34,9 @@ function PlayerState_Static(playerNumber, playerType) {
     // How good the player is at controlling the ball. This is used
     // when taking possession of the ball...
     this.ballControlAbility = 0.0;
+
+    // How good the player is at tackling...
+    this.tacklingAbility = 0.0;
 }
 
 /**

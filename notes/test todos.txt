@@ -13,3 +13,8 @@ TODO: Test that errors in parsing responses get sent to the correct AI. If the o
 TODO: Test that when a player has the ball, the ball's position changes as the player moves
 
 TODO: Test that a player runs slower when he has the ball
+
+TODO: Test multiple players trying to take possession
+
+TODO: Test taking possession of a moving ball
+

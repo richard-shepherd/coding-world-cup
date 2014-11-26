@@ -30,6 +30,10 @@ function PlayerState_Static(playerNumber, playerType) {
 
     // How fast the player can run...
     this.runningAbility = 0.0;
+
+    // How good the player is at controlling the ball. This is used
+    // when taking possession of the ball...
+    this.ballControlAbility = 0.0;
 }
 
 /**

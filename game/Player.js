@@ -19,7 +19,7 @@ var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
 var CWCError = UtilsLib.CWCError;
 var Random = UtilsLib.Random;
-
+var Ball = require('./Ball');
 
 /**
  * @constructor
@@ -178,7 +178,11 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
     // We find the vector to the destination, and scale it by the
     // distance to move...
     var vectorToDestination = position.vectorTo(destination);
-    var scaleFactor = distanceToMove / distanceToDestination;
+    if(Utils.approxEqual(distanceToDestination, 0.0)) {
+        var scaleFactor = 0.0;
+    } else {
+        var scaleFactor = distanceToMove / distanceToDestination;
+    }
     var scaledVector = vectorToDestination.scale(scaleFactor);
 
     // We move the player...
@@ -251,6 +255,83 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
     // We're no longer managing the ball...
     dynamicState.hasBall = false;
     actionState.action = PlayerState_Action.Action.NONE;
+};
+
+/**
+ * _processAction_TAKE_POSSESSION
+ * ------------------------------
+ * The player can attempt to take possession of the ball if he is close
+ * enough to it.
+ *
+ * This action only *moves* the player towards the ball (at full speed).
+ *
+ * Taking possession itself is managed by the Game, as there may be multiple
+ * players trying to take possession at the same time.
+ */
+Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhenComplete) {
+    // We check if a player (including ourself) already has possession...
+    var ballState = game.ball.state;
+    if(ballState.controllingPlayerNumber !== -1) {
+        // The ball is already in a player's possession...
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
+
+    // We check if the player is close enough to the ball...
+    var distance = this.getDistanceToBall(game.ball);
+    if(distance > 5.0) {
+        // The player is too far from the ball to take possession,
+        // so we cancel the action...
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
+
+    // We are close enough and the ball is not owned, so we move towards
+    // the ball...
+    this.actionState.moveDestination.copyFrom(ballState.position);
+    this.actionState.moveSpeed = 100.0;
+    this._processAction_MOVE(game, false);
+};
+
+/**
+ * getProbabilityOfTakingPossession
+ * --------------------------------
+ * Returns the probability of this player taking possession of the ball.
+ */
+Player.prototype.getProbabilityOfTakingPossession = function(game) {
+    // Is this player trying to take possession?
+    if(this.actionState.action !== PlayerState_Action.Action.TAKE_POSSESSION) {
+        return 0.0;
+    }
+
+    // Is the player near enough?
+    var ball = game.ball;
+    var distance = this.getDistanceToBall(ball);
+    if(distance > 0.5) {
+        return;
+    }
+
+    // The player is close enough and wants to take possession. The probability
+    // depends on:
+    // - How close he is to the ball.
+    // - His ball-control ability.
+    // - The speed the ball is travelling
+    var distanceFactor = (0.5 - distance) / 0.5;
+    var ballControlFactor = this.staticState.ballControlAbility / 100.0;
+    var speedFactor = (Ball.MAX_SPEED - ball.state.speed) / Ball.MAX_SPEED;
+    var probability = distanceFactor * ballControlFactor * speedFactor;
+    return probability;
+};
+
+/**
+ * getDistanceToBall
+ * -----------------
+ */
+Player.prototype.getDistanceToBall = function(ball) {
+    var playerPosition = this.dynamicState.position;
+    var ballPosition = ball.state.position;
+    var distance = Utils.distanceBetween(playerPosition, ballPosition);
+    return distance;
 };
 
 /**
@@ -364,6 +445,16 @@ Player.prototype._setAction_KICK = function(action) {
     this.actionState.kickDestination.copyFrom(action.destination);
     this.actionState.kickSpeed = action.speed;
 };
+
+/**
+ * _setAction_TAKE_POSSESSION
+ * --------------------------
+ * Sets the action to take possession of the ball when it is nearby.
+ */
+Player.prototype._setAction_TAKE_POSSESSION = function(action) {
+    this.actionState.action = PlayerState_Action.Action.TAKE_POSSESSION;
+};
+
 
 // Exports...
 module.exports = Player;

@@ -160,7 +160,22 @@ function countIf(array, condition) {
     return array.reduce(function(count, item) {
         return condition(item) ? count+1 : count;
     }, 0);
-};
+}
+
+/**
+ * distanceBetween
+ * ---------------
+ * Returns the distance between two positions.
+ */
+function distanceBetween(p1, p2) {
+    var diffX = p1.x - p2.x;
+    var diffY = p1.y - p2.y;
+    var diffXSquared = diffX * diffX;
+    var diffYSquared = diffY * diffY;
+    var distanceSquared = diffXSquared + diffYSquared;
+    var distance = Math.sqrt(distanceSquared);
+    return distance;
+}
 
 
 // Exports...
@@ -174,3 +189,4 @@ exports.secondsSince = secondsSince;
 exports.callIfExists = callIfExists;
 exports.extend = extend;
 exports.countIf = countIf;
+exports.distanceBetween = distanceBetween;

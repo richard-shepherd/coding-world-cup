@@ -223,9 +223,43 @@ Game.prototype.calculate = function() {
         this._team1.processActions(this);
         this._team2.processActions(this);
 
+        // We see if any players can take possession of the ball...
+        this.calculate_takePossession();
+
         // We check for game events...
         this._checkGameEvents();
     }
+};
+
+/**
+ * calculate_takePossession
+ * ------------------------
+ * Checks if any of the players can take possession of the ball.
+ *
+ * If more than one wants to take possession, we have to decide
+ * between them.
+ */
+Game.prototype.calculate_takePossession = function() {
+    // Is the ball already controlled by a player?
+    var ballState = this.ball.state;
+    if(ballState.controllingPlayerNumber !== -1) {
+        // The ball is already controlled by a player, so no one else
+        // can take possession. (They should tackle instead.)
+        return;
+    }
+
+    // We look through the players to find whether they want to take
+    // possession, and their probability of doing so...
+    var probabilities = [];
+    this._players.forEach(function(player) {
+        var probability = player.getProbabilityOfTakingPossession(this);
+        if(probability !== 0.0) {
+            probabilities.push({
+                player:player,
+                probability:probability
+            });
+        }
+    }, this);
 };
 
 /**
@@ -287,6 +321,7 @@ Game.prototype.giveAllPlayersMaxAbilities = function() {
     this._players.forEach(function(player) {
         player.staticState.runningAbility = 100.0;
         player.staticState.passingAbility = 100.0;
+        player.staticState.ballControlAbility = 100.0;
         player.dynamicState.energy = 100.0;
     });
 };

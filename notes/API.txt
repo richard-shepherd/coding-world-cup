@@ -66,3 +66,6 @@ AI Response to PLAY request
 - "action":"KICK"
   - "destination":{"x":(value), "y":(value)}
   - "speed":(value) // Percentage of max ball speed
+
+- "action":"TAKE_POSSESSION"
+  - (no parameters)

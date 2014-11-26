@@ -333,6 +333,16 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
         return;
     }
 
+    // Is the other player close enough?
+    var position = this.dynamicState.position;
+    var otherPlayerPosition = otherPlayerDynamicState.position;
+    var distance = Utils.distanceBetween(position, otherPlayerPosition);
+    if(distance > 5.0) {
+        // The player is too far away to tackle...
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
+
 };
 
 /**

@@ -312,6 +312,14 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
         return;
     }
 
+    // Does the other player have the ball?
+    var otherPlayer = game.getPlayer(otherPlayerNumber);
+    var otherPlayerDynamicState = otherPlayer.dynamicState;
+    if(otherPlayerDynamicState.hasBall === false) {
+        // The other player does not have the ball...
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
 
 };
 

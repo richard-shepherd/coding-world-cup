@@ -321,6 +321,18 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
         return;
     }
 
+    // You cannot tackle the goalkeeper...
+    if(otherPlayer.isGoalkeeper()) {
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
+
+    // The goalkeeper cannot take another player...
+    if(this.isGoalkeeper()) {
+        this.actionState.action = PlayerState_Action.Action.NONE;
+        return;
+    }
+
 };
 
 /**

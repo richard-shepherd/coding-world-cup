@@ -62,5 +62,56 @@ exports['Player does not have ball'] = function(test) {
     test.done();
 };
 
+exports['Tackling the goalkeeper'] = function(test) {
+    // We create a game...
+    var game = new MockGame_CalculationInterval(0.1);
+    game._aiUpdateIntervalSeconds = 1.0;
 
+    // We get two players (one the goalkeeper) and give the goalkeeper the ball...
+    var player1 = game.getPlayer(Team.NUMBER_OF_PLAYERS + 2);
+    PlayerTestUtils.setPlayerPosition(player1, 40.0, 21.0, 88.0);
+    var goalkeeperNumber = Team.NUMBER_OF_PLAYERS;
+    var goalkeeper = game.getPlayer(goalkeeperNumber);
+    PlayerTestUtils.setPlayerPosition(goalkeeper, 38.0, 21.0, 47.0);
+    game.giveBallToPlayer(goalkeeper);
+
+    // We tell player1 to tackle the goalkeeper...
+    player1._setAction_TACKLE({player:goalkeeperNumber, strength:100});
+    game.calculate();
+
+    // We check the results...
+    var player1Position = player1.dynamicState.position;
+    test.equal(player1.actionState.action, PlayerState_Action.Action.NONE);
+    test.equal(player1Position.x, 40.0);
+    test.equal(player1Position.y, 21.0);
+
+    test.done();
+};
+
+exports['Goalkeeper tries to tackle'] = function(test) {
+    // We create a game...
+    var game = new MockGame_CalculationInterval(0.1);
+    game._aiUpdateIntervalSeconds = 1.0;
+
+    // We get two players (one the goalkeeper) and give the other player the ball...
+    var player1Number = Team.NUMBER_OF_PLAYERS + 2;
+    var player1 = game.getPlayer(player1Number);
+    PlayerTestUtils.setPlayerPosition(player1, 40.0, 21.0, 88.0);
+    var goalkeeperNumber = Team.NUMBER_OF_PLAYERS;
+    var goalkeeper = game.getPlayer(goalkeeperNumber);
+    PlayerTestUtils.setPlayerPosition(goalkeeper, 38.0, 21.0, 47.0);
+    game.giveBallToPlayer(player1);
+
+    // We tell the goalkeeper to tackle player1...
+    goalkeeper._setAction_TACKLE({player:player1Number, strength:100});
+    game.calculate();
+
+    // We check the results...
+    var goalkeeperPosition = goalkeeper.dynamicState.position;
+    test.equal(goalkeeper.actionState.action, PlayerState_Action.Action.NONE);
+    test.equal(goalkeeperPosition.x, 38.0);
+    test.equal(goalkeeperPosition.y, 21.0);
+
+    test.done();
+};
 

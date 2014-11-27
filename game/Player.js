@@ -146,7 +146,7 @@ Player.prototype._processAction_TURN = function(game, resetActionWhenComplete) {
 
     // If we are now facing in the desired direction, we stop turning...
     if(Utils.approxEqual(newDirection, desiredDirection) && resetActionWhenComplete === true) {
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
     }
 };
 
@@ -192,7 +192,7 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
 
     // If the player is now at the destination, we stop him moving...
     if(position.approxEqual(destination) && resetActionWhenComplete === true) {
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
     }
 };
 
@@ -206,7 +206,7 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
     var dynamicState = this.dynamicState;
     if(dynamicState.hasBall === false) {
         // The player does not have the ball, so can't kick it...
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
@@ -256,7 +256,7 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
 
     // We're no longer managing the ball...
     dynamicState.hasBall = false;
-    actionState.action = PlayerState_Action.Action.NONE;
+    this.clearAction();
 };
 
 /**
@@ -275,7 +275,7 @@ Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhen
     var ballState = game.ball.state;
     if(ballState.controllingPlayerNumber !== -1) {
         // The ball is already in a player's possession...
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
@@ -284,7 +284,7 @@ Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhen
     if(distance > 5.0) {
         // The player is too far from the ball to take possession,
         // so we cancel the action...
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
@@ -308,7 +308,7 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
     if((playerNumber <= Team.NUMBER_OF_PLAYERS && otherPlayerNumber <= Team.NUMBER_OF_PLAYERS) ||
         (playerNumber > Team.NUMBER_OF_PLAYERS && otherPlayerNumber > Team.NUMBER_OF_PLAYERS)) {
         // The players are on the same team...
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
@@ -317,19 +317,19 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
     var otherPlayerDynamicState = otherPlayer.dynamicState;
     if(otherPlayerDynamicState.hasBall === false) {
         // The other player does not have the ball...
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
     // You cannot tackle the goalkeeper...
     if(otherPlayer.isGoalkeeper()) {
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
     // The goalkeeper cannot tackle another player...
     if(this.isGoalkeeper()) {
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
@@ -339,7 +339,7 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
     var distance = Utils.distanceBetween(position, otherPlayerPosition);
     if(distance > 5.0) {
         // The player is too far away to tackle...
-        this.actionState.action = PlayerState_Action.Action.NONE;
+        this.clearAction();
         return;
     }
 
@@ -392,7 +392,7 @@ Player.prototype.getProbabilityOfTakingPossession = function(game) {
  * Returns the probability that this player gets the ball by tackling
  * the currently selected target player.
  */
-Player.prototype.getProbabilityOfSuccessfulTackle = function(game, playerWithBall) {
+Player.prototype.getProbabilityOfSuccessfulTackle = function(game, opponent) {
     // Is this player trying to tackle?
     var actionState = this.actionState;
     if(actionState.action !== PlayerState_Action.Action.TACKLE) {
@@ -401,14 +401,22 @@ Player.prototype.getProbabilityOfSuccessfulTackle = function(game, playerWithBal
 
     // Is the player near enough?
     var position = this.dynamicState.position;
-    var playerWithBallPosition = playerWithBall.dynamicState.position;
-    var distance = Utils.distanceBetween(position, playerWithBallPosition);
+    var opponentPosition = opponent.dynamicState.position;
+    var distance = Utils.distanceBetween(position, opponentPosition);
     if(distance > 0.5) {
         return 0.0;
     }
 
-    // TODO: Write this!
-    return 0.0;
+    // TODO: include the tackling strength, and fouling
+
+    // The player is near enough to tackle, so we calculate the probability
+    // that he gets the ball. This depends on the relative tackling ability
+    // of the two players...
+    var playerAbility = this.staticState.tacklingAbility;
+    var opponentAbility = opponent.staticState.tacklingAbility;
+    var totalAbility = playerAbility + opponentAbility;
+    var probability = playerAbility / totalAbility;
+    return probability;
 };
 
 /**
@@ -561,6 +569,14 @@ Player.prototype._setAction_TACKLE = function(action) {
     this.actionState.tackleStrength = action.strength;
 };
 
+/**
+ * clearAction
+ * -----------
+ * Sets the action to NONE.
+ */
+Player.prototype.clearAction = function() {
+    this.actionState.action = PlayerState_Action.Action.NONE;
+};
 
 // Exports...
 module.exports = Player;

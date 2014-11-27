@@ -6,6 +6,7 @@
 var TestUtilsLib = require('../test_utils');
 var PlayerTestUtils = TestUtilsLib.PlayerTestUtils;
 var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
+var MockRandom = TestUtilsLib.MockRandom;
 var GameLib = require('../game');
 var PlayerState_Action = GameLib.PlayerState_Action;
 var Team = GameLib.Team;
@@ -17,6 +18,9 @@ exports['Equal ability'] = function(test) {
     // We create a game...
     var game = new MockGame_CalculationInterval(0.1);
     game._aiUpdateIntervalSeconds = 1.0;
+
+    // We set the random number generator...
+    game._random = new MockRandom([0.4]);
 
     // We get two players...
     var player1 = game.getPlayer(1);

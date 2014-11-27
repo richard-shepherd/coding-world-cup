@@ -30,3 +30,6 @@ TODO: When the goalkeeper has the ball, he cannot be tackled
 TODO: Check that players do not go into the goal circle, and that the goalkeeper doesn't go outside
 
 TODO: Add fouling to tackling
+
+TODO: Is tackling broken? Should it be related to distance? If you fail to tackle, should there be a time limit before you can tackle again? Otherwise a tackling player will more-or-less always eventually get the ball.
+

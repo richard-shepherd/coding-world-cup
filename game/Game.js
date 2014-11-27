@@ -279,6 +279,7 @@ Game.prototype.calculate_takePossession = function() {
     var index = Math.floor(this._random.nextDouble() * players.length);
     var player = players[index];
     this.giveBallToPlayer(player);
+    player.clearAction();
 };
 
 /**
@@ -320,6 +321,7 @@ Game.prototype.calculate_tackle = function() {
     var index = Math.floor(this._random.nextDouble() * players.length);
     var player = players[index];
     this.giveBallToPlayer(player);
+    player.clearAction();
 };
 
 /**

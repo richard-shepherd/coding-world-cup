@@ -230,6 +230,9 @@ Game.prototype.calculate = function() {
         // We see if any players can take possession of the ball...
         this.calculate_takePossession();
 
+        // We see if any tackling is taking place...
+        this.calculate_tackle();
+
         // We check for game events...
         this._checkGameEvents();
     }
@@ -273,6 +276,47 @@ Game.prototype.calculate_takePossession = function() {
 
     // We've now got a collection of players who could take possession
     // of the ball, so we pick one who actually gets it...
+    var index = Math.floor(this._random.nextDouble() * players.length);
+    var player = players[index];
+    this.giveBallToPlayer(player);
+};
+
+/**
+ * calculate_tackle
+ * ----------------
+ * Checks if any player can tackle the player with the ball.
+ */
+Game.prototype.calculate_tackle = function() {
+    // Does any player have the ball?
+    var ballState = this.ball.state;
+    var playerWithBallNumber = ballState.controllingPlayerNumber;
+    if(playerWithBallNumber === -1) {
+        // No player has the ball...
+        return;
+    }
+    var playerWithBall = this.getPlayer(playerWithBallNumber);
+
+    // We look through the players to find whether they want to tackle,
+    // and their probability of successfully doing so...
+    var players = [];
+    this._players.forEach(function(player) {
+        // We get the probability of successfully tackling...
+        var probability = player.getProbabilityOfSuccessfulTackle(this, playerWithBall);
+
+        // And see if they actually could get it...
+        var random = this._random.nextDouble();
+        if(random <= probability) {
+            players.push(player);
+        }
+    }, this);
+
+    // Are there any players who can successfully tackle?
+    if(players.length === 0) {
+        return;
+    }
+
+    // We've now got a collection of players who could successfully tackle,
+    // so we pick one who actually gets it...
     var index = Math.floor(this._random.nextDouble() * players.length);
     var player = players[index];
     this.giveBallToPlayer(player);

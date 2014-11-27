@@ -327,7 +327,7 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
         return;
     }
 
-    // The goalkeeper cannot take another player...
+    // The goalkeeper cannot tackle another player...
     if(this.isGoalkeeper()) {
         this.actionState.action = PlayerState_Action.Action.NONE;
         return;
@@ -343,6 +343,10 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
         return;
     }
 
+    // We move towards the other player...
+    this.actionState.moveDestination.copyFrom(otherPlayerPosition);
+    this.actionState.moveSpeed = 100.0;
+    this._processAction_MOVE(game, false);
 };
 
 /**
@@ -360,7 +364,7 @@ Player.prototype.getProbabilityOfTakingPossession = function(game) {
     var ball = game.ball;
     var distance = this.getDistanceToBall(ball);
     if(distance > 0.5) {
-        return;
+        return 0.0;
     }
 
     // The player is close enough and wants to take possession. The probability
@@ -380,6 +384,31 @@ Player.prototype.getProbabilityOfTakingPossession = function(game) {
     var speedFactor = ball.state.speed / Ball.MAX_SPEED;
     var probabilityOfFailing = distanceFactor * ballControlFactor * speedFactor;
     return 1.0 - probabilityOfFailing;
+};
+
+/**
+ * getProbabilityOfSuccessfulTackle
+ * --------------------------------
+ * Returns the probability that this player gets the ball by tackling
+ * the currently selected target player.
+ */
+Player.prototype.getProbabilityOfSuccessfulTackle = function(game, playerWithBall) {
+    // Is this player trying to tackle?
+    var actionState = this.actionState;
+    if(actionState.action !== PlayerState_Action.Action.TACKLE) {
+        return 0.0;
+    }
+
+    // Is the player near enough?
+    var position = this.dynamicState.position;
+    var playerWithBallPosition = playerWithBall.dynamicState.position;
+    var distance = Utils.distanceBetween(position, playerWithBallPosition);
+    if(distance > 0.5) {
+        return 0.0;
+    }
+
+    // TODO: Write this!
+    return 0.0;
 };
 
 /**

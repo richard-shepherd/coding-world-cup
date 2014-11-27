@@ -13,6 +13,7 @@
  * make sure that no events are missed.
  */
 var Team = require('./Team');
+var TeamState = require('./TeamState');
 var Player = require('./Player');
 var PlayerState_Static = require('./PlayerState_Static');
 var Ball = require('./Ball');
@@ -64,7 +65,7 @@ function Game(ai1, ai2, guiWebSocket) {
 
     // The interval in seconds between updates / requests being
     // sent to the AIs...
-    this._aiUpdateIntervalSeconds = 0.0999999;
+    this._aiUpdateIntervalSeconds = 0.1;
 
     // The length of the game in seconds...
     this._gameLengthSeconds = 30.0 * 60.0;
@@ -215,10 +216,11 @@ Game.prototype.calculate = function() {
     // make it more likely for players to be able to tackle and take
     // possession of the ball...
     var calculationTime = 0.0;
-    while(calculationTime < this._aiUpdateIntervalSeconds) {
+    var calculationIntervalSeconds = this.getCalculationIntervalSeconds();
+    while(calculationTime < this._aiUpdateIntervalSeconds-0.000001) {
         // We update the game time and calculation time...
-        this.state.currentTimeSeconds += this._calculationIntervalSeconds;
-        calculationTime += this._calculationIntervalSeconds;
+        this.state.currentTimeSeconds += calculationIntervalSeconds;
+        calculationTime += calculationIntervalSeconds;
 
         // We move the ball...
         this.ball.updatePosition(this);
@@ -322,6 +324,41 @@ Game.prototype.calculate_tackle = function() {
     var player = players[index];
     this.giveBallToPlayer(player);
     player.clearAction();
+};
+
+/**
+ * checkForGoal
+ * ------------
+ * Called when the ball has bounced off one of the goal lines. We check if
+ * a goal has been scored.
+ *
+ * 'goalLine' is the x-value of the goal line that the ball bounced off.
+ */
+Game.prototype.checkForGoal = function(position1, position2, goalLine) {
+    // We find the crossing point (y-value) where the ball bounced...
+    var crossingPoint = Utils.crossingPoint(position1, position2, goalLine);
+    if(crossingPoint < Pitch.GOAL_Y1 || crossingPoint > Pitch.GOAL_Y2) {
+        // The crossing point was outside the goalposts...
+        return;
+    }
+
+    // A goal was scored. We need to work out which team scored it...
+    var team1State = this._team1.state;
+    var team2State = this._team2.state;
+    var team1Direction = team1State.direction;
+    if(goalLine === 0.0) {
+        if(team1Direction === TeamState.Direction.LEFT) {
+            team1State.score++;
+        } else {
+            team2State.score++;
+        }
+    } else if(goalLine === Pitch.WIDTH) {
+        if(team1Direction === TeamState.Direction.RIGHT) {
+            team1State.score++;
+        } else {
+            team2State.score++;
+        }
+    }
 };
 
 /**

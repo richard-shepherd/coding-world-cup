@@ -39,6 +39,15 @@ Team.prototype.addPlayer = function(player) {
 };
 
 /**
+ * setDirection
+ * ------------
+ * Sets the direction the team is playing.
+ */
+Team.prototype.setDirection = function(direction) {
+    this.state.direction = direction;
+};
+
+/**
  * processActions
  * --------------
  * Processes the actions (moving, kicking etc) for each player

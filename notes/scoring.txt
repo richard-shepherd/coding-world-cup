@@ -1,0 +1,13 @@
+Scoring
+-------
+- A team scores if the ball goes into the opponent's goal (!)
+
+- This means that the ball goes past the end-of-pitch line
+  - Which means that the ball bounces
+  - From x < 0 or x > WIDTH
+
+- If it has bounced, we need to find the intersection with the x=0 line
+  or x=WIDTH line
+  - We want the y-value at the intersection
+  - Then we see if this is between the goalposts
+

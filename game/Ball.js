@@ -5,6 +5,10 @@
  */
 var BallState = require('./BallState');
 var Pitch = require('./Pitch');
+var UtilsLib = require('../utils');
+var Position = UtilsLib.Position;
+var Utils = UtilsLib.Utils;
+
 
 /**
  * @constructor
@@ -52,19 +56,25 @@ Ball.prototype.updatePosition = function (game) {
     }
     var averageSpeed = (speedAtStart + speedAtEnd) / 2.0;
 
+    // We hold the initial position to help check whether a goal
+    // has been scored...
+    var position = this.state.position;
+    var initialPosition = new Position(position.x, position.y);
+
     // We find the distance travelled, and move the ball...
     var distance = averageSpeed * intervalSeconds;
     var vector = this.state.vector;
     var vectorMoved = this.state.vector.scale(distance);
-    var position = this.state.position;
     position.addVector(vectorMoved);
 
     // Did the ball bounce?
     if(position.x < 0.0) {
+        game.checkForGoal(initialPosition, position, 0.0);
         position.x *= -1.0;
         vector.x *= -1.0;
     }
     if(position.x > Pitch.WIDTH) {
+        game.checkForGoal(initialPosition, position, Pitch.WIDTH);
         position.x = Pitch.WIDTH - (position.x - Pitch.WIDTH);
         vector.x *= -1.0;
     }

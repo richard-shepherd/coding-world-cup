@@ -177,6 +177,28 @@ function distanceBetween(p1, p2) {
     return distance;
 }
 
+/**
+ * crossingPoint
+ * -------------
+ * Finds the line between p1 and p2 and returns its intersection with
+ * the line x=x.
+ */
+function crossingPoint(p1, p2, x) {
+    // We calculate the formula for the line, y=mx+c...
+    var diffY = p2.y - p1.y;
+    var diffX = p2.x - p1.x;
+    if(diffX === 0.0) {
+        var m = 0.0;
+    } else {
+        var m = diffY / diffX;
+    }
+    var c = p1.y - m*p1.x;
+
+    // And calculate the value for x...
+    var y = m*x + c;
+    return y;
+}
+
 
 // Exports...
 exports.setApproxTolerance = setApproxTolerance;
@@ -190,3 +212,4 @@ exports.callIfExists = callIfExists;
 exports.extend = extend;
 exports.countIf = countIf;
 exports.distanceBetween = distanceBetween;
+exports.crossingPoint = crossingPoint;

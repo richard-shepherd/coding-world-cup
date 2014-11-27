@@ -11,12 +11,12 @@ var TeamState = GameLib.TeamState;
 
 
 /**
- * Straight bounce
- * ---------------
+ * Straight bounce left
+ * --------------------
  * The ball is travelling straight (horizontally) and bounces
- * out of the goal during the calculation cycle.
+ * out of the left-hand goal during the calculation cycle.
  */
-exports['Straight bounce'] = function(test) {
+exports['Straight bounce left'] = function(test) {
     // We set up the game...
     var game = new MockGame_CalculationInterval(1.0);
     game._aiUpdateIntervalSeconds = 1.0;

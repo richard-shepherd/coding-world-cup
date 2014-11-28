@@ -14,6 +14,8 @@ function Pitch() {
     this.goalCentre = this.height / 2.0;
     this.goalY1 = this.goalCentre - 4.0;
     this.goalY2 = this.goalCentre + 4.0;
+    this.centreCircleRadius = 10.0;
+    this.goalAreaRadius = 15.0;
 }
 
 

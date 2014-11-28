@@ -48,12 +48,9 @@ Utils.extend(AIWrapper, AIWrapper_RandomMovement);  // Derived from AIWrapper.
  * This is called when the game sends data to the AI, so in this
  * dummy AI it is where we receive updates.
  */
-AIWrapper_RandomMovement.prototype.sendData = function(data) {
-    // Note re. JSON
-    // -------------
-    // Normally AIs would receive data as JSON strings. Here, though,
-    // we are intercepting the original data before it has been stringified
-    // into JSON, so we do not have to convert it back to an object.
+AIWrapper_RandomMovement.prototype.sendData = function(jsonData) {
+    // We get the object...
+    var data = JSON.parse(jsonData);
 
     // We process the data next time around the event loop as if
     // the AI was calling back asynchronously (and to make sure the

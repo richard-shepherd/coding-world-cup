@@ -1,19 +1,16 @@
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
-var GameLib = require('../game');
-var Game = GameLib.Game;
 var TestUtilsLib = require('../test_utils');
 var MockAIWrapper = TestUtilsLib.MockAIWrapper;
+var MockGame_CalculationInterval = TestUtilsLib.MockGame_CalculationInterval;
 
 
 /**
  * Tests that a newly created game has the expected number of _players.
  */
 exports['Expected number of players created'] = function(test) {
-    // We create a new game with mock AIs...
-    var ai1 = new MockAIWrapper();
-    var ai2 = new MockAIWrapper();
-    var game = new Game(ai1, ai2);
+    // We create a new game...
+    var game = new MockGame_CalculationInterval(1.0);
 
     // We check the number of _players...
     var numberOfPlayers = Utils.countIf(game._players, function(player) { return player.isPlayer(); });

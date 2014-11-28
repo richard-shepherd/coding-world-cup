@@ -27,6 +27,7 @@ var AIUtilsLib = require('../ai_utils');
 var AIResponse = AIUtilsLib.AIResponse;
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
+var MessageUtils = AIUtilsLib.MessageUtils;
 
 
 /**
@@ -62,8 +63,9 @@ GSM_Base.prototype.sendPlayRequestToBothAIs = function() {
     var request = {
         request:"PLAY"
     };
-    this._AI1.sendRequest(request);
-    this._AI2.sendRequest(request);
+    var jsonRequest = MessageUtils.getRequestJSON(request);
+    this._AI1.sendData(jsonRequest);
+    this._AI2.sendData(jsonRequest);
 };
 
 /**

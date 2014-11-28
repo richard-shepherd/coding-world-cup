@@ -26,6 +26,8 @@ var Logger = UtilsLib.Logger;
 var Utils = UtilsLib.Utils;
 var NanoTimer = require('nanotimer');
 var Random = UtilsLib.Random;
+var AIUtilsLib = require('../ai_utils');
+var MessageUtils = AIUtilsLib.MessageUtils;
 
 
 /**
@@ -145,9 +147,6 @@ Game.prototype.onTurn = function() {
     // Now that we've updated positions and events, we see if this
     // has changed the game state...
     this._gsmManager.checkState();
-
-    // We send an update the the GUI...
-    this._sendUpdateToGUI();
 
     // We send the start-of-turn event to the AIs. This includes
     // the game-state (player positions, ball position etc)...
@@ -431,6 +430,25 @@ Game.prototype.giveAllPlayersMaxAbilities = function() {
 };
 
 /**
+ * _sendEvent
+ * ----------
+ * Sends the event to both AIs and to the GUI.
+ */
+Game.prototype._sendEvent = function(event) {
+    // We get the JSON version of the event...
+    var jsonEvent = MessageUtils.getEventJSON(event);
+
+    // We send the event to both AIs...
+    this._team1.getAI().sendData(jsonEvent);
+    this._team2.getAI().sendData(jsonEvent);
+
+    // And to the GUI...
+    if(this._guiWebSocket !== null) {
+        this._guiWebSocket.broadcast(jsonEvent);
+    }
+};
+
+/**
  * _sendEvent_GameStart
  * --------------------
  * Sends the game-start event to both AIs.
@@ -440,8 +458,7 @@ Game.prototype._sendEvent_GameStart = function() {
         event:"GAME_START",
         pitch: this.pitch
     };
-    this._team1.getAI().sendEvent(info);
-    this._team2.getAI().sendEvent(info);
+    this._sendEvent(info);
 };
 
 /**
@@ -463,8 +480,7 @@ Game.prototype._sendEvent_StartOfTurn = function() {
     // We get the DTO and pass it to the AIs...
     var info = this.getDTO(true);
     info.event = "START_OF_TURN";
-    this._team1.getAI().sendEvent(info);
-    this._team2.getAI().sendEvent(info);
+    this._sendEvent(info);
 };
 
 /**

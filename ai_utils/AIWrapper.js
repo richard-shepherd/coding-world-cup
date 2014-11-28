@@ -31,28 +31,6 @@ AIWrapper.prototype.setGSMManager = function(gsmManager) {
 };
 
 /**
- * sendRequest
- * -----------
- * Sends a request message to the AI we're managing.
- */
-AIWrapper.prototype.sendRequest = function(request) {
-    // We add the REQUEST type to the message...
-    request.messageType = "REQUEST";
-    this.sendData(request);
-};
-
-/**
- * sendEvent
- * ---------
- * Sends an event message to the AI we're managing.
- */
-AIWrapper.prototype.sendEvent = function(event) {
-    // We add the EVENT type to the message...
-    event.messageType = "EVENT";
-    this.sendData(event);
-};
-
-/**
  * sendError
  * ---------
  * Sends an error message to the AI.
@@ -66,18 +44,18 @@ AIWrapper.prototype.sendError = function(message) {
         messageType: "ERROR",
         error: message
     };
-    var errorMessageJSON = JSON.stringify(errorMessage);
-    this.sendData(errorMessageJSON);
+
+    var jsonErrorMessage = JSON.stringify(errorMessage);
+    this.sendData(jsonErrorMessage);
 };
 
 /**
  * sendData
  * --------
  * Sends the data passed in to the AI.
- * The data should be a JSON string.
  */
-AIWrapper.prototype.sendData = function(data) {
-    // TODO: Write this! (Convert to JSON and send to AI.)
+AIWrapper.prototype.sendData = function(jsonData) {
+    // TODO: Write this! (Convert to JSON and send)
 };
 
 /**

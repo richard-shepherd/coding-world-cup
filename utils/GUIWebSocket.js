@@ -20,9 +20,9 @@ function GUIWebSocket(port) {
  * ---------
  * Sends the data to all clients attached to the WebSocket.
  */
-GUIWebSocket.prototype.broadcast = function(data) {
+GUIWebSocket.prototype.broadcast = function(jsonData) {
     for(var i in this.server.clients) {
-        this.server.clients[i].send(data);
+        this.server.clients[i].send(jsonData);
     }
 };
 

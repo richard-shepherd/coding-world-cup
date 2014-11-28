@@ -6,6 +6,8 @@
 var TeamState = require('./TeamState');
 var UtilsLib = require('../utils');
 var CWCError = UtilsLib.CWCError;
+var AIUtilsLib = require('../ai_utils');
+var MessageUtils = AIUtilsLib.MessageUtils;
 
 
 /**
@@ -157,7 +159,8 @@ Team.prototype.sendEvent_TeamInfo = function() {
     }, this);
 
     // And send it to the team's AI...
-    this._ai.sendEvent(info);
+    var jsonInfo = MessageUtils.getEventJSON(info);
+    this._ai.sendData(jsonInfo);
 };
 
 // Exports...

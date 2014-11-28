@@ -453,8 +453,8 @@ Player.prototype.getSpeed = function() {
  */
 Player.prototype.getDTO = function(publicOnly) {
     var state = {};
+    state.static = this.staticState;
     state.dynamic = this.dynamicState;
-    state.config = this.staticState;
     if(!publicOnly) {
         // We want to include the private jsonData as well...
         state.action = this.actionState;

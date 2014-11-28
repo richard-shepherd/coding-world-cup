@@ -9,10 +9,6 @@ var AIWrapper_RandomMovement = TestUtilsLib.AIWrapper_RandomMovement;
 var GUIWebSocket = UtilsLib.GUIWebSocket;
 
 
-var Pitch = GameLib.Pitch;
-var jsonPitch = JSON.stringify(new Pitch());
-console.log(jsonPitch);
-
 // We set up logging...
 Logger.addHandler(new LogHandler_Console(Logger.LogLevel.INFO));
 Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.INFO));

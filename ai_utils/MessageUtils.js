@@ -3,6 +3,8 @@
  * ------------
  * Some helper functions for creating messages to send to AIs and to the GUI.
  */
+var UtilsLib = require('../utils');
+var Utils = UtilsLib.Utils;
 
 
 /**
@@ -12,7 +14,7 @@
 function getEventJSON(event) {
     // We add the EVENT type to the message and convert to JSON...
     event.messageType = "EVENT";
-    var jsonEvent = JSON.stringify(event);
+    var jsonEvent = JSON.stringify(event, Utils.decimalPlaceReplacer(3));
     return jsonEvent;
 }
 
@@ -23,7 +25,7 @@ function getEventJSON(event) {
 function getRequestJSON(request) {
     // We add the REQUEST type to the message...
     request.messageType = "REQUEST";
-    var jsonRequest = JSON.stringify(request);
+    var jsonRequest = JSON.stringify(request, Utils.decimalPlaceReplacer(3));
     return jsonRequest;
 }
 

@@ -362,6 +362,9 @@ Game.prototype.checkForGoal = function(position1, position2, goalLine) {
             team2State.score++;
         }
     }
+
+    // We send an event...
+    this._sendEvent_Goal();
 };
 
 /**
@@ -454,11 +457,11 @@ Game.prototype._sendEvent = function(event) {
  * Sends the game-start event to both AIs.
  */
 Game.prototype._sendEvent_GameStart = function() {
-    var info = {
+    var event = {
         event:"GAME_START",
         pitch: this.pitch
     };
-    this._sendEvent(info);
+    this._sendEvent(event);
 };
 
 /**
@@ -478,9 +481,22 @@ Game.prototype._sendEvent_TeamInfo = function() {
  */
 Game.prototype._sendEvent_StartOfTurn = function() {
     // We get the DTO and pass it to the AIs...
-    var info = this.getDTO(true);
-    info.event = "START_OF_TURN";
-    this._sendEvent(info);
+    var event = this.getDTO(true);
+    event.event = "START_OF_TURN";
+    this._sendEvent(event);
+};
+
+/**
+ * _sendEvent_Goal
+ * ---------------
+ */
+Game.prototype._sendEvent_Goal = function() {
+    var event = {
+        event:"GOAL",
+        team1:this._team1.state,
+        team2:this._team2.state
+    };
+    this._sendEvent(event);
 };
 
 /**

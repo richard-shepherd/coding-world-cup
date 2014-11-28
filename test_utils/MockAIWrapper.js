@@ -25,7 +25,7 @@ Utils.extend(AIWrapper, MockAIWrapper); // Derives from AIWrapper.
  * --------
  * We override sendData(). No data is sent to an external AI.
  */
-MockAIWrapper.prototype.sendData = function(data) {
+MockAIWrapper.prototype.sendData = function(jsonData) {
 };
 
 

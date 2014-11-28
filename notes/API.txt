@@ -39,6 +39,10 @@ EVENT
     - Called at the start of each turn / time-slice
     - "game":{game-state}
 
+  - "event":"GOAL"
+    - "team1":(team-state, including score)
+    - "team2":(team-state, including score)
+
 
 REQUEST
 -------

@@ -73,9 +73,10 @@ exports['Diagonal right'] = function(test) {
     var ball = game.ball;
     var ballState = ball.state;
     var ballPosition = ballState.position;
+    var pitch = game.pitch;
     ball.friction = 0.0;
-    ballPosition.x = Pitch.WIDTH -  4.0;
-    ballPosition.y = Pitch.GOAL_Y2 + 3;
+    ballPosition.x = pitch.width -  4.0;
+    ballPosition.y = pitch.goalY2 + 3;
     ballState.vector = Utils.vectorFromDirection(45);
     ballState.speed = 10.0;
 

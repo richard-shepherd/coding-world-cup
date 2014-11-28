@@ -44,6 +44,9 @@ function Game(ai1, ai2, guiWebSocket) {
     // The game state...
     this.state = new GameState();
 
+    // Holds the dimensions of the pitch...
+    this.pitch = new Pitch();
+
     // The ball...
     this.ball = new Ball();
 
@@ -336,8 +339,9 @@ Game.prototype.calculate_tackle = function() {
  */
 Game.prototype.checkForGoal = function(position1, position2, goalLine) {
     // We find the crossing point (y-value) where the ball bounced...
+    var pitch = this.pitch;
     var crossingPoint = Utils.crossingPoint(position1, position2, goalLine);
-    if(crossingPoint < Pitch.GOAL_Y1 || crossingPoint > Pitch.GOAL_Y2) {
+    if(crossingPoint < pitch.goalY1 || crossingPoint > pitch.goalY2) {
         // The crossing point was outside the goalposts...
         return;
     }
@@ -352,7 +356,7 @@ Game.prototype.checkForGoal = function(position1, position2, goalLine) {
         } else {
             team2State.score++;
         }
-    } else if(goalLine === Pitch.WIDTH) {
+    } else if(goalLine === pitch.width) {
         if(team1Direction === TeamState.Direction.RIGHT) {
             team1State.score++;
         } else {
@@ -434,12 +438,7 @@ Game.prototype.giveAllPlayersMaxAbilities = function() {
 Game.prototype._sendEvent_GameStart = function() {
     var info = {
         event:"GAME_START",
-        pitch: {
-            width:Pitch.WIDTH,
-            height:Pitch.HEIGHT,
-            goalY1:Pitch.GOAL_Y1,
-            goalY2:Pitch.GOAL_Y2
-        }
+        pitch: this.pitch
     };
     this._team1.getAI().sendEvent(info);
     this._team2.getAI().sendEvent(info);

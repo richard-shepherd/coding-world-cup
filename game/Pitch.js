@@ -8,27 +8,13 @@
  * @constructor
  */
 function Pitch() {
+    // All measurements in metres...
+    this.width = 100.0;
+    this.height = 50.0;
+    this.goalCentre = this.height / 2.0;
+    this.goalY1 = this.goalCentre - 4.0;
+    this.goalY2 = this.goalCentre + 4.0;
 }
-
-/**
- * The width of the pitch in metres.
- */
-Pitch.WIDTH = 100.0;
-
-/**
- * The height of the pitch in metres.
- */
-Pitch.HEIGHT = 50.0;
-
-/**
- * The position of the 'top' goalpost.
- */
-Pitch.GOAL_Y1 = Pitch.HEIGHT/2.0 - 4.0;
-
-/**
- * The position of the 'bottom' goalpost.
- */
-Pitch.GOAL_Y2 = Pitch.HEIGHT/2.0 + 4.0;
 
 
 // Exports...

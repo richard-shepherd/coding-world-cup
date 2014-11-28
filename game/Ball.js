@@ -68,14 +68,15 @@ Ball.prototype.updatePosition = function (game) {
     position.addVector(vectorMoved);
 
     // Did the ball bounce?
+    var pitch = game.pitch;
     if(position.x < 0.0) {
         game.checkForGoal(initialPosition, position, 0.0);
         position.x *= -1.0;
         vector.x *= -1.0;
     }
-    if(position.x > Pitch.WIDTH) {
-        game.checkForGoal(initialPosition, position, Pitch.WIDTH);
-        position.x = Pitch.WIDTH - (position.x - Pitch.WIDTH);
+    if(position.x > pitch.width) {
+        game.checkForGoal(initialPosition, position, pitch.width);
+        position.x = pitch.width - (position.x - pitch.width);
         vector.x *= -1.0;
     }
 
@@ -84,8 +85,8 @@ Ball.prototype.updatePosition = function (game) {
         vector.y *= -1.0;
     }
 
-    if(position.y > Pitch.HEIGHT) {
-        position.y = Pitch.HEIGHT - (position.y - Pitch.HEIGHT);
+    if(position.y > pitch.height) {
+        position.y = pitch.height - (position.y - pitch.height);
         vector.y *= -1.0;
     }
 

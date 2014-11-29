@@ -27,8 +27,9 @@ var AIUtilsLib = require('../ai_utils');
 var AIResponse = AIUtilsLib.AIResponse;
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
+var Logger = UtilsLib.Logger;
 var MessageUtils = AIUtilsLib.MessageUtils;
-
+var util = require('util');
 
 /**
  * @constructor
@@ -50,22 +51,41 @@ function GSM_Base(game) {
 }
 
 /**
- * sendPlayRequestToBothAIs
- * ------------------------
- * Sends a PLAY request to the AIs.
+ * onTurn
+ * ------
+ * Virtual function, usually handled by a derived class.
  */
-GSM_Base.prototype.sendPlayRequestToBothAIs = function() {
+GSM_Base.prototype.onTurn = function() {
+};
+
+/**
+ * checkState
+ * ----------
+ * Virtual function, usually handled by a erived class.
+ */
+GSM_Base.prototype.checkState = function() {
+    return this;
+};
+
+/**
+ * sendRequestToBothAIs
+ * --------------------
+ * Sends the request to both AIs and waits for a response.
+ */
+GSM_Base.prototype.sendRequestToBothAIs = function(request) {
+    // We clear any previous responses...
+    this._aiResponses = {};
+
     // We note the time before sending the update, so that we
     // an time how long the AIs take to process it...
     this._updateSentTime = process.hrtime();
 
-    // We create the request, and send it to the AIs...
-    var request = {
-        request:"PLAY"
-    };
+    // We send the request...
     var jsonRequest = MessageUtils.getRequestJSON(request);
     this._AI1.sendData(jsonRequest);
     this._AI2.sendData(jsonRequest);
+
+    Logger.log('SENT REQUEST: ' + jsonRequest, Logger.LogLevel.DEBUG);
 };
 
 /**
@@ -74,6 +94,9 @@ GSM_Base.prototype.sendPlayRequestToBothAIs = function() {
  * Called when we get a response from AI1.
  */
 GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
+    var message = util.format('GOT RESPONSE (%s): %s', this._team1.getName(), jsonData);
+    Logger.log(message, Logger.LogLevel.DEBUG);
+
     // We store the jsonData and check whether we have received both updates...
     this._aiResponses.AI1 = this._getAIResponse(jsonData);
     this._checkResponses();
@@ -85,6 +108,9 @@ GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
  * Called when we get a response from AI2.
  */
 GSM_Base.prototype.onResponse_AI2 = function(jsonData) {
+    var message = util.format('GOT RESPONSE (%s): %s', this._team2.getName(), jsonData);
+    Logger.log(message, Logger.LogLevel.DEBUG);
+
     // We store the jsonData and check whether we have received both updates...
     this._aiResponses.AI2 = this._getAIResponse(jsonData);
     this._checkResponses();
@@ -111,9 +137,6 @@ GSM_Base.prototype._checkResponses = function() {
 
     // We call into the derived class to handle the responses...
     this.onAIResponsesReceived();
-
-    // We clear the responses...
-    this._aiResponses = {};
 };
 
 /**

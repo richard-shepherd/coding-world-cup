@@ -10,22 +10,13 @@ TODO: Have a parameter for rate of energy decrease. So simple tests will set thi
 
 TODO: With energy decrease, distance is just the average using speed@start and speed@end.
 
-TODO: Make sure you can't score a goal by hitting it diagonally by the side of the goal, but so that it ends up behind the goal. In this case, it should have bounced off the side earlier.
-TODO: So we should make an "accurate" bounce, where we find the intersection of the ball's path with the border of the pitch, and "reflect" from there.
-
 TODO: Think about timeouts for AI responses
 
 TODO: Add processing time allowances to the Teams. Process in GSM_Base??
 
-TODO: Rename Intentions to Actions?
-
-TODO: Some intentions reset to None once complete. KICK, maybe also TURN. Maybe all do?
-
 TODO: Do not allow players within (10 metres?) of the goal
 
 TODO: Only allow the goalkeeper to hold the ball for 5 seconds
-
-TODO: When the goalkeeper has the ball, he cannot be tackled
 
 TODO: Check that players do not go into the goal circle, and that the goalkeeper doesn't go outside
 
@@ -34,3 +25,4 @@ TODO: Add fouling to tackling
 TODO: Is tackling broken? Should it be related to distance? If you fail to tackle, should there be a time limit before you can tackle again? Otherwise a tackling player will more-or-less always eventually get the ball.
 
 TODO: Try to avoid timewasting. Can't pass back and forth with the goalkeeper
+

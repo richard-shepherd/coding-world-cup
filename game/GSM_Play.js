@@ -20,20 +20,6 @@ Utils.extend(GSM_Base, GSM_Play); // Derived from GSM_Base.
 module.exports = GSM_Play;
 
 /**
- * onAIResponsesReceived
- * ---------------------
- * Called when we have received responses from both AIs.
- */
-GSM_Play.prototype.onAIResponsesReceived = function() {
-    // We process the two responses...
-    this._processResponse(this._aiResponses.AI1.data, this._team1);
-    this._processResponse(this._aiResponses.AI2.data, this._team2);
-
-    // We play the next turn...
-    this._game.playNextTurn();
-};
-
-/**
  * checkState
  * ----------
  * Called by the game loop after updates have been made, to check
@@ -50,8 +36,12 @@ GSM_Play.prototype.checkState = function() {
  * the AIs. We request PLAY updates from the AIs.
  */
 GSM_Play.prototype.onTurn = function() {
+    // We send the start-of-turn event to the AIs. This includes
+    // the game-state (player positions, ball position etc)...
+    this._game.sendEvent_StartOfTurn();
+
     // We request PLAY responses from the AIs...
-    this.sendPlayRequestToBothAIs();
+    this.sendRequestToBothAIs({request:"PLAY"});
 };
 
 
@@ -74,6 +64,20 @@ GSM_Play.prototype._processResponse = function (data, team) {
     //    // We log the error and report it back to the AI...
     //    team.getAI().sendError(ex.message);
     //}
+};
+
+/**
+ * onAIResponsesReceived
+ * ---------------------
+ * Called when we have received responses from both AIs.
+ */
+GSM_Play.prototype.onAIResponsesReceived = function() {
+    // We process the two responses...
+    this._processResponse(this._aiResponses.AI1.data, this._team1);
+    this._processResponse(this._aiResponses.AI2.data, this._team2);
+
+    // We play the next turn...
+    this._game.playNextTurn();
 };
 
 

@@ -21,6 +21,7 @@ var GameState = require('./GameState');
 var Pitch = require('./Pitch');
 var GSM_Manager = require('./GSM_Manager');
 var GSM_Play = require('./GSM_Play');
+var GSM_Kickoff = require('./GSM_Kickoff');
 var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
 var Utils = UtilsLib.Utils;
@@ -58,7 +59,8 @@ function Game(ai1, ai2, guiWebSocket) {
     // The game-state-machine (GSM) that manages game events and transitions.
     // Note: This has to be done after creating the teams.
     this._gsmManager = new GSM_Manager();
-    this._gsmManager.setState(new GSM_Play(this));
+    this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
+    //this._gsmManager.setState(new GSM_Play(this));
     ai1.setGSMManager(this._gsmManager);
     ai2.setGSMManager(this._gsmManager);
 
@@ -81,7 +83,7 @@ function Game(ai1, ai2, guiWebSocket) {
     this.simulationMode = false;
 
     // We send some events to the AIs at the start of the game...
-    this._sendEvent_GameStart();
+    this.sendEvent_GameStart();
     this._sendEvent_TeamInfo();
 }
 
@@ -137,6 +139,7 @@ Game.prototype.getPlayer = function(playerNumber) {
 Game.prototype.onTurn = function() {
     // We log the game time...
     Logger.log("Time (seconds): " + this.state.currentTimeSeconds.toFixed(4), Logger.LogLevel.INFO_PLUS);
+    Logger.indent();
 
     // We update the game state - kicking, moving the ball and players etc...
     this.calculate();
@@ -147,10 +150,6 @@ Game.prototype.onTurn = function() {
     // Now that we've updated positions and events, we see if this
     // has changed the game state...
     this._gsmManager.checkState();
-
-    // We send the start-of-turn event to the AIs. This includes
-    // the game-state (player positions, ball position etc)...
-    this._sendEvent_StartOfTurn();
 
     // We perform actions specific to the current state.
     // This includes sending requests to the AIs...
@@ -163,6 +162,8 @@ Game.prototype.onTurn = function() {
  * Called (usually by one of the GSM states) when we can play the next turn.
  */
 Game.prototype.playNextTurn = function () {
+    Logger.dedent();
+
     // Has the game ended?
     if(this.state.currentTimeSeconds >= this._gameLengthSeconds) {
         Logger.log("Game over!", Logger.LogLevel.INFO);
@@ -346,25 +347,27 @@ Game.prototype.checkForGoal = function(position1, position2, goalLine) {
     }
 
     // A goal was scored. We need to work out which team scored it...
-    var team1State = this._team1.state;
-    var team2State = this._team2.state;
-    var team1Direction = team1State.direction;
-    if(goalLine === 0.0) {
-        if(team1Direction === TeamState.Direction.LEFT) {
-            team1State.score++;
-        } else {
-            team2State.score++;
-        }
-    } else if(goalLine === pitch.width) {
-        if(team1Direction === TeamState.Direction.RIGHT) {
-            team1State.score++;
-        } else {
-            team2State.score++;
-        }
+    var team1Direction = this._team1.state.direction;
+    var team2Direction = this._team2.state.direction;
+    var scoringTeam = null;
+    if(goalLine === 0.0 && team1Direction === TeamState.Direction.LEFT) {
+        scoringTeam = this._team1;
+    } else
+    if(goalLine === 0.0 && team2Direction === TeamState.Direction.LEFT) {
+        scoringTeam = this._team2;
+    } else
+    if(goalLine === pitch.width && team1Direction === TeamState.Direction.RIGHT) {
+        scoringTeam = this._team1;
+    } else
+    if(goalLine === pitch.width && team2Direction === TeamState.Direction.RIGHT) {
+        scoringTeam = this._team2;
     }
 
-    // We send an event...
-    this._sendEvent_Goal();
+    // We update the score, send an event, and start the kickoff...
+    scoringTeam.state.score++;
+    var teamToKickOff = (scoringTeam === this._team1) ? this._team2 : this._team1;
+    this.sendEvent_Goal();
+    this._gsmManager.setState(new GSM_Kickoff(this, teamToKickOff))
 };
 
 /**
@@ -449,14 +452,16 @@ Game.prototype._sendEvent = function(event) {
     if(this._guiWebSocket !== null) {
         this._guiWebSocket.broadcast(jsonEvent);
     }
+
+    Logger.log('SENT EVENT: ' + jsonEvent, Logger.LogLevel.DEBUG);
 };
 
 /**
- * _sendEvent_GameStart
- * --------------------
+ * sendEvent_GameStart
+ * -------------------
  * Sends the game-start event to both AIs.
  */
-Game.prototype._sendEvent_GameStart = function() {
+Game.prototype.sendEvent_GameStart = function() {
     var event = {
         event:"GAME_START",
         pitch: this.pitch
@@ -475,11 +480,11 @@ Game.prototype._sendEvent_TeamInfo = function() {
 };
 
 /**
- * _sendEvent_StartOfTurn
- * ----------------------
+ * sendEvent_StartOfTurn
+ * ---------------------
  * Sends the game-state to the AIs.
  */
-Game.prototype._sendEvent_StartOfTurn = function() {
+Game.prototype.sendEvent_StartOfTurn = function() {
     // We get the DTO and pass it to the AIs...
     var event = this.getDTO(true);
     event.event = "START_OF_TURN";
@@ -487,10 +492,10 @@ Game.prototype._sendEvent_StartOfTurn = function() {
 };
 
 /**
- * _sendEvent_Goal
- * ---------------
+ * sendEvent_Goal
+ * --------------
  */
-Game.prototype._sendEvent_Goal = function() {
+Game.prototype.sendEvent_Goal = function() {
     var event = {
         event:"GOAL",
         team1:this._team1.state,

@@ -11,7 +11,7 @@ var GUIWebSocket = UtilsLib.GUIWebSocket;
 
 // We set up logging...
 Logger.addHandler(new LogHandler_Console(Logger.LogLevel.INFO));
-Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.INFO));
+Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.DEBUG));
 
 // We create two RandomMovement AIs for the teams...
 var ai1 = new AIWrapper_RandomMovement();

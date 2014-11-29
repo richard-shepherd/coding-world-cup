@@ -1,0 +1,31 @@
+Kickoff
+-------
+
+- All actions set to NONE
+
+- We send a kickoff request to each team
+
+- "request":"KICKOFF"
+- "team1":(state, including direction)
+- "team2":(state, including direction)
+- "team":"team1" or "team2"
+
+- Response
+- "request":"KICKOFF"
+- "positions":[{"playerNumber":(value), position:{"x":(value), "y":(value), "direction":(value)}, ...]
+
+- We then *validate* the positions
+  - Players must be in their own half
+  - Non-kicking team must be outside the centre circle
+  - If they are not valid, we use default positions
+
+- We then go to the PLAY state.
+
+
+
+
+AIs get:
+- PLAY request
+- GOAL event
+- KICKOFF request
+- START_OF_TURN event, with default positions

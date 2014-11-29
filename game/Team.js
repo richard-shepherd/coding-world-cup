@@ -5,6 +5,7 @@
  */
 var TeamState = require('./TeamState');
 var UtilsLib = require('../utils');
+var Logger = UtilsLib.Logger;
 var CWCError = UtilsLib.CWCError;
 var AIUtilsLib = require('../ai_utils');
 var MessageUtils = AIUtilsLib.MessageUtils;
@@ -38,6 +39,15 @@ Team.NUMBER_OF_PLAYERS = 5;
  */
 Team.prototype.addPlayer = function(player) {
     this._players.push(player);
+};
+
+/**
+ * getTeamID
+ * ---------
+ * Returns the team ID, ie "team1" or "team2".
+ */
+Team.prototype.getTeamID = function() {
+    return 'team' + this._teamNumber;
 };
 
 /**
@@ -143,7 +153,7 @@ Team.prototype._getPlayer = function(playerNumber) {
  */
 Team.prototype.sendEvent_TeamInfo = function() {
     // We create the info for the event...
-    var info = {
+    var event = {
         event:"TEAM_INFO",
         teamNumber:this._teamNumber,
         players:[]
@@ -155,12 +165,15 @@ Team.prototype.sendEvent_TeamInfo = function() {
             playerNumber:player.staticState.playerNumber,
             playerType:player.staticState.playerType
         };
-        info.players.push(player);
+        event.players.push(player);
     }, this);
 
     // And send it to the team's AI...
-    var jsonInfo = MessageUtils.getEventJSON(info);
-    this._ai.sendData(jsonInfo);
+    var jsonEvent = MessageUtils.getEventJSON(event);
+    this._ai.sendData(jsonEvent);
+
+    Logger.log('SENT EVENT: ' + jsonEvent, Logger.LogLevel.DEBUG);
+
 };
 
 // Exports...

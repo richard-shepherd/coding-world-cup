@@ -37,7 +37,7 @@ function AIWrapper_RandomMovement() {
 
     // The last time (in game-time) that we changed the movement of
     // players. We only update every few seconds...
-    this._lastTimeWeChangedMovements = 0.0;
+    this._lastTimeWeChangedMovements = -1.0;
     this._changeInterval = 10.0;
 }
 Utils.extend(AIWrapper, AIWrapper_RandomMovement);  // Derived from AIWrapper.
@@ -92,7 +92,7 @@ AIWrapper_RandomMovement.prototype._onREQUEST = function(data) {
  */
 AIWrapper_RandomMovement.prototype._onEVENT_GAME_START = function(data) {
     // We reset the last update time...
-    this._lastTimeWeChangedMovements = 0.0;
+    this._lastTimeWeChangedMovements = -1.0;
 
     // We get data about the pitch...
     this._pitch = data.pitch;
@@ -134,7 +134,8 @@ AIWrapper_RandomMovement.prototype._onREQUEST_PLAY = function(data) {
 
     // We only update player movements if some time has elapsed...
     var nextChange = this._lastTimeWeChangedMovements + this._changeInterval;
-    if(this._gameState.currentTimeSeconds >= nextChange) {
+    if(this._gameState.currentTimeSeconds >= nextChange ||
+       this._lastTimeWeChangedMovements === -1.0) {
         // We change the movements of our players.
         // For each player, we choose a random place on the pitch
         // for them to move towards...
@@ -154,6 +155,14 @@ AIWrapper_RandomMovement.prototype._onREQUEST_PLAY = function(data) {
     // We send the data back to the game...
     var jsonReply = JSON.stringify(reply);
     this.onResponseReceived(jsonReply);
+};
+
+/**
+ * _onREQUEST_KICKOFF
+ * ------------------
+ * Called when we get the request to place players for the kickoff.
+ */
+AIWrapper_RandomMovement.prototype._onREQUEST_KICKOFF = function(data) {
 };
 
 // Exports...

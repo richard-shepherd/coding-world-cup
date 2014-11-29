@@ -19,8 +19,10 @@ var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
 var CWCError = UtilsLib.CWCError;
 var Random = UtilsLib.Random;
+var Position = UtilsLib.Position;
 var Ball = require('./Ball');
 var Team = require('./Team');
+var TeamState = require('./TeamState');
 
 
 /**
@@ -180,10 +182,9 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
     // We find the vector to the destination, and scale it by the
     // distance to move...
     var vectorToDestination = position.vectorTo(destination);
-    if(Utils.approxEqual(distanceToDestination, 0.0)) {
-        var scaleFactor = 0.0;
-    } else {
-        var scaleFactor = distanceToMove / distanceToDestination;
+    var scaleFactor = 0.0;
+    if(!Utils.approxEqual(distanceToDestination, 0.0)) {
+        scaleFactor = distanceToMove / distanceToDestination;
     }
     var scaledVector = vectorToDestination.scale(scaleFactor);
 
@@ -593,6 +594,123 @@ Player.prototype.setPosition = function(x, y) {
  */
 Player.prototype.setDirection = function(direction) {
     this.dynamicState.direction = direction;
+};
+
+/**
+ * validatePosition
+ * ----------------
+ * Returns true if 'position' is a valid one for the player, false if not.
+ * The position may be valid under some circumstance, but not others (such as kickoff).
+ */
+Player.prototype.validatePosition = function(position, pitch, playDirection, isKickoff, isMemberOfKickoffTeam) {
+    // Is the player on the pitch?
+    if(position.x < 0.0 || position.x > pitch.width || position.y < 0.0 || position.y > pitch.height) {
+        return false;
+    }
+
+    // We validate a goalkeeper's position differently from a player's...
+    switch(this.staticState.playerType) {
+        case PlayerState_Static.PlayerType.PLAYER:
+            return this._validatePosition_Player(position, pitch, playDirection, isKickoff, isMemberOfKickoffTeam);
+            break;
+
+        case PlayerState_Static.PlayerType.GOALKEEPER:
+            return this._validatePosition_Goalkeeper(position, pitch, playDirection);
+            break;
+
+        default:
+            throw new CWCError('Unexpected playerType');
+    }
+};
+
+/**
+ * _validatePosition_Player
+ * ------------------------
+ * Validates that 'position is a valid position for a (non-goalkeeper) player.
+ */
+Player.prototype._validatePosition_Player = function(position, pitch, playDirection, isKickoff, isMemberOfKickoffTeam) {
+    // The player is not allowed in either of the goal-areas...
+    var leftGoalCentre = new Position(0.0, pitch.goalCentre);
+    var leftGoalDistance = Utils.distanceBetween(position, leftGoalCentre);
+    if(leftGoalDistance < pitch.goalAreaRadius) {
+        return false;
+    }
+    var rightGoalCentre = new Position(pitch.width, pitch.goalCentre);
+    var rightGoalDistance = Utils.distanceBetween(position, rightGoalCentre);
+    if(rightGoalDistance < pitch.goalAreaRadius) {
+        return false;
+    }
+
+    // If we're not at kickoff, then the position is looking good...
+    if(isKickoff === false) {
+        return true;
+    }
+
+    // We are at kickoff, so we need to do some extra checks.
+
+    // Is the player in the right half?
+    switch(playDirection) {
+        case TeamState.Direction.RIGHT:
+            // The player should be in the left side of the pitch...
+            if(position.x > pitch.centreSpot.x) {
+                return false;
+            }
+            break;
+
+        case TeamState.Direction.LEFT:
+            // The player should be in the right side of the pitch...
+            if(position.x < pitch.centreSpot.x) {
+                return false;
+            }
+            break;
+
+        default:
+            throw new CWCError('Unexpected playDirection');
+    }
+
+    // If the player is not in the kicking-off team, he is not allowed
+    // in the centre circle...
+    if(isMemberOfKickoffTeam) {
+        return true;
+    }
+    var distanceFromCentreSpot = Utils.distanceBetween(position, pitch.centreSpot);
+    if(distanceFromCentreSpot < pitch.centreCircleRadius) {
+        return false;
+    }
+
+    // Everything looks OK...
+    return true;
+};
+
+/**
+ * _validatePosition_Goalkeeper
+ * ----------------------------
+ * Returns true if 'position' is a valid position for the goalkeeper,
+ * ie, in his goal-area.
+ */
+Player.prototype._validatePosition_Goalkeeper = function(position, pitch, playDirection) {
+    // We find the centre of the goal...
+    var y = pitch.goalCentre;
+    var x = 0.0;
+    switch(playDirection) {
+        case TeamState.Direction.RIGHT:
+            x = 0.0;
+            break;
+        case TeamState.Direction.LEFT:
+            x = pitch.width;
+            break;
+        default:
+            throw new CWCError('Unexpected playDirection');
+    }
+    var goalCentre = new Position(x, y);
+
+    // The goalkeeper should be within the goal semi-circle area...
+    var distance = Utils.distanceBetween(position, goalCentre);
+    if(distance <= pitch.goalAreaRadius) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 // Exports...

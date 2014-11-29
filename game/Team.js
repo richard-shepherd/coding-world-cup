@@ -228,6 +228,55 @@ Team.prototype.setDefaultKickoffPositions = function(pitch) {
     });
 };
 
+/**
+ * processKickoffResponse
+ * ----------------------
+ * Updates player positions in preparation for kickoff.
+ *
+ * 'teamKickingOff' is true if this team is the one kicking off,
+ * false if not.
+ */
+Team.prototype.processKickoffResponse = function(data, pitch, teamKickingOff) {
+    // We're expecting a 'players' field...
+    if(!('players' in data)) {
+        throw new CWCError('Expected a "players" field in KICKOFF response');
+    }
+
+    // We update the position for each player...
+    data.players.forEach(function(playerInfo) {
+        // There should be a position and direction for each player...
+        if(!('position' in playerInfo)) {
+            throw new CWCError('Expected a "position" field in KICKOFF response');
+        }
+        if(!('direction' in playerInfo)) {
+            throw new CWCError('Expected a "direction" field in KICKOFF response');
+        }
+
+        // We set the player's position and direction...
+        var player = this._getPlayer(playerInfo.playerNumber);
+        var isValidPosition = player.validatePosition(
+            playerInfo.position,
+            pitch,
+            this.state.direction,
+            true, // isKickoff
+            teamKickingOff);
+
+        // TODO: set position and direction
+
+    }, this);
+
+    // TODO: check no more than 2 players in centre circle
+};
+
+/**
+ * _setKickOffPosition
+ * -------------------
+ * Sets the kickoff position for the player specified, first validating that
+ * he is in the correct half.
+ */
+Team.prototype._setKickOffPosition = function(player, position, direction, pitch, teamKickingOff) {
+    // TODO: Player.validatePosition ???
+};
 
 // Exports...
 module.exports = Team;

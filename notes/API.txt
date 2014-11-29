@@ -85,4 +85,5 @@ AI Response to PLAY request
 
 AI Response to KICKOFF request
 ------------------------------
-TODO: Write this!
+- "request":"KICKOFF"
+- "players":[{"playerNumber":(value), "position":{"x":(value), "y":(value)}, "direction":(value)}, ...]

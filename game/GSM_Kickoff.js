@@ -66,8 +66,10 @@ GSM_Kickoff.prototype._processResponse = function (data, team) {
     if(data.request !== 'KICKOFF') {
         throw new CWCError('Expected a KICKOFF response.')
     }
+
     // We got a KICKOFF response, so we pass it to the Team to process...
-    team.processPlayResponse(data);
+    var teamKickingOff =  (team === this._teamToKickOff);
+    team.processKickoffResponse(data, this._game.pitch, teamKickingOff);
     //} catch(ex) {
     //    // We log the error and report it back to the AI...
     //    team.getAI().sendError(ex.message);

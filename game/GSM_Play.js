@@ -71,6 +71,7 @@ GSM_Play.prototype._processResponse = function (data, team) {
         if(data.request !== 'PLAY') {
             throw new CWCError('Expected a PLAY response.')
         }
+
         // We got a PLAY response, so we pass it to the Team to process...
         team.processPlayResponse(data);
     //} catch(ex) {

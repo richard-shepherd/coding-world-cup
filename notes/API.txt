@@ -40,8 +40,8 @@ EVENT
     - "game":{game-state}
 
   - "event":"GOAL"
-    - "team1":(team-state, including score)
-    - "team2":(team-state, including score)
+    - "team1":(team-state, including "score")
+    - "team2":(team-state, including "score")
 
 
 REQUEST
@@ -53,6 +53,10 @@ REQUEST
   - "request":"PLAY"
     - Called during the normal course of play to get player movements and actions.
 
+  - "request":"KICKOFF"
+    - "team1":{info including "direction"}
+    - "team2":{info including "direction"}
+    - "team":("team1" or "team2", the team kicking off)
 
 
 AI Response to PLAY request
@@ -78,3 +82,7 @@ AI Response to PLAY request
   - "player":(player-number of the player to tackle)
   - "strength":(value between 0.0-100.0)
 
+
+AI Response to KICKOFF request
+------------------------------
+TODO: Write this!

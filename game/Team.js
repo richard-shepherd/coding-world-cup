@@ -9,6 +9,7 @@ var Logger = UtilsLib.Logger;
 var CWCError = UtilsLib.CWCError;
 var AIUtilsLib = require('../ai_utils');
 var MessageUtils = AIUtilsLib.MessageUtils;
+var PlayerState_Static = require('./PlayerState_Static');
 
 
 /**
@@ -165,7 +166,7 @@ Team.prototype.sendEvent_TeamInfo = function() {
             playerNumber:player.staticState.playerNumber,
             playerType:player.staticState.playerType
         };
-        event.players.push(player);
+        event.players.push(playerInfo);
     }, this);
 
     // And send it to the team's AI...
@@ -175,6 +176,58 @@ Team.prototype.sendEvent_TeamInfo = function() {
     Logger.log('SENT EVENT: ' + jsonEvent, Logger.LogLevel.DEBUG);
 
 };
+
+/**
+ * setDefaultKickoffPositions
+ * --------------------------
+ * Sets the kickoff positions to defaults used if the AI does
+ * not specify valid positions.
+ */
+Team.prototype.setDefaultKickoffPositions = function(pitch) {
+    var playerX = 0.0;
+    var playerY = pitch.goalCentre;
+    var goalkeeperX = 0.0;
+    var direction = 0.0;
+
+    // Is the team playing right or left?
+    switch(this.state.direction) {
+        case TeamState.Direction.LEFT:
+            playerX = pitch.width * 0.75;
+            goalkeeperX = pitch.width - 0.5;
+            direction = 270.0;
+            break;
+
+        case TeamState.Direction.RIGHT:
+            playerX = pitch.width * 0.25;
+            goalkeeperX = pitch.width + 0.5;
+            direction = 90.0;
+            break;
+
+        default:
+            throw new CWCError('Unexpected team direction');
+    }
+
+    // We set the positions for each player...
+    this._players.forEach(function(player) {
+
+        // We set the direction the player is facing...
+        player.setDirection(direction);
+
+        // The position of the player depends on whether he is a
+        // player or the goalkeeper...
+        switch(player.staticState.playerType) {
+
+            case PlayerState_Static.PlayerType.PLAYER:
+                player.setPosition(playerX, playerY);
+                break;
+
+            case PlayerState_Static.PlayerType.GOALKEEPER:
+                player.setPosition(goalkeeperX, playerY);
+                break;
+        }
+    });
+};
+
 
 // Exports...
 module.exports = Team;

@@ -141,7 +141,7 @@ AIWrapper_RandomMovement.prototype._onREQUEST_PLAY = function(data) {
         // for them to move towards...
         this._players.forEach(function(player) {
             var action = {};
-            action.playerNumber = player.staticState.playerNumber;
+            action.playerNumber = player.playerNumber;
             action.action = "MOVE";
             action.destination = {x:Math.random() * this._pitch.width, y:Math.random() * this._pitch.height};
             action.speed = 100.0;

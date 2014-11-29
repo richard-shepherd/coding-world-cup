@@ -44,6 +44,19 @@ GSM_Play.prototype.onTurn = function() {
     this.sendRequestToBothAIs({request:"PLAY"});
 };
 
+/**
+ * onAIResponsesReceived
+ * ---------------------
+ * Called when we have received responses from both AIs.
+ */
+GSM_Play.prototype.onAIResponsesReceived = function() {
+    // We process the two responses...
+    this._processResponse(this._aiResponses.AI1.data, this._team1);
+    this._processResponse(this._aiResponses.AI2.data, this._team2);
+
+    // We play the next turn...
+    this._game.playNextTurn();
+};
 
 /**
  * _processResponse
@@ -66,19 +79,6 @@ GSM_Play.prototype._processResponse = function (data, team) {
     //}
 };
 
-/**
- * onAIResponsesReceived
- * ---------------------
- * Called when we have received responses from both AIs.
- */
-GSM_Play.prototype.onAIResponsesReceived = function() {
-    // We process the two responses...
-    this._processResponse(this._aiResponses.AI1.data, this._team1);
-    this._processResponse(this._aiResponses.AI2.data, this._team2);
-
-    // We play the next turn...
-    this._game.playNextTurn();
-};
 
 
 

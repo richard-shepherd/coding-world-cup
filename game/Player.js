@@ -578,6 +578,23 @@ Player.prototype.clearAction = function() {
     this.actionState.action = PlayerState_Action.Action.NONE;
 };
 
+/**
+ * setPosition
+ * -----------
+ */
+Player.prototype.setPosition = function(x, y) {
+    this.dynamicState.position.x = x;
+    this.dynamicState.position.y = y;
+};
+
+/**
+ * setDirection
+ * ------------
+ */
+Player.prototype.setDirection = function(direction) {
+    this.dynamicState.direction = direction;
+};
+
 // Exports...
 module.exports = Player;
 

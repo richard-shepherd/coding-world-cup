@@ -85,17 +85,23 @@ function Game(ai1, ai2, guiWebSocket) {
     this._sendEvent_TeamInfo();
 
     // We set the initial game state...
-    //this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
-    this._gsmManager.setState(new GSM_Play(this));
+    this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
+    //this._gsmManager.setState(new GSM_Play(this));
 }
 
 /**
- * Creates the teams and the _players.
+ * createTeams
+ * -----------
+ * Creates the teams and the players.
  */
 Game.prototype.createTeams = function(ai1, ai2) {
     // We create the two teams...
     this._team1 = new Team(ai1, 1);
     this._team2 = new Team(ai2, 2);
+
+    // We set the direction they are playing...
+    this._team1.setDirection(TeamState.Direction.RIGHT);
+    this._team2.setDirection(TeamState.Direction.LEFT);
 
     // We create the _players and assign them to the teams...
     this._players = [];
@@ -105,7 +111,9 @@ Game.prototype.createTeams = function(ai1, ai2) {
 };
 
 /**
- * Adds _players and the goalkeeper to the team passed in.
+ * addPlayersToTeam
+ * ----------------
+ * Adds players and the goalkeeper to the team passed in.
  */
 Game.prototype.addPlayersToTeam = function(team, playerNumber) {
     // We add the _players...
@@ -186,22 +194,6 @@ Game.prototype.playNextTurn = function () {
             that.onTurn();
         }, '', timeout);
     }
-};
-
-/**
- * _sendUpdateToGUI
- * ----------------
- * Sends an update of the current game state to the GUI.
- */
-Game.prototype._sendUpdateToGUI = function() {
-    if(this._guiWebSocket === null) {
-        return;
-    }
-
-    // We get the DTO, and send it to the GUI...
-    var dto = this.getDTO(true);
-    var jsonDTO = JSON.stringify(dto, Utils.decimalPlaceReplacer(4));
-    this._guiWebSocket.broadcast(jsonDTO);
 };
 
 /**
@@ -523,7 +515,25 @@ Game.prototype.giveBallToPlayer = function(player) {
     ballState.position.copyFrom(playerDynamicState.position);
 };
 
+/**
+ * clearAllActions
+ * ---------------
+ * Sets the action for all players to NONE.
+ */
+Game.prototype.clearAllActions = function() {
+    this._players.forEach(function(player) {
+        player.clearAction();
+    });
+};
 
+/**
+ * setDefaultKickoffPositions
+ * --------------------------
+ */
+Game.prototype.setDefaultKickoffPositions = function() {
+    this._team1.setDefaultKickoffPositions(this.pitch);
+    this._team2.setDefaultKickoffPositions(this.pitch);
+};
 
 // Exports...
 module.exports = Game;

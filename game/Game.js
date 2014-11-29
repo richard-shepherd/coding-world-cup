@@ -59,8 +59,6 @@ function Game(ai1, ai2, guiWebSocket) {
     // The game-state-machine (GSM) that manages game events and transitions.
     // Note: This has to be done after creating the teams.
     this._gsmManager = new GSM_Manager();
-    this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
-    //this._gsmManager.setState(new GSM_Play(this));
     ai1.setGSMManager(this._gsmManager);
     ai2.setGSMManager(this._gsmManager);
 
@@ -85,6 +83,10 @@ function Game(ai1, ai2, guiWebSocket) {
     // We send some events to the AIs at the start of the game...
     this.sendEvent_GameStart();
     this._sendEvent_TeamInfo();
+
+    // We set the initial game state...
+    //this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
+    this._gsmManager.setState(new GSM_Play(this));
 }
 
 /**

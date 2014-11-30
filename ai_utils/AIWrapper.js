@@ -45,8 +45,7 @@ AIWrapper.prototype.dispose = function() {
  */
 AIWrapper.prototype.wrap = function(aiInfo) {
     // We launch the AI process...
-    var pathToExecutable = aiInfo.relativeFolder + '/' + aiInfo.executable;
-    this._aiProcess = child_process.spawn(pathToExecutable, aiInfo.args, {cwd:aiInfo.absoluteFolder});
+    this._aiProcess = child_process.spawn(aiInfo.executable, aiInfo.args, {cwd:aiInfo.absoluteFolder});
 
     // We hook up to stdout from the AI...
     var that = this;

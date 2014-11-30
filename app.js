@@ -21,17 +21,19 @@ var aiManager = new AIManager();
 // We create a 'Playground' AI...
 var ai = aiManager.getAIWrapperFromName('Playground');
 
-// We create two RandomMovement AIs for the teams...
-var ai1 = new AIWrapper_RandomMovement();
-var ai2 = new AIWrapper_RandomMovement();
+//// We create two RandomMovement AIs for the teams...
+//var ai1 = new AIWrapper_RandomMovement();
+//var ai2 = new AIWrapper_RandomMovement();
+//
+//// We create a new game...
+//var guiWebSocket = new GUIWebSocket(12345);
+//var game = new Game(ai1, ai2, guiWebSocket);
+//game.giveAllPlayersMaxAbilities();
+//
+//// And we start to play...
+//game.onTurn();
 
-// We create a new game...
-var guiWebSocket = new GUIWebSocket(12345);
-var game = new Game(ai1, ai2, guiWebSocket);
-game.giveAllPlayersMaxAbilities();
-
-// And we start to play...
-game.onTurn();
-
-
+require('readline')
+    .createInterface(process.stdin, process.stdout)
+    .question("Press Enter to exit...", function () { process.exit(); });
 

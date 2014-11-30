@@ -8,6 +8,7 @@
  */
 var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
+var child_process = require('child_process');
 
 
 /**
@@ -19,8 +20,40 @@ function AIWrapper() {
 
     // The game state machine...
     this._gsmManager = null;
+
+    // The AI process...
+    this._aiProcess  = null;
 }
 module.exports = AIWrapper;
+
+/**
+ * dispose
+ * -------
+ */
+AIWrapper.prototype.dispose = function() {
+    // We kill the AI process...
+    if(this._aiProcess !== null) {
+        this._aiProcess.kill();
+        this._aiProcess = null;
+    }
+};
+
+/**
+ * wrap
+ * ----
+ * Launches the AI from the info provided.
+ */
+AIWrapper.prototype.wrap = function(aiInfo) {
+    // We launch the AI process...
+    var pathToExecutable = aiInfo.relativeFolder + '/' + aiInfo.executable;
+    this._aiProcess = child_process.spawn(pathToExecutable, aiInfo.args, {cwd:aiInfo.absoluteFolder});
+
+    // We hook up to stdout from the AI...
+    var that = this;
+    this._aiProcess.stdout.on('data', function(data) {
+        that.onResponseReceived(data);
+    });
+};
 
 /**
  * setGSMManager
@@ -55,7 +88,10 @@ AIWrapper.prototype.sendError = function(message) {
  * Sends the data passed in to the AI.
  */
 AIWrapper.prototype.sendData = function(jsonData) {
-    // TODO: Write this! (Convert to JSON and send)
+    if(this._aiProcess !== null) {
+        this._aiProcess.stdin.write(jsonData);
+        this._aiProcess.stdin.write('\n');
+    }
 };
 
 /**

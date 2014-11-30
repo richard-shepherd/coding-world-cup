@@ -7,11 +7,19 @@ var Game = GameLib.Game;
 var TestUtilsLib = require('./test_utils');
 var AIWrapper_RandomMovement = TestUtilsLib.AIWrapper_RandomMovement;
 var GUIWebSocket = UtilsLib.GUIWebSocket;
+var AIUtilsLib = require('./ai_utils');
+var AIManager = AIUtilsLib.AIManager;
 
 
 // We set up logging...
 Logger.addHandler(new LogHandler_Console(Logger.LogLevel.INFO));
 Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.DEBUG));
+
+// The AI manager finds the available AIs...
+var aiManager = new AIManager();
+
+// We create a 'Playground' AI...
+var ai = aiManager.getAIWrapperFromName('Playground');
 
 // We create two RandomMovement AIs for the teams...
 var ai1 = new AIWrapper_RandomMovement();

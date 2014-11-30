@@ -10,6 +10,7 @@ var GSM_Base = require('./GSM_Base');
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
 var CWCError = UtilsLib.CWCError;
+var GSM_Play = require('./GSM_Play');
 
 
 /**
@@ -50,6 +51,7 @@ GSM_Kickoff.prototype.onAIResponsesReceived = function() {
     this._processResponse(this._aiResponses.AI2.data, this._team2);
 
     // We play the next turn...
+    this._game.setGameState(new GSM_Play(this._game));
     this._game.playNextTurn();
 };
 

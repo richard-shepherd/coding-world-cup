@@ -1,6 +1,6 @@
 TODO: Test moving along a diagonal (not 45 degrees)
 
-TODO: Test that you can't move off the pitch
+TODO: Test that you can't move off the pitch, and other invalid positions
 
 TODO: Test that player slows down as energy runs down
 
@@ -19,4 +19,6 @@ TODO: Test multiple players trying to take possession
 TODO: Test taking possession of a moving ball
 
 TODO: Test of more than one player tackling
+
+TODO: Test of kickoff positions
 

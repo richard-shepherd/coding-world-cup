@@ -85,8 +85,7 @@ function Game(ai1, ai2, guiWebSocket) {
     this._sendEvent_TeamInfo();
 
     // We set the initial game state...
-    //this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
-    this._gsmManager.setState(new GSM_Play(this));
+    this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
 }
 
 /**
@@ -535,6 +534,25 @@ Game.prototype.clearAllActions = function() {
 Game.prototype.setDefaultKickoffPositions = function() {
     this._team1.setDefaultKickoffPositions(this.pitch);
     this._team2.setDefaultKickoffPositions(this.pitch);
+};
+
+/**
+ * setGameState
+ * ------------
+ * Sets the (GSM) game state.
+ */
+Game.prototype.setGameState = function(gameState) {
+    this._gsmManager.setState(gameState);
+};
+
+/**
+ * setSimulationMode
+ * -----------------
+ * If simulationMode is true, the game runs as fast as possible.
+ * If false, it runs closer to real-time.
+ */
+Game.prototype.setSimulationMode = function(simulationMode) {
+    this.simulationMode = simulationMode;
 };
 
 // Exports...

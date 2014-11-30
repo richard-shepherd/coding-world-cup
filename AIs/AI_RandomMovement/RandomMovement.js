@@ -4,9 +4,15 @@
  * Moves the players randomly.
  */
 var readline = require('readline');
+var UtilsLib = require('../../utils');
+var Logger = UtilsLib.Logger;
+var LogHandler_File = UtilsLib.LogHandler_File;
 
+// We set up logging...
+Logger.addHandler(new LogHandler_File('./log/RandomMovement.log', Logger.LogLevel.DEBUG));
 
-var playGround = new RandomMovement();
+// We create the AI...
+var ai = new RandomMovement();
 
 /**
  * @constructor
@@ -37,7 +43,7 @@ function RandomMovement() {
 
     // The last time (in game-time) that we changed the movement of
     // players. We only update every few seconds...
-    this._lastTimeWeChangedMovements = -1.0;
+    this._lastTimeWeChangedMovements = 0.0;
     this._changeInterval = 10.0;
 }
 
@@ -84,7 +90,7 @@ RandomMovement.prototype._onREQUEST = function(data) {
  */
 RandomMovement.prototype._onEVENT_GAME_START = function(data) {
     // We reset the last update time...
-    this._lastTimeWeChangedMovements = -1.0;
+    this._lastTimeWeChangedMovements = 0.0;
 
     // We get data about the pitch...
     this._pitch = data.pitch;
@@ -113,6 +119,22 @@ RandomMovement.prototype._onEVENT_START_OF_TURN = function(data) {
 };
 
 /**
+ * _onREQUEST_KICKOFF
+ * ------------------
+ * Called when we receive a request for player positions at kickoff.
+ */
+RandomMovement.prototype._onREQUEST_KICKOFF = function(data) {
+    // We return an empty collection of positions, so we get the defaults...
+    var reply = {};
+    reply.request = "KICKOFF";
+    reply.players = [];
+
+    // We send the data back to the game...
+    var jsonReply = JSON.stringify(reply);
+    console.log(jsonReply);
+};
+
+/**
  * _onREQUEST_PLAY
  * ---------------
  * Called when we receive a request for a PLAY update, ie instructions
@@ -126,8 +148,7 @@ RandomMovement.prototype._onREQUEST_PLAY = function(data) {
 
     // We only update player movements if some time has elapsed...
     var nextChange = this._lastTimeWeChangedMovements + this._changeInterval;
-    if(this._gameState.currentTimeSeconds >= nextChange ||
-        this._lastTimeWeChangedMovements === -1.0) {
+    if(this._gameState.currentTimeSeconds >= nextChange) {
         // We change the movements of our players.
         // For each player, we choose a random place on the pitch
         // for them to move towards...
@@ -148,15 +169,6 @@ RandomMovement.prototype._onREQUEST_PLAY = function(data) {
     var jsonReply = JSON.stringify(reply);
     console.log(jsonReply);
 };
-
-/**
- * _onREQUEST_KICKOFF
- * ------------------
- * Called when we get the request to place players for the kickoff.
- */
-RandomMovement.prototype._onREQUEST_KICKOFF = function(data) {
-};
-
 
 
 

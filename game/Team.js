@@ -200,7 +200,7 @@ Team.prototype.setDefaultKickoffPositions = function(pitch) {
 
         case TeamState.Direction.RIGHT:
             playerX = pitch.width * 0.25;
-            goalkeeperX = pitch.width + 0.5;
+            goalkeeperX = 0.5;
             direction = 90.0;
             break;
 

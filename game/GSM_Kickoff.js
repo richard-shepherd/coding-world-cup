@@ -69,7 +69,7 @@ GSM_Kickoff.prototype._processResponse = function (data, team) {
 
     // We got a KICKOFF response, so we pass it to the Team to process...
     var teamKickingOff =  (team === this._teamToKickOff);
-    team.processKickoffResponse(data, this._game.pitch, teamKickingOff);
+    team.processKickoffResponse(data, teamKickingOff);
     //} catch(ex) {
     //    // We log the error and report it back to the AI...
     //    team.getAI().sendError(ex.message);

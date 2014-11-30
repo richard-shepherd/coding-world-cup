@@ -236,7 +236,7 @@ Team.prototype.setDefaultKickoffPositions = function(pitch) {
  * 'teamKickingOff' is true if this team is the one kicking off,
  * false if not.
  */
-Team.prototype.processKickoffResponse = function(data, pitch, teamKickingOff) {
+Team.prototype.processKickoffResponse = function(data, teamKickingOff) {
     // We're expecting a 'players' field...
     if(!('players' in data)) {
         throw new CWCError('Expected a "players" field in KICKOFF response');
@@ -256,10 +256,10 @@ Team.prototype.processKickoffResponse = function(data, pitch, teamKickingOff) {
         var player = this._getPlayer(playerInfo.playerNumber);
         var isValidPosition = player.validatePosition(
             playerInfo.position,
-            pitch,
             this.state.direction,
             true, // isKickoff
             teamKickingOff);
+
 
         // TODO: set position and direction
 

@@ -94,7 +94,7 @@ GSM_Base.prototype.sendRequestToBothAIs = function(request) {
  * Called when we get a response from AI1.
  */
 GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
-    var message = util.format('GOT RESPONSE (%s): %s', this._team1.getName(), jsonData);
+    var message = util.format('GOT RESPONSE (AI1): %s', jsonData);
     Logger.log(message, Logger.LogLevel.DEBUG);
 
     // We store the jsonData and check whether we have received both updates...
@@ -108,7 +108,7 @@ GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
  * Called when we get a response from AI2.
  */
 GSM_Base.prototype.onResponse_AI2 = function(jsonData) {
-    var message = util.format('GOT RESPONSE (%s): %s', this._team2.getName(), jsonData);
+    var message = util.format('GOT RESPONSE (AI2): %s', jsonData);
     Logger.log(message, Logger.LogLevel.DEBUG);
 
     // We store the jsonData and check whether we have received both updates...

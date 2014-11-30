@@ -10,6 +10,7 @@ var CWCError = UtilsLib.CWCError;
 var AIUtilsLib = require('../ai_utils');
 var MessageUtils = AIUtilsLib.MessageUtils;
 var PlayerState_Static = require('./PlayerState_Static');
+var GameUtils = require('./GameUtils');
 
 
 /**
@@ -242,6 +243,9 @@ Team.prototype.processKickoffResponse = function(data, teamKickingOff) {
         throw new CWCError('Expected a "players" field in KICKOFF response');
     }
 
+    // A maximum of two players are allowed in the centre circle...
+    var numberPlayersInCentreCircle = 0;
+
     // We update the position for each player...
     data.players.forEach(function(playerInfo) {
         // There should be a position and direction for each player...
@@ -252,31 +256,30 @@ Team.prototype.processKickoffResponse = function(data, teamKickingOff) {
             throw new CWCError('Expected a "direction" field in KICKOFF response');
         }
 
-        // We set the player's position and direction...
+        // We validate the position...
         var player = this._getPlayer(playerInfo.playerNumber);
         var isValidPosition = player.validatePosition(
             playerInfo.position,
             this.state.direction,
             true, // isKickoff
             teamKickingOff);
+        if(!isValidPosition) {
+            return;
+        }
 
+        // We check that there are not too many players in the centre circle...
+        var playerInCentreCircle = GameUtils.positionIsInCentreCircle(playerInfo.position);
+        if(playerInCentreCircle && numberPlayersInCentreCircle >= 2) {
+            return;
+        }
 
-        // TODO: set position and direction
-
+        // We set the player's position and direction...
+        player.setPosition(playerInfo.position.x, playerInfo.position.y);
+        player.setDirection(playerInfo.direction);
+        numberPlayersInCentreCircle += playerInCentreCircle ? 1 : 0;
     }, this);
-
-    // TODO: check no more than 2 players in centre circle
 };
 
-/**
- * _setKickOffPosition
- * -------------------
- * Sets the kickoff position for the player specified, first validating that
- * he is in the correct half.
- */
-Team.prototype._setKickOffPosition = function(player, position, direction, pitch, teamKickingOff) {
-    // TODO: Player.validatePosition ???
-};
 
 // Exports...
 module.exports = Team;

@@ -39,6 +39,14 @@ AIWrapper.prototype.dispose = function() {
 };
 
 /**
+ * setTeamNumber
+ * -------------
+ */
+AIWrapper.prototype.setTeamNumber = function(teamNumber) {
+    this._teamNumber = teamNumber;
+};
+
+/**
  * wrap
  * ----
  * Launches the AI from the info provided.
@@ -49,8 +57,12 @@ AIWrapper.prototype.wrap = function(aiInfo) {
 
     // We hook up to stdout from the AI...
     var that = this;
+    //this._aiProcess.stdout.on('data', function(data) {
+    //    that.onResponseReceived(data);
+    //});
     this._aiProcess.stdout.on('data', function(data) {
-        that.onResponseReceived(data);
+        var line = data.toString();
+        that.onResponseReceived(line);
     });
 };
 

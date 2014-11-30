@@ -85,8 +85,8 @@ function Game(ai1, ai2, guiWebSocket) {
     this._sendEvent_TeamInfo();
 
     // We set the initial game state...
-    this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
-    //this._gsmManager.setState(new GSM_Play(this));
+    //this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
+    this._gsmManager.setState(new GSM_Play(this));
 }
 
 /**
@@ -98,6 +98,8 @@ Game.prototype.createTeams = function(ai1, ai2) {
     // We create the two teams...
     this._team1 = new Team(ai1, 1);
     this._team2 = new Team(ai2, 2);
+    ai1.setTeamNumber(1);
+    ai2.setTeamNumber(2);
 
     // We set the direction they are playing...
     this._team1.setDirection(TeamState.Direction.RIGHT);

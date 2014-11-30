@@ -18,22 +18,15 @@ Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.DEBUG));
 // The AI manager finds the available AIs...
 var aiManager = new AIManager();
 
-// We create a 'Playground' AI...
-var ai = aiManager.getAIWrapperFromName('Playground');
+// We create two AIs...
+var ai1 = aiManager.getAIWrapperFromName('Playground');
+var ai2 = aiManager.getAIWrapperFromName('Playground');
 
-//// We create two RandomMovement AIs for the teams...
-//var ai1 = new AIWrapper_RandomMovement();
-//var ai2 = new AIWrapper_RandomMovement();
-//
-//// We create a new game...
-//var guiWebSocket = new GUIWebSocket(12345);
-//var game = new Game(ai1, ai2, guiWebSocket);
-//game.giveAllPlayersMaxAbilities();
-//
-//// And we start to play...
-//game.onTurn();
+// We create a new game...
+var guiWebSocket = new GUIWebSocket(12345);
+var game = new Game(ai1, ai2, guiWebSocket);
+game.giveAllPlayersMaxAbilities();
 
-require('readline')
-    .createInterface(process.stdin, process.stdout)
-    .question("Press Enter to exit...", function () { process.exit(); });
+// And we start to play...
+game.onTurn();
 

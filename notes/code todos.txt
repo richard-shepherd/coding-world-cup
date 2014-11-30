@@ -26,3 +26,4 @@ TODO: Is tackling broken? Should it be related to distance? If you fail to tackl
 
 TODO: Try to avoid timewasting. Can't pass back and forth with the goalkeeper
 
+TODO: Some notes on wiki about how to debug AIs.

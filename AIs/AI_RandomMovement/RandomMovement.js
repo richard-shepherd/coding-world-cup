@@ -1,22 +1,17 @@
 /**
- * Playground
- * ----------
- * Plays football like children in a playground.
- *
- * All players (except the goalkeeper) run for the ball. If they get it
- * they kick it towards the goal.
- *
- * The goalkeeper tries to save the ball.
+ * RandomMovement
+ * --------------
+ * Moves the players randomly.
  */
 var readline = require('readline');
 
 
-var playGround = new Playground();
+var playGround = new RandomMovement();
 
 /**
  * @constructor
  */
-function Playground() {
+function RandomMovement() {
     // We hook up stdin and stdout, and register onGameData
     // to be called when data is received over stdin...
     this._io = readline.createInterface({
@@ -51,7 +46,7 @@ function Playground() {
  * ----------
  * Called when the game sends data to us.
  */
-Playground.prototype.onGameData = function(jsonData) {
+RandomMovement.prototype.onGameData = function(jsonData) {
     // We get the object...
     var data = JSON.parse(jsonData);
 
@@ -65,7 +60,7 @@ Playground.prototype.onGameData = function(jsonData) {
  * --------
  * Called when we receive an event message.
  */
-Playground.prototype._onEVENT = function(data) {
+RandomMovement.prototype._onEVENT = function(data) {
     // We call different functions depending on the event...
     var eventHandler = '_onEVENT_' + data.event;
     this[eventHandler](data);
@@ -76,7 +71,7 @@ Playground.prototype._onEVENT = function(data) {
  * ----------
  * Called when we receive a request message.
  */
-Playground.prototype._onREQUEST = function(data) {
+RandomMovement.prototype._onREQUEST = function(data) {
     // We call different functions depending on the request...
     var requestHandler = '_onREQUEST_' + data.request;
     this[requestHandler](data);
@@ -87,7 +82,7 @@ Playground.prototype._onREQUEST = function(data) {
  * -------------------
  * Called at the start of a game with general game info.
  */
-Playground.prototype._onEVENT_GAME_START = function(data) {
+RandomMovement.prototype._onEVENT_GAME_START = function(data) {
     // We reset the last update time...
     this._lastTimeWeChangedMovements = -1.0;
 
@@ -100,7 +95,7 @@ Playground.prototype._onEVENT_GAME_START = function(data) {
  * ------------------
  * Called when we receive the TEAM_INFO event.
  */
-Playground.prototype._onEVENT_TEAM_INFO = function(data) {
+RandomMovement.prototype._onEVENT_TEAM_INFO = function(data) {
     // We store our team number, direction and player info...
     this._teamNumber = data.teamNumber;
     this._direction = data.direction;
@@ -112,7 +107,7 @@ Playground.prototype._onEVENT_TEAM_INFO = function(data) {
  * ----------------------
  * Called at the start of turn with the current game state.
  */
-Playground.prototype._onEVENT_START_OF_TURN = function(data) {
+RandomMovement.prototype._onEVENT_START_OF_TURN = function(data) {
     // We store the current game state, to use later when we get requests...
     this._gameState = data.game;
 };
@@ -123,7 +118,7 @@ Playground.prototype._onEVENT_START_OF_TURN = function(data) {
  * Called when we receive a request for a PLAY update, ie instructions
  * to move players, kick etc.
  */
-Playground.prototype._onREQUEST_PLAY = function(data) {
+RandomMovement.prototype._onREQUEST_PLAY = function(data) {
     // We create an object for the reply...
     var reply = {};
     reply.request = "PLAY";
@@ -159,7 +154,7 @@ Playground.prototype._onREQUEST_PLAY = function(data) {
  * ------------------
  * Called when we get the request to place players for the kickoff.
  */
-Playground.prototype._onREQUEST_KICKOFF = function(data) {
+RandomMovement.prototype._onREQUEST_KICKOFF = function(data) {
 };
 
 

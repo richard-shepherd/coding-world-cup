@@ -27,3 +27,7 @@ TODO: Is tackling broken? Should it be related to distance? If you fail to tackl
 TODO: Try to avoid timewasting. Can't pass back and forth with the goalkeeper
 
 TODO: Some notes on wiki about how to debug AIs.
+
+TODO: Validate movement of players in game loop
+TODO: RandomMovement should keep goalkeepers in their areas, and players outside.
+TODO: OR: movement should fail if a player moves to an invalid position.

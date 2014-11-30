@@ -19,8 +19,8 @@ Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.DEBUG));
 var aiManager = new AIManager();
 
 // We create two AIs...
-var ai1 = aiManager.getAIWrapperFromName('Playground');
-var ai2 = aiManager.getAIWrapperFromName('Playground');
+var ai1 = aiManager.getAIWrapperFromName('RandomMovement');
+var ai2 = aiManager.getAIWrapperFromName('RandomMovement');
 
 // We create a new game...
 var guiWebSocket = new GUIWebSocket(12345);

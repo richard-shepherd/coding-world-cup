@@ -63,6 +63,11 @@ Player.MAX_ENERGY = 100.0;
 Player.MAX_TURNING_RATE = 600.0;
 
 /**
+ * The player moves slower when he has the ball.
+ */
+Player.SPEED_WITH_BALL_FACTOR = 0.4;
+
+/**
  * isPlayer
  * --------
  * Returns true if this player is a player (ie, not a goalkeeper).
@@ -191,6 +196,11 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
 
     // We move the player...
     position.addVector(scaledVector);
+
+    // If the player has the ball, we move the ball as well...
+    if(this.dynamicState.hasBall) {
+        game.ball.state.position.copyFrom(position);
+    }
 
     // If the player is now at the destination, we stop him moving...
     if(position.approxEqual(destination) && resetActionWhenComplete === true) {
@@ -442,6 +452,12 @@ Player.prototype.getSpeed = function() {
     var runningAbility = this.staticState.runningAbility / 100.0;
     var energy = this.dynamicState.energy / 100.0;
     var speed = runningAbility * energy * Player.MAX_SPEED;
+
+    // If we have the ball, we move slower...
+    if(this.dynamicState.hasBall) {
+        speed *= Player.SPEED_WITH_BALL_FACTOR;
+    }
+
     return speed;
 };
 

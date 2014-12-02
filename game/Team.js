@@ -249,6 +249,9 @@ Team.prototype.processKickoffResponse = function(data, teamKickingOff) {
     // We update the position for each player...
     data.players.forEach(function(playerInfo) {
         // There should be a position and direction for each player...
+        if(!('playerNumber' in playerInfo)) {
+            throw new CWCError('Expected a "playerNumber" field in KICKOFF response');
+        }
         if(!('position' in playerInfo)) {
             throw new CWCError('Expected a "position" field in KICKOFF response');
         }
@@ -292,9 +295,50 @@ Team.prototype.processConfigureAbilitiesResponse = function(data, maxTotalAbilit
         throw new CWCError('Expected a "players" field in KICKOFF response');
     }
 
+    // We keep a note of the total remaining ability in each category, to
+    // make sure that the team cannot be allocated more than this...
+    var remainingKickingAbility = maxTotalAbility;
+    var remainingRunningAbility = maxTotalAbility;
+    var remainingBallControlAbility = maxTotalAbility;
+    var remainingTacklingAbility = maxTotalAbility;
+
     // We update the abilities for each player...
     data.players.forEach(function(playerInfo) {
-    });
+        // We check the fields...
+        if(!('playerNumber' in playerInfo)) {
+            throw new CWCError('Expected a "playerNumber" field in CONFIGURE_ABILITIES response');
+        }
+        if(!('kickingAbility' in playerInfo)) {
+            throw new CWCError('Expected a "kickingAbility" field in CONFIGURE_ABILITIES response');
+        }
+        if(!('runningAbility' in playerInfo)) {
+            throw new CWCError('Expected a "runningAbility" field in CONFIGURE_ABILITIES response');
+        }
+        if(!('ballControlAbility' in playerInfo)) {
+            throw new CWCError('Expected a "ballControlAbility" field in CONFIGURE_ABILITIES response');
+        }
+        if(!('tacklingAbility' in playerInfo)) {
+            throw new CWCError('Expected a "tacklingAbility" field in CONFIGURE_ABILITIES response');
+        }
+
+        // We get the player, and set his abilities...
+        var player = this._getPlayer(playerInfo.playerNumber);
+        var kickingAbility = (playerInfo.kickingAbility <= remainingKickingAbility) ? playerInfo.kickingAbility : remainingKickingAbility;
+        var runningAbility = (playerInfo.runningAbility <= remainingRunningAbility) ? playerInfo.runningAbility : remainingRunningAbility;
+        var ballControlAbility = (playerInfo.ballControlAbility <= remainingBallControlAbility) ? playerInfo.ballControlAbility : remainingBallControlAbility;
+        var tacklingAbility = (playerInfo.tacklingAbility <= remainingTacklingAbility) ? playerInfo.tacklingAbility : remainingTacklingAbility;
+
+        player.staticState.kickingAbility = kickingAbility;
+        player.staticState.runningAbility = runningAbility;
+        player.staticState.ballControlAbility = ballControlAbility;
+        player.staticState.tacklingAbility = tacklingAbility;
+
+        remainingKickingAbility -= kickingAbility;
+        remainingRunningAbility -= runningAbility;
+        remainingBallControlAbility -= ballControlAbility;
+        remainingTacklingAbility -= tacklingAbility;
+
+    }, this);
 };
 
 // Exports...

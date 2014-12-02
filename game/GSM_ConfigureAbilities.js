@@ -60,7 +60,7 @@ GSM_ConfigureAbilities.prototype._processResponse = function (data, team) {
     }
 
     // We got a CONFIGURE_ABILITIES response, so we pass it to the Team to process...
-    team.processConfigureAbilitiesResponse(data, game.maxTotalAbility);
+    team.processConfigureAbilitiesResponse(data, this._game.maxTotalAbility);
     //} catch(ex) {
     //    // We log the error and report it back to the AI...
     //    team.getAI().sendError(ex.message);

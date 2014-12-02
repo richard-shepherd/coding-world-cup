@@ -51,13 +51,6 @@ function Player(playerNumber, playerType) {
 Player.MAX_SPEED = 10.0;
 
 /**
- * The maximum energy that any player can have. All players start with
- * this energy. (Though players recuperate at different rates depending
- * on their stamina.)
- */
-Player.MAX_ENERGY = 100.0;
-
-/**
  * The maximum rate at which players turn, in degrees/second.
  */
 Player.MAX_TURNING_RATE = 600.0;

@@ -23,8 +23,7 @@ var ai2 = aiManager.getAIWrapperFromName('RandomMovement');
 // We create a new game...
 var guiWebSocket = new GUIWebSocket(12345);
 var game = new Game(ai1, ai2, guiWebSocket);
-game.giveAllPlayersMaxAbilities();
-game.setSimulationMode(true);
+game.setSimulationMode(false);
 
 // And we start to play...
 game.onTurn();

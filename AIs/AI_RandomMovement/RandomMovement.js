@@ -119,6 +119,34 @@ RandomMovement.prototype._onEVENT_START_OF_TURN = function(data) {
 };
 
 /**
+ * _onREQUEST_CONFIGURE_ABILITIES
+ * ------------------------------
+ * Called when we receive the request to configure abilities for our players.
+ */
+RandomMovement.prototype._onREQUEST_CONFIGURE_ABILITIES = function(data) {
+    var reply = {};
+    reply.request = "CONFIGURE_ABILITIES";
+    reply.players = [];
+
+    // We try to give each player 75% ability in each category, regardless
+    // of the max ability specified in the request. The game may not give us this...
+    this._players.forEach(function(player) {
+        var info = {
+            playerNumber:player.playerNumber,
+            kickingAbility:75,
+            runningAbility:75,
+            ballControlAbility:75,
+            tacklingAbility:75
+        };
+        reply.players.push(info);
+    });
+
+    // We send the data back to the game...
+    var jsonReply = JSON.stringify(reply);
+    console.log(jsonReply);
+};
+
+/**
  * _onREQUEST_KICKOFF
  * ------------------
  * Called when we receive a request for player positions at kickoff.

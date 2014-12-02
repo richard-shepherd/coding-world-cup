@@ -23,11 +23,6 @@ function GSM_Kickoff(game, teamToKickOff) {
     // We store the team kicking off...
     this._teamToKickOff = teamToKickOff;
 
-    // We clear all actions and set the players to their
-    // default kickoff positions...
-    game.clearAllActions();
-    game.setDefaultKickoffPositions();
-
     // We send the KICKOFF request...
     var request = {
         request:'KICKOFF',
@@ -46,6 +41,11 @@ module.exports = GSM_Kickoff;
  * Called when we have received responses from both AIs.
  */
 GSM_Kickoff.prototype.onAIResponsesReceived = function() {
+    // We clear all actions and set the players to their
+    // default kickoff positions...
+    this._game.clearAllActions();
+    this._game.setDefaultKickoffPositions();
+
     // We process the two responses...
     this._processResponse(this._aiResponses.AI1.data, this._team1);
     this._processResponse(this._aiResponses.AI2.data, this._team2);

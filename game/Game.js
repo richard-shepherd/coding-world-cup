@@ -21,6 +21,7 @@ var GameState = require('./GameState');
 var Pitch = require('./Pitch');
 var GSM_Manager = require('./GSM_Manager');
 var GSM_ConfigureAbilities = require('./GSM_ConfigureAbilities');
+var GSM_Kickoff = require('./GSM_Kickoff');
 var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
 var Utils = UtilsLib.Utils;

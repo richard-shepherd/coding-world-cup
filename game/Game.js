@@ -20,8 +20,7 @@ var Ball = require('./Ball');
 var GameState = require('./GameState');
 var Pitch = require('./Pitch');
 var GSM_Manager = require('./GSM_Manager');
-var GSM_Play = require('./GSM_Play');
-var GSM_Kickoff = require('./GSM_Kickoff');
+var GSM_ConfigureAbilities = require('./GSM_ConfigureAbilities');
 var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
 var Utils = UtilsLib.Utils;
@@ -80,12 +79,15 @@ function Game(ai1, ai2, guiWebSocket) {
     // runs more in real time...
     this.simulationMode = false;
 
+    // The maximum total ability in each category...
+    this.maxTotalAbility = 400;
+
     // We send some events to the AIs at the start of the game...
     this.sendEvent_GameStart();
     this._sendEvent_TeamInfo();
 
     // We set the initial game state...
-    this._gsmManager.setState(new GSM_Kickoff(this, this._team1));
+    this._gsmManager.setState(new GSM_ConfigureAbilities(this));
 }
 
 /**
@@ -423,7 +425,7 @@ Game.prototype.getTeam2 = function() {
 Game.prototype.giveAllPlayersMaxAbilities = function() {
     this._players.forEach(function(player) {
         player.staticState.runningAbility = 100.0;
-        player.staticState.passingAbility = 100.0;
+        player.staticState.kickingAbility = 100.0;
         player.staticState.ballControlAbility = 100.0;
         player.staticState.tacklingAbility = 100.0;
         player.dynamicState.energy = 100.0;
@@ -532,6 +534,7 @@ Game.prototype.clearAllActions = function() {
  * --------------------------
  */
 Game.prototype.setDefaultKickoffPositions = function() {
+    this.ball.setPosition(this.pitch.centreSpot);
     this._team1.setDefaultKickoffPositions(this.pitch);
     this._team2.setDefaultKickoffPositions(this.pitch);
 };

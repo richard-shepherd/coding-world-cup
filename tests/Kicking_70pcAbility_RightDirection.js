@@ -29,7 +29,7 @@ exports['Lucky'] = function(test) {
 
     // We create a player in the centre of the pitch and give him the ball...
     var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 288.0);
-    player.staticState.passingAbility = 70.0;
+    player.staticState.kickingAbility = 70.0;
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...
@@ -68,7 +68,7 @@ exports['70pc ability'] = function(test) {
 
     // We create a player in the centre of the pitch and give him the ball...
     var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 77.0);
-    player.staticState.passingAbility = 70.0;
+    player.staticState.kickingAbility = 70.0;
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...

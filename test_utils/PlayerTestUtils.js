@@ -29,7 +29,7 @@ function setPlayerPosition(player, x, y, direction) {
     player.dynamicState.position.y = y;
     player.dynamicState.direction = direction;
     player.dynamicState.energy = Player.MAX_ENERGY;
-    player.staticState.passingAbility = 100.0;
+    player.staticState.kickingAbility = 100.0;
     player.staticState.runningAbility = 100.0;
     player.staticState.ballControlAbility = 100.0;
     player.staticState.tacklingAbility = 100.0;

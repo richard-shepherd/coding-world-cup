@@ -18,5 +18,5 @@ TODO: Test of more than one player tackling
 
 TODO: Test of kickoff positions
 
-TODO: Test that players cannot move to invalid positions
+TODO: Test that AIs receive error messages thrown by the game (for example, missing fields in messages)
 

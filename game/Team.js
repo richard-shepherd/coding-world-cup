@@ -280,6 +280,22 @@ Team.prototype.processKickoffResponse = function(data, teamKickingOff) {
     }, this);
 };
 
+/**
+ * processConfigureAbilitiesResponse
+ * ---------------------------------
+ * Assigns abilities to player. The team cannot have more than
+ * 'maxTotalAbility' in any one category.
+ */
+Team.prototype.processConfigureAbilitiesResponse = function(data, maxTotalAbility) {
+    // We're expecting a 'players' field...
+    if(!('players' in data)) {
+        throw new CWCError('Expected a "players" field in KICKOFF response');
+    }
+
+    // We update the abilities for each player...
+    data.players.forEach(function(playerInfo) {
+    });
+};
 
 // Exports...
 module.exports = Team;

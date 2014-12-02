@@ -1,12 +1,12 @@
 - How does kicking work?
 
 - We apply a random offset to the requested _angle_ based on
-  1. passingAbility
+  1. kickingAbility
   2. angle away from the direction the player is facing
 
 - So maybe two random factors - one for each of the points above.
 
-- passingAbility
+- kickingAbility
   - 100 = no deviation
   - 0   = deviation up to (180 degrees * random factor)
 

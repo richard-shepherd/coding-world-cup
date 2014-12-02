@@ -27,6 +27,14 @@ function Ball() {
 Ball.MAX_SPEED = 30.0;
 
 /**
+ * setPosition
+ * -----------
+ */
+Ball.prototype.setPosition = function(position) {
+    this.state.position.copyFrom(position);
+};
+
+/**
  * updatePosition
  * --------------
  * Updates the position of the ball when it is has been kicked.

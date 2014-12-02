@@ -1,0 +1,21 @@
+Configuring abilities
+---------------------
+- REQUEST near start of game
+  - At start of game or start of tournament?
+  - Game makes sense, as you know the player numbers then.
+  - Also, it could be that you are fielding a different team for each game.
+
+- "request":"CONFIGURE_ABILITIES"
+  - "totalKickingAbility":(value)
+  - "totalRunningAbility":(value)
+  - "totalBallControlAbility":(value)
+  - "totalTacklingAbility":(value)
+
+- Is this a GSM-state?
+  - Yes
+  - Waits for abilities, then moves to Kickoff
+
+- What's the response?
+  - [players], where each player is:
+  - {playerNumber, kickingAbility, runningAbility, ballControlAbility, tacklingAbility}
+

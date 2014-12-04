@@ -22,24 +22,24 @@ EVENT
 - Fields
   - "messageType":"EVENT"
 
-  - "event":"GAME_START"
+  - "eventType":"GAME_START"
     - Called at the start of a new game.
     - "pitch":{"width":(metres), "height":(metres), "goalY1":(value), "goalY2":(value)}
 
-  - "event":"TEAM_INFO"
+  - "eventType":"TEAM_INFO"
     - Called near the start of a game to give you team info.
     - "teamNumber":(1 or 2)
     - "players":[{"playerNumber":(number), "playerType":("P" or "G")}, ...]
 
-  - "event":"START_OF_HALF"
+  - "eventType":"START_OF_HALF"
     - Called at the start of each half of the game.
     - "direction":("RIGHT" or "LEFT")
 
-  - "event":"START_OF_TURN"
+  - "eventType":"START_OF_TURN"
     - Called at the start of each turn / time-slice
     - "game":{game-state}
 
-  - "event":"GOAL"
+  - "eventType":"GOAL"
     - "team1":(team-state, including "score")
     - "team2":(team-state, including "score")
 
@@ -50,10 +50,10 @@ REQUEST
 - Fields
   - "messageType":"REQUEST"
 
-  - "request":"PLAY"
+  - "requestType":"PLAY"
     - Called during the normal course of play to get player movements and actions.
 
-  - "request":"KICKOFF"
+  - "requestType":"KICKOFF"
     - "team1":{info including "direction"}
     - "team2":{info including "direction"}
     - "team":("team1" or "team2", the team kicking off)
@@ -61,7 +61,7 @@ REQUEST
 
 AI Response to PLAY request
 ---------------------------
-- "request":"PLAY"
+- "requestType":"PLAY"
 - "actions":[{"playerNumber":(value), "action":("MOVE", "TURN" etc), "action-specific-data":xyz}, ...]
 
 - "action":"MOVE"
@@ -83,5 +83,5 @@ AI Response to PLAY request
 
 AI Response to KICKOFF request
 ------------------------------
-- "request":"KICKOFF"
+- "requestType":"KICKOFF"
 - "players":[{"playerNumber":(value), "position":{"x":(value), "y":(value)}, "direction":(value)}, ...]

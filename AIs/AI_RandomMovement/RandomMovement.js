@@ -68,7 +68,7 @@ RandomMovement.prototype.onGameData = function(jsonData) {
  */
 RandomMovement.prototype._onEVENT = function(data) {
     // We call different functions depending on the event...
-    var eventHandler = '_onEVENT_' + data.event;
+    var eventHandler = '_onEVENT_' + data.eventType;
     this[eventHandler](data);
 };
 
@@ -79,7 +79,7 @@ RandomMovement.prototype._onEVENT = function(data) {
  */
 RandomMovement.prototype._onREQUEST = function(data) {
     // We call different functions depending on the request...
-    var requestHandler = '_onREQUEST_' + data.request;
+    var requestHandler = '_onREQUEST_' + data.requestType;
     this[requestHandler](data);
 };
 
@@ -125,7 +125,7 @@ RandomMovement.prototype._onEVENT_START_OF_TURN = function(data) {
  */
 RandomMovement.prototype._onREQUEST_CONFIGURE_ABILITIES = function(data) {
     var reply = {};
-    reply.request = "CONFIGURE_ABILITIES";
+    reply.requestType = "CONFIGURE_ABILITIES";
     reply.players = [];
 
     // We try to give each player 75% ability in each category, regardless
@@ -154,7 +154,7 @@ RandomMovement.prototype._onREQUEST_CONFIGURE_ABILITIES = function(data) {
 RandomMovement.prototype._onREQUEST_KICKOFF = function(data) {
     // We return an empty collection of positions, so we get the defaults...
     var reply = {};
-    reply.request = "KICKOFF";
+    reply.requestType = "KICKOFF";
     reply.players = [];
 
     // We send the data back to the game...
@@ -171,7 +171,7 @@ RandomMovement.prototype._onREQUEST_KICKOFF = function(data) {
 RandomMovement.prototype._onREQUEST_PLAY = function(data) {
     // We create an object for the reply...
     var reply = {};
-    reply.request = "PLAY";
+    reply.requestType = "PLAY";
     reply.actions = [];
 
     // We only update player movements if some time has elapsed...

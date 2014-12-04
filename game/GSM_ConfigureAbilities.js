@@ -19,7 +19,7 @@ function GSM_ConfigureAbilities(game) {
 
     // We send the CONFIGURE_ABILITIES request...
     var request = {
-        request:'CONFIGURE_ABILITIES',
+        requestType:'CONFIGURE_ABILITIES',
         totalKickingAbility:game.maxTotalAbility,
         totalRunningAbility:game.maxTotalAbility,
         totalBallControlAbility:game.maxTotalAbility,
@@ -55,7 +55,7 @@ GSM_ConfigureAbilities.prototype._processResponse = function (data, team) {
     // TODO: Put try...catch back later.
     //try {
     // We check that we got a PLAY response...
-    if(data.request !== 'CONFIGURE_ABILITIES') {
+    if(data.requestType !== 'CONFIGURE_ABILITIES') {
         throw new CWCError('Expected a CONFIGURE_ABILITIES response.')
     }
 

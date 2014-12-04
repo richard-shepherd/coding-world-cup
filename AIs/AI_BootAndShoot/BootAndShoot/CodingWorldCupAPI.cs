@@ -20,7 +20,6 @@ namespace BootAndShoot
         public CodingWorldCupAPI()
         {
             // We run the game loop...
-            // The game loop...
             Logger.log("Starting game loop", Logger.LogLevel.INFO);
             for (; ; )
             {
@@ -30,7 +29,7 @@ namespace BootAndShoot
             }
         }
 
-            /// <summary>
+        /// <summary>
         /// Called when we have received a new message from the game-engine.
         /// </summary>
         private void processMessage(string message)
@@ -39,13 +38,41 @@ namespace BootAndShoot
             
             // We decode the JSON message, and process it depending
             // on its message type...
-            var jsonMessage = Json.Decode(message);
-            string messageType = jsonMessage.messageType; 
+            var data = Json.Decode(message);
+            string messageType = data.messageType; 
             switch(messageType)
             {
+                case "EVENT":
+                    processEvent(data);
+                    break;
+
+                case "REQUEST":
+                    processRequest(data);
+                    break;
+
                 default:
                     throw new Exception("Unexpected messageType");
             }
+        }
+
+        /// <summary>
+        /// Called when we receive an EVENT.
+        /// </summary>
+        private void processEvent(dynamic data)
+        {
+            string eventType = data.eventType;
+            switch(eventType)
+    {
+
+    }
+        }
+
+        /// <summary>
+        /// Called when we receive a REQUEST.
+        /// </summary>
+        private void processRequest(dynamic data)
+        {
+
         }
     }
 }

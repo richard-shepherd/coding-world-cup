@@ -25,7 +25,7 @@ function GSM_Kickoff(game, teamToKickOff) {
 
     // We send the KICKOFF request...
     var request = {
-        request:'KICKOFF',
+        requestType:'KICKOFF',
         team1:game.getTeam1().state,
         team2:game.getTeam2().state,
         team:teamToKickOff.getTeamID()
@@ -65,7 +65,7 @@ GSM_Kickoff.prototype._processResponse = function (data, team) {
     // TODO: Put try...catch back later.
     //try {
     // We check that we got a PLAY response...
-    if(data.request !== 'KICKOFF') {
+    if(data.requestType !== 'KICKOFF') {
         throw new CWCError('Expected a KICKOFF response.')
     }
 

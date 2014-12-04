@@ -41,7 +41,7 @@ GSM_Play.prototype.onTurn = function() {
     this._game.sendEvent_StartOfTurn();
 
     // We request PLAY responses from the AIs...
-    this.sendRequestToBothAIs({request:"PLAY"});
+    this.sendRequestToBothAIs({requestType:"PLAY"});
 };
 
 /**
@@ -68,7 +68,7 @@ GSM_Play.prototype._processResponse = function (data, team) {
     // TODO: Put try...catch back later.
     //try {
         // We check that we got a PLAY response...
-        if(data.request !== 'PLAY') {
+        if(data.requestType !== 'PLAY') {
             throw new CWCError('Expected a PLAY response.')
         }
 

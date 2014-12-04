@@ -164,7 +164,7 @@ Team.prototype._getPlayer = function(playerNumber) {
 Team.prototype.sendEvent_TeamInfo = function() {
     // We create the info for the event...
     var event = {
-        event:"TEAM_INFO",
+        eventType:"TEAM_INFO",
         teamNumber:this._teamNumber,
         players:[]
     };

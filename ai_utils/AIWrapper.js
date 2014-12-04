@@ -57,12 +57,15 @@ AIWrapper.prototype.wrap = function(aiInfo) {
 
     // We hook up to stdout from the AI...
     var that = this;
-    //this._aiProcess.stdout.on('data', function(data) {
-    //    that.onResponseReceived(data);
-    //});
     this._aiProcess.stdout.on('data', function(data) {
         var line = data.toString();
         that.onResponseReceived(line);
+    });
+
+    // And to stderr...
+    this._aiProcess.stderr.on('data', function(data) {
+        var line = data.toString();
+        Logger.log(line, Logger.LogLevel.ERROR);
     });
 };
 

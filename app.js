@@ -17,6 +17,7 @@ Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.DEBUG));
 var aiManager = new AIManager();
 
 // We create two AIs...
+//var ai1 = aiManager.getAIWrapperFromName('BootAndShoot');
 var ai1 = aiManager.getAIWrapperFromName('RandomMovement');
 var ai2 = aiManager.getAIWrapperFromName('RandomMovement');
 

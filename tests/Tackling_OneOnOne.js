@@ -31,7 +31,7 @@ exports['Equal ability'] = function(test) {
     game.giveBallToPlayer(player2);
 
     // We tell player1 to tackle player2...
-    player1._setAction_TACKLE({player:playerNumberToTackle, strength:100.0});
+    player1._setAction_TAKE_POSSESSION();
     game.calculate();
 
     // We check the results (player1 should have the ball)...

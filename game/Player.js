@@ -291,11 +291,18 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
  * players trying to take possession at the same time.
  */
 Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhenComplete) {
-    // We check if a player (including ourself) already has possession...
+    // If we already have possession, we clear the action...
+    if(this.dynamicState.hasBall) {
+        this.clearAction();
+        return;
+    }
+
+    // We check if another player has possession...
     var ballState = game.ball.state;
     if(ballState.controllingPlayerNumber !== -1) {
-        // The ball is already in a player's possession...
-        this.clearAction();
+        // The ball is in another player's possession, so we try to tackle...
+        this.actionState.tacklePlayerNumber = ballState.controllingPlayerNumber;
+        this._processAction_TACKLE(game, resetActionWhenComplete);
         return;
     }
 
@@ -376,12 +383,12 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
  */
 Player.prototype.getProbabilityOfTakingPossession = function(game) {
     // Is this player trying to take possession?
-    if(this.actionState.action !== PlayerState_Action.Action.TAKE_POSSESSION) {
+    var ball = game.ball;
+    if(!this.isTakingPossession(ball)) {
         return 0.0;
     }
 
     // Is the player near enough?
-    var ball = game.ball;
     var distance = this.getDistanceToBall(ball);
     if(distance > 0.5) {
         return 0.0;
@@ -414,8 +421,7 @@ Player.prototype.getProbabilityOfTakingPossession = function(game) {
  */
 Player.prototype.getProbabilityOfSuccessfulTackle = function(game, opponent) {
     // Is this player trying to tackle?
-    var actionState = this.actionState;
-    if(actionState.action !== PlayerState_Action.Action.TACKLE) {
+    if(!this.isTackling(game.ball)) {
         return 0.0;
     }
 
@@ -426,8 +432,6 @@ Player.prototype.getProbabilityOfSuccessfulTackle = function(game, opponent) {
     if(distance > 0.5) {
         return 0.0;
     }
-
-    // TODO: include the tackling strength, and fouling
 
     // The player is near enough to tackle, so we calculate the probability
     // that he gets the ball. This depends on the relative tackling ability
@@ -578,24 +582,6 @@ Player.prototype._setAction_TAKE_POSSESSION = function(action) {
 };
 
 /**
- * _setAction_TACKLE
- * -----------------
- * Sets the action to tackle another player.
- */
-Player.prototype._setAction_TACKLE = function(action) {
-    // We expect the action to have "player" and "strength" fields...
-    if(!('player' in action)) {
-        throw new CWCError('Expected "player" field in TACKLE action');
-    }
-    if(!('strength' in action)) {
-        throw new CWCError('Expected "strength" field in TACKLE action');
-    }
-    this.actionState.action = PlayerState_Action.Action.TACKLE;
-    this.actionState.tacklePlayerNumber = action.player;
-    this.actionState.tackleStrength = action.strength;
-};
-
-/**
  * clearAction
  * -----------
  * Sets the action to NONE.
@@ -715,6 +701,38 @@ Player.prototype._validatePosition_Goalkeeper = function(position, playDirection
         default:
             throw new CWCError('Unexpected playDirection');
     }
+};
+
+/**
+ * isTakingPossession
+ * ------------------
+ * True if the player is attempting to "take possession", ie trying
+ * to get the ball when it is not controlled by any player.
+ */
+Player.prototype.isTakingPossession = function(ball) {
+    // Are we trying to take possession?
+    if(this.actionState.action != PlayerState_Action.Action.TAKE_POSSESSION) {
+        return false;
+    }
+
+    // Is the ball controlled by any player?
+    return (ball.state.controllingPlayerNumber === -1);
+};
+
+/**
+ * isTackling
+ * ----------
+ * True if the player is tackling, ie trying to take possession when the
+ * ball is controlled by another player.
+ */
+Player.prototype.isTackling = function(ball) {
+    // Are we trying to take possession?
+    if(this.actionState.action != PlayerState_Action.Action.TAKE_POSSESSION) {
+        return false;
+    }
+
+    // Is the ball controlled by any player?
+    return (ball.state.controllingPlayerNumber !== -1);
 };
 
 // Exports...

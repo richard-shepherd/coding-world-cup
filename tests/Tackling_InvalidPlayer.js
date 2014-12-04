@@ -24,8 +24,8 @@ exports['On same team'] = function(test) {
     PlayerTestUtils.setPlayerPosition(player2, 38.0, 21.0, 47.0);
     game.giveBallToPlayer(player2);
 
-    // We tell player1 to tackle player2...
-    player1._setAction_TACKLE({player:2, strength:100.0});
+    // We tell player1 to tackle...
+    player1._setAction_TAKE_POSSESSION();
     game.calculate();
 
     // We check the results...
@@ -49,8 +49,8 @@ exports['Player does not have ball'] = function(test) {
     var player2 = game.getPlayer(playerNumberToTackle);
     PlayerTestUtils.setPlayerPosition(player2, 38.0, 21.0, 47.0);
 
-    // We tell player1 to tackle player2...
-    player1._setAction_TACKLE({player:playerNumberToTackle, strength:100.0});
+    // We tell player1 to tackle...
+    player1._setAction_TAKE_POSSESSION();
     game.calculate();
 
     // We check the results...
@@ -75,8 +75,8 @@ exports['Tackling the goalkeeper'] = function(test) {
     PlayerTestUtils.setPlayerPosition(goalkeeper, 38.0, 21.0, 47.0);
     game.giveBallToPlayer(goalkeeper);
 
-    // We tell player1 to tackle the goalkeeper...
-    player1._setAction_TACKLE({player:goalkeeperNumber, strength:100});
+    // We tell player1 to tackle...
+    player1._setAction_TAKE_POSSESSION();
     game.calculate();
 
     // We check the results...
@@ -103,7 +103,7 @@ exports['Goalkeeper tries to tackle'] = function(test) {
     game.giveBallToPlayer(player1);
 
     // We tell the goalkeeper to tackle player1...
-    goalkeeper._setAction_TACKLE({player:player1Number, strength:100});
+    goalkeeper._setAction_TAKE_POSSESSION();
     game.calculate();
 
     // We check the results...
@@ -129,7 +129,7 @@ exports['Player over 5m away'] = function(test) {
     game.giveBallToPlayer(player2);
 
     // We tell player1 to tackle player2...
-    player1._setAction_TACKLE({player:playerNumberToTackle, strength:100.0});
+    player1._setAction_TAKE_POSSESSION();
     game.calculate();
 
     // We check the results...

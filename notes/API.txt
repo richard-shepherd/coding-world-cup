@@ -77,10 +77,8 @@ AI Response to PLAY request
 
 - "action":"TAKE_POSSESSION"
   - (no parameters)
+  - Takes possession or tackles the player with the ball (if within 5m)
 
-- "action":"TACKLE"
-  - "player":(player-number of the player to tackle)
-  - "strength":(value between 0.0-100.0)
 
 
 AI Response to KICKOFF request

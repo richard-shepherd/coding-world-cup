@@ -1,0 +1,12 @@
+Merge take possession and tackling
+----------------------------------
+- Huw suggested it, and it seems like a good idea!
+
+- You issue the TAKE_POSSESSION action
+
+- The rules about 5m still apply.
+
+- It means that if a player kicks the ball, you will try to get it.
+  - Instead of having to switch between tacke and take-possession actions.
+
+

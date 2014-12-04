@@ -127,7 +127,8 @@ exports['Kick up facing up'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 270.0);
+    var player = game.getPlayer(1);
+    PlayerTestUtils.setPlayerPosition(player, 50.0, 25.0, 270.0);
     game.giveBallToPlayer(player);
 
     // The player kicks the ball...

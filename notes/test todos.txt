@@ -1,7 +1,5 @@
 TODO: Test moving along a diagonal (not 45 degrees)
 
-TODO: Test that you can't move off the pitch, and other invalid positions
-
 TODO: Test that player slows down as energy runs down
 
 TODO: Test that energy does not go below zero (and player does not go backwards!)

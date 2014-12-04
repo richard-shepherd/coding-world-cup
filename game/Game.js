@@ -122,14 +122,14 @@ Game.prototype.createTeams = function(ai1, ai2) {
 Game.prototype.addPlayersToTeam = function(team, playerNumber) {
     // We add the _players...
     for(var i=0; i<Team.NUMBER_OF_PLAYERS; ++i) {
-        var player = new Player(playerNumber.value, PlayerState_Static.PlayerType.PLAYER);
+        var player = new Player(playerNumber.value, PlayerState_Static.PlayerType.PLAYER, team);
         this._players.push(player);
         team.addPlayer(player);
         playerNumber.value++;
     }
 
     // And the goalkeeper...
-    player = new Player(playerNumber.value, PlayerState_Static.PlayerType.GOALKEEPER);
+    player = new Player(playerNumber.value, PlayerState_Static.PlayerType.GOALKEEPER, team);
     this._players.push(player);
     team.addPlayer(player);
     playerNumber.value++;

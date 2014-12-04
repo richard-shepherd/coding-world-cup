@@ -28,7 +28,8 @@ exports['Lucky'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 288.0);
+    var player = game.getPlayer(1);
+    PlayerTestUtils.setPlayerPosition(player, 50.0, 25.0, 288.0);
     player.staticState.kickingAbility = 70.0;
     game.giveBallToPlayer(player);
 
@@ -67,7 +68,8 @@ exports['70pc ability'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 77.0);
+    var player = game.getPlayer(1);
+    PlayerTestUtils.setPlayerPosition(player, 50.0, 25.0, 77.0);
     player.staticState.kickingAbility = 70.0;
     game.giveBallToPlayer(player);
 

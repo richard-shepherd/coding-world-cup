@@ -53,6 +53,14 @@ Team.prototype.getTeamID = function() {
 };
 
 /**
+ * getDirection
+ * ------------
+ */
+Team.prototype.getDirection = function() {
+    return this.state.direction;
+};
+
+/**
  * setDirection
  * ------------
  * Sets the direction the team is playing.

@@ -29,12 +29,15 @@ var GameUtils = require('./GameUtils');
 /**
  * @constructor
  */
-function Player(playerNumber, playerType) {
+function Player(playerNumber, playerType, team) {
     // Dynamic state (position etc)...
     this.dynamicState = new PlayerState_Dynamic();
 
     // Static state (skills, abilities etc)...
     this.staticState = new PlayerState_Static(playerNumber, playerType);
+
+    // The team the player is a member of...
+    this._team = team;
 
     // Current action (moving, kicking etc)...
     this.actionState = new PlayerState_Action();
@@ -188,7 +191,19 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
     var scaledVector = vectorToDestination.scale(scaleFactor);
 
     // We move the player...
-    position.addVector(scaledVector);
+    var newPosition = new Position(position.x, position.y);
+    newPosition.addVector(scaledVector);
+
+    // Is the new position a valid one for this player?
+    var validPosition = this.validatePosition(newPosition, this._team.getDirection(), false, false);
+    if(!validPosition) {
+        // The player tried to move to an invalid position...
+        this.clearAction();
+        return;
+    }
+
+    // We update the position...
+    position.copyFrom(newPosition);
 
     // If the player has the ball, we move the ball as well...
     if(this.dynamicState.hasBall) {

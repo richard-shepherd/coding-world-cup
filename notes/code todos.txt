@@ -1,7 +1,3 @@
-TODO: Method to set direction in degrees
-
-TODO: Method to set direction facing a destination
-
 TODO: Decide whether speed & kicking strength decreases as energy goes down. Or it could remain at full strength until energy runs out.
 
 TODO: If speed goes down with energy, then need to calculate energy (and thus speed) at start and end of a calculation interval and "integrate".
@@ -14,11 +10,7 @@ TODO: Think about timeouts for AI responses
 
 TODO: Add processing time allowances to the Teams. Process in GSM_Base??
 
-TODO: Do not allow players within (10 metres?) of the goal
-
 TODO: Only allow the goalkeeper to hold the ball for 5 seconds
-
-TODO: Check that players do not go into the goal circle, and that the goalkeeper doesn't go outside
 
 TODO: Add fouling to tackling
 
@@ -28,6 +20,4 @@ TODO: Try to avoid timewasting. Can't pass back and forth with the goalkeeper
 
 TODO: Some notes on wiki about how to debug AIs.
 
-TODO: Validate movement of players in game loop
-TODO: RandomMovement should keep goalkeepers in their areas, and players outside.
-TODO: OR: movement should fail if a player moves to an invalid position.
+TODO: Merge the take-possession and tackle actions

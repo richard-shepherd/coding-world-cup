@@ -29,7 +29,8 @@ exports['Kick backwards - Lucky'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 20.0);
+    var player = game.getPlayer(1);
+    PlayerTestUtils.setPlayerPosition(player, 50.0, 25.0, 20.0);
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...
@@ -68,7 +69,8 @@ exports['Kick backwards'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 20.0);
+    var player = game.getPlayer(1);
+    PlayerTestUtils.setPlayerPosition(player, 50.0, 25.0, 20.0);
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...
@@ -106,7 +108,8 @@ exports['Kick sideways'] = function(test) {
     ball.friction = 0.0;
 
     // We create a player in the centre of the pitch and give him the ball...
-    var player = PlayerTestUtils.createPlayerAt(50.0, 25.0, 250.0);
+    var player = game.getPlayer(1);
+    PlayerTestUtils.setPlayerPosition(player, 50.0, 25.0, 250.0);
     game.giveBallToPlayer(player);
 
     // We mock the random number generator...

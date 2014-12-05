@@ -50,9 +50,7 @@ namespace BootAndShoot
             var messageToLog = String.Format("{0},{1}: {2}", DateTime.Now.ToString(), logLevel.ToString(), message);
             var lines = new List<string>();
             lines.Add(messageToLog);
-
-            //File.WriteAllLines("log/BootAndShoot.log", lines);
-            File.AppendAllLines("log/BootAndShoot.log", lines);
+            File.AppendAllLines("log/log.txt", lines);
         }
 
         // The current log level...

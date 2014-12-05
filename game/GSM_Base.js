@@ -97,7 +97,7 @@ GSM_Base.prototype.onResponse_AI1 = function(jsonData) {
     var message = util.format('GOT RESPONSE (AI1): %s', jsonData);
     Logger.log(message, Logger.LogLevel.DEBUG);
 
-    // We store the jsonData and check whether we have received both updates...
+    // We store the data and check whether we have received both updates...
     this._aiResponses.AI1 = this._getAIResponse(jsonData);
     this._checkResponses();
 };
@@ -111,7 +111,7 @@ GSM_Base.prototype.onResponse_AI2 = function(jsonData) {
     var message = util.format('GOT RESPONSE (AI2): %s', jsonData);
     Logger.log(message, Logger.LogLevel.DEBUG);
 
-    // We store the jsonData and check whether we have received both updates...
+    // We store the data and check whether we have received both updates...
     this._aiResponses.AI2 = this._getAIResponse(jsonData);
     this._checkResponses();
 };
@@ -122,7 +122,7 @@ GSM_Base.prototype.onResponse_AI2 = function(jsonData) {
  * Checks whether we have received responses from both AIs.
  */
 GSM_Base.prototype._checkResponses = function() {
-    // We check if we have jsonData from both AIs in our
+    // We check if we have data from both AIs in our
     // collection of responses...
     if(!('AI1' in this._aiResponses)) return;
     if(!('AI2' in this._aiResponses)) return;
@@ -142,7 +142,7 @@ GSM_Base.prototype._checkResponses = function() {
 /**
  * _getAIResponse
  * --------------
- * Creates an AIResponse object to hold the jsonData passed in by an AI,
+ * Creates an AIResponse object to hold the data passed in by an AI,
  * along with other associated info.
  */
 GSM_Base.prototype._getAIResponse = function(jsonData) {

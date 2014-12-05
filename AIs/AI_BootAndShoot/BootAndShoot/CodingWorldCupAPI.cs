@@ -108,7 +108,7 @@ namespace BootAndShoot
             double totalBallControlAbility = data.totalBallControlAbility;
             double totalTacklingAbility = data.totalTacklingAbility;
 
-            int numberOfPlayers = this.allPlayers.Count;
+            int numberOfPlayers = this.teamPlayers.Count + 1; // +1 for the goalkeeper
 
             // We create the reply...
             var reply = new JSObject();
@@ -116,10 +116,10 @@ namespace BootAndShoot
 
             // We give each player an average ability in all categories...
             var playerInfos = new List<JSObject>();
-            foreach(var player in this.allPlayers)
+            foreach(var playerNumber in this.allTeamPlayers.Keys)
             {
                 var playerInfo = new JSObject();
-                playerInfo.add("playerNumber", player.playerNumber);
+                playerInfo.add("playerNumber", playerNumber);
                 playerInfo.add("kickingAbility", totalKickingAbility / numberOfPlayers);
                 playerInfo.add("runningAbility", totalRunningAbility / numberOfPlayers);
                 playerInfo.add("ballControlAbility", totalBallControlAbility / numberOfPlayers);
@@ -259,7 +259,28 @@ namespace BootAndShoot
         private void processEvent_TeamInfo(dynamic data)
         {
             this.teamNumber = data.teamNumber;
-            this.allPlayers = new List<dynamic>(data.players);
+
+            // We keep a collection of all the player-numbers in out team
+            // as well as the information sorted by player vs. goalkeeper...
+            foreach(var player in data.players)
+            {
+                int playerNumber = player.playerNumber;
+
+                // We set up the all-players collection...
+                this.allTeamPlayers[playerNumber] = new { };
+
+                // And the player / goalkeeper split...
+                if(player.playerType == "P")
+                {
+                    // This is a player...
+                    this.teamPlayers[playerNumber] = new { };
+                }
+                else
+                {
+                    // This is the goalkeeper...
+                    this.teamGoalkeeperPlayerNumber = playerNumber;
+                }
+            }
         }
 
         /// <summary>
@@ -267,7 +288,72 @@ namespace BootAndShoot
         /// </summary>
         private void processEvent_StartOfTurn(dynamic data)
         {
-            this.gameState = data.game;
+            // We store the whole game-state...
+            this.gameState = data;
+
+            // And we split up parts of it.
+
+            // The ball...
+            this.ball = data.ball;
+
+            // The teams...
+            if(this.teamNumber == 1)
+            {
+                // We are team 1...
+                storeTeamInfo(data.team1);
+                storeOpposingTeamInfo(data.team2);
+            }
+            else
+            {
+                // We are team 2...
+                storeTeamInfo(data.team2);
+                storeOpposingTeamInfo(data.team1);
+            }
+        }
+
+        /// <summary>
+        /// Stores info about our team in our internal collections.
+        /// </summary>
+        private void storeTeamInfo(dynamic teamInfo)
+        {
+            // We store info about each player in the team in a map 
+            // by player-number, and we also split out the player info
+            // from the goalkeeper info...
+            foreach (var playerInfo in teamInfo.players)
+            {
+                var staticState = playerInfo.staticState;
+                int playerNumber = staticState.playerNumber;
+
+                // We store all the players in one collection...
+                this.allTeamPlayers[playerNumber] = playerInfo;
+
+                // And split by player vs. goalkeeper...
+                string playerType = staticState.playerType;
+                if(playerType == "P")
+                {
+                    // This is a player...
+                    this.teamPlayers[playerNumber] = playerInfo;
+                }
+                else
+                {
+                    // This is the goalkeeper...
+                    this.teamGoalkeeper = playerInfo;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Stores info about the opposing team in our internal collections.
+        /// </summary>
+        private void storeOpposingTeamInfo(dynamic teamInfo)
+        {
+            // We store info about each player in the opposing team 
+            // in a map by player-number...
+            foreach(var playerInfo in teamInfo.players)
+            {
+                int playerNumber = playerInfo.staticState.playerNumber;
+                this.allOpposingTeamPlayers[playerNumber] = playerInfo;
+            }
         }
 
         /// <summary>
@@ -298,22 +384,40 @@ namespace BootAndShoot
         #region Protected data
 
         // The dimensions of the pitch...
-        protected dynamic pitch = null;
+        protected dynamic pitch = new { };
 
         // Our team number...
         protected int teamNumber = -1;
 
-        // The collection of players in the team...
-        protected IList<dynamic> allPlayers = null;
+        // The collection of all players in our team...
+        // This is a map of player-number to information about the player.
+        protected Dictionary<int, dynamic> allTeamPlayers = new Dictionary<int, dynamic>();
 
-        // The game start at the start of each turn...
-        protected dynamic gameState = null;
+        // The collection of players, not including the goalkeeper.
+        // This is a map of player-number to information about the player.
+        protected Dictionary<int, dynamic> teamPlayers = new Dictionary<int, dynamic>();
+
+        // Information about the goalkeeper...
+        protected int teamGoalkeeperPlayerNumber = -1;
+        protected dynamic teamGoalkeeper = new { };
+
+        // The collection of all players in the opposing team...
+        // This is a map of player-number to information about the player.
+        protected Dictionary<int, dynamic> allOpposingTeamPlayers = new Dictionary<int, dynamic>();
+
+        // The game start at the start of each turn.
+        // Some of this data is split up into the 'ball' info and the 
+        // 'players' info...
+        protected dynamic gameState = new { };
+
+        // Information about the ball, including its position, direction and speed...
+        protected dynamic ball = new { };
 
         // Info about our team. Includes the score and the direction of play...
-        protected dynamic teamInfo = null;
+        protected dynamic teamInfo = new { };
 
         // Info about the opposing team. Includes the score and the direction of play...
-        protected dynamic opposingTeamInfo = null;
+        protected dynamic opposingTeamInfo = new { };
 
         // True if we are kicking off.
         // (Only valid during a KICKOFF event and request.)

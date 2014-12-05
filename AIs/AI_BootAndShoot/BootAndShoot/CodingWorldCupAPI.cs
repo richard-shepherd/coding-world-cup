@@ -216,7 +216,7 @@ namespace BootAndShoot
                     break;
 
                 default:
-                    throw new Exception("Unexpected eventType");
+                    throw new Exception("Unexpected eventType: " + eventType);
             }
         }
 
@@ -270,10 +270,27 @@ namespace BootAndShoot
             this.gameState = data.game;
         }
 
-
+        /// <summary>
+        /// Called when we receive a KICKOFF event.
+        /// </summary>
         private void processEvent_Kickoff(dynamic data)
         {
+            // We store the team info (including playing direction and score)...
+            if(this.teamNumber == 1)
+            {
+                // We are team 1...
+                this.teamInfo = data.team1;
+                this.opposingTeamInfo = data.team2;
+            }
+            else
+            {
+                // We are team 2...
+                this.teamInfo = data.team2;
+                this.opposingTeamInfo = data.team1;
+            }
 
+            // Are we the team kicking off?
+            this.weAreKickingOff = (data.teamKickingOff == this.teamNumber);
         }
 
         #endregion

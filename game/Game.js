@@ -434,11 +434,11 @@ Game.prototype.giveAllPlayersMaxAbilities = function() {
 };
 
 /**
- * _sendEvent
- * ----------
+ * sendEvent
+ * ---------
  * Sends the event to both AIs and to the GUI.
  */
-Game.prototype._sendEvent = function(event) {
+Game.prototype.sendEvent = function(event) {
     // We get the JSON version of the event...
     var jsonEvent = MessageUtils.getEventJSON(event);
 
@@ -464,7 +464,7 @@ Game.prototype.sendEvent_GameStart = function() {
         eventType:"GAME_START",
         pitch: this.pitch
     };
-    this._sendEvent(event);
+    this.sendEvent(event);
 };
 
 /**
@@ -486,7 +486,7 @@ Game.prototype.sendEvent_StartOfTurn = function() {
     // We get the DTO and pass it to the AIs...
     var event = this.getDTO(true);
     event.eventType = "START_OF_TURN";
-    this._sendEvent(event);
+    this.sendEvent(event);
 };
 
 /**
@@ -499,7 +499,7 @@ Game.prototype.sendEvent_Goal = function() {
         team1:this._team1.state,
         team2:this._team2.state
     };
-    this._sendEvent(event);
+    this.sendEvent(event);
 };
 
 /**

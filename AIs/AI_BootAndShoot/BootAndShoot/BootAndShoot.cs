@@ -16,9 +16,5 @@ namespace BootAndShoot
     /// </remarks>
     class BootAndShoot : CodingWorldCupAPI
     {
-        protected override void processRequest_Play(dynamic data)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

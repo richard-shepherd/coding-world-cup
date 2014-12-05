@@ -23,14 +23,17 @@ function GSM_Kickoff(game, teamToKickOff) {
     // We store the team kicking off...
     this._teamToKickOff = teamToKickOff;
 
-    // We send the KICKOFF request...
-    var request = {
-        requestType:'KICKOFF',
+    // We send the KICKOFF event...
+    var event = {
+        eventType:'KICKOFF',
         team1:game.getTeam1().state,
         team2:game.getTeam2().state,
-        team:teamToKickOff.getTeamID()
+        teamKickingOff:teamToKickOff.getTeamNumber()
     };
-    this.sendRequestToBothAIs(request);
+    game.sendEvent(event);
+
+    // And the request...
+    this.sendRequestToBothAIs({requestType:'KICKOFF'});
 }
 Utils.extend(GSM_Base, GSM_Kickoff); // Derived from GSM_Base.
 module.exports = GSM_Kickoff;

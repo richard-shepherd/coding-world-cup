@@ -44,12 +44,11 @@ Team.prototype.addPlayer = function(player) {
 };
 
 /**
- * getTeamID
- * ---------
- * Returns the team ID, ie "team1" or "team2".
+ * getTeamNumber
+ * -------------
  */
-Team.prototype.getTeamID = function() {
-    return 'team' + this._teamNumber;
+Team.prototype.getTeamNumber = function() {
+    return this._teamNumber;
 };
 
 /**

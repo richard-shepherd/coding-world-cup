@@ -96,10 +96,9 @@ namespace BootAndShoot
         #region Abstract and virtual methods
 
         /// <summary>
-        /// Called when we receive the request to configure players' abilities.
+        /// Default implementation for the CONFIGURE_ABLITIES request.
         /// </summary><remarks>
-        /// This is a default implementation. AIs can override this to
-        /// configure abilities more intelligently.
+        /// We give all players an average level of ability in all areas.
         /// </remarks>
         protected virtual void processRequest_ConfigureAbilities(dynamic data)
         {
@@ -132,12 +131,35 @@ namespace BootAndShoot
             sendReply(reply);
         }
 
+        /// <summary>
+        /// Default implementation for the kickoff request.
+        /// </summary><remarks>
+        /// Returns a minimal response (which results in default positions
+        /// being allocated).
+        /// </remarks>
         protected virtual void processRequest_Kickoff(dynamic data)
         {
-
+            // We create the reply...
+            var reply = new JSObject();
+            reply.add("requestType", "KICKOFF");
+            reply.add("players", new List<JSObject>());
+            sendReply(reply);
         }
 
-        protected abstract void processRequest_Play(dynamic data);
+        /// <summary>
+        /// Default implementation for the PLAY request.
+        /// </summary><remarks>
+        /// We send back an empty list of actions, which means that
+        /// the players do nothing.
+        /// </remarks>
+        protected virtual void processRequest_Play(dynamic data)
+        {
+            // We create the reply...
+            var reply = new JSObject();
+            reply.add("requestType", "PLAY");
+            reply.add("actions", new List<JSObject>());
+            sendReply(reply);
+        }
 
         #endregion
 
@@ -187,6 +209,10 @@ namespace BootAndShoot
 
                 case "START_OF_TURN":
                     processEvent_StartOfTurn(data);
+                    break;
+
+                case "KICKOFF":
+                    processEvent_Kickoff(data);
                     break;
 
                 default:
@@ -244,21 +270,37 @@ namespace BootAndShoot
             this.gameState = data.game;
         }
 
+
+        private void processEvent_Kickoff(dynamic data)
+        {
+
+        }
+
         #endregion
 
         #region Protected data
 
         // The dimensions of the pitch...
-        dynamic pitch = null;
+        protected dynamic pitch = null;
 
         // Our team number...
-        int teamNumber = -1;
+        protected int teamNumber = -1;
 
         // The collection of players in the team...
-        IList<dynamic> allPlayers = null;
+        protected IList<dynamic> allPlayers = null;
 
         // The game start at the start of each turn...
-        dynamic gameState = null;
+        protected dynamic gameState = null;
+
+        // Info about our team. Includes the score and the direction of play...
+        protected dynamic teamInfo = null;
+
+        // Info about the opposing team. Includes the score and the direction of play...
+        protected dynamic opposingTeamInfo = null;
+
+        // True if we are kicking off.
+        // (Only valid during a KICKOFF event and request.)
+        protected bool weAreKickingOff = false;
 
         #endregion
 

@@ -41,6 +41,9 @@ function RandomMovement() {
     // The game state for the current turn...
     this._gameState = {};
 
+    // Kickoff info, including the direction we're playing...
+    this._kickoffInfo = {};
+
     // The last time (in game-time) that we changed the movement of
     // players. We only update every few seconds...
     this._lastTimeWeChangedMovements = 0.0;
@@ -116,6 +119,15 @@ RandomMovement.prototype._onEVENT_TEAM_INFO = function(data) {
 RandomMovement.prototype._onEVENT_START_OF_TURN = function(data) {
     // We store the current game state, to use later when we get requests...
     this._gameState = data.game;
+};
+
+/**
+ * _onEVENT_KICKOFF
+ * ----------------
+ * Called when we get the KICKOFF event.
+ */
+RandomMovement.prototype._onEVENT_KICKOFF = function(data) {
+    this._kickoffInfo = data;
 };
 
 /**

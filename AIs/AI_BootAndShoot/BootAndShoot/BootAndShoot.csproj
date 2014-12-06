@@ -48,6 +48,7 @@
     <Compile Include="BootAndShoot.cs" />
     <Compile Include="CodingWorldCupAPI.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

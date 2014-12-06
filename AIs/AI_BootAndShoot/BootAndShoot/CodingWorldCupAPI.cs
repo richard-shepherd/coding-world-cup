@@ -161,6 +161,14 @@ namespace BootAndShoot
             sendReply(reply);
         }
 
+        /// <summary>
+        /// Called after the TEAM_INFO event has been processed.
+        /// (If the implementation in this class has been called.)
+        /// </summary>
+        protected virtual void onTeamInfoUpdated()
+        {
+        }
+
         #endregion
 
         #region Private functions
@@ -281,6 +289,9 @@ namespace BootAndShoot
                     this.teamGoalkeeperPlayerNumber = playerNumber;
                 }
             }
+
+            // We notify that team inf has been updated...
+            onTeamInfoUpdated();
         }
 
         /// <summary>
@@ -375,6 +386,16 @@ namespace BootAndShoot
                 this.opposingTeamInfo = data.team1;
             }
 
+            // We find the direction we are playing...
+            if(this.teamInfo.direction == "LEFT")
+            {
+                this.playingDirection = PlayingDirectionType.LEFT;
+            }
+            else
+            {
+                this.playingDirection = PlayingDirectionType.RIGHT;
+            }
+
             // Are we the team kicking off?
             this.weAreKickingOff = (data.teamKickingOff == this.teamNumber);
         }
@@ -422,6 +443,21 @@ namespace BootAndShoot
         // True if we are kicking off.
         // (Only valid during a KICKOFF event and request.)
         protected bool weAreKickingOff = false;
+
+        // The direction we are playing...
+        protected enum PlayingDirectionType
+        {
+            // We don't yet know the playing direction...
+            DONT_KNOW,
+
+            // We are shooting at the left goal...
+            LEFT,
+
+            // We are shooting at the right goal...
+            RIGHT
+        }
+        protected PlayingDirectionType playingDirection;
+
 
         #endregion
 

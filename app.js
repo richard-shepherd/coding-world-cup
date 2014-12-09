@@ -18,13 +18,14 @@ var aiManager = new AIManager();
 
 // We create two AIs...
 var ai1 = aiManager.getAIWrapperFromName('BootAndShoot');
+var ai2 = aiManager.getAIWrapperFromName('BootAndShoot');
 //var ai1 = aiManager.getAIWrapperFromName('RandomMovement');
-var ai2 = aiManager.getAIWrapperFromName('RandomMovement');
+//var ai2 = aiManager.getAIWrapperFromName('RandomMovement');
 
 // We create a new game...
 var guiWebSocket = new GUIWebSocket(12345);
 var game = new Game(ai1, ai2, guiWebSocket);
-game.setSimulationMode(false);
+game.setSimulationMode(true);
 
 // And we start to play...
 game.onTurn();

@@ -131,6 +131,22 @@ RandomMovement.prototype._onEVENT_KICKOFF = function(data) {
 };
 
 /**
+ * _onEVENT_GOAL
+ * -------------
+ * Called when we get the GOAL event.
+ */
+RandomMovement.prototype._onEVENT_GOAL = function(data) {
+};
+
+/**
+ * _onEVENT_HALF_TIME
+ * ------------------
+ * Called when we get the HALF_TIME event.
+ */
+RandomMovement.prototype._onEVENT_HALF_TIME = function(data) {
+};
+
+/**
  * _onREQUEST_CONFIGURE_ABILITIES
  * ------------------------------
  * Called when we receive the request to configure abilities for our players.

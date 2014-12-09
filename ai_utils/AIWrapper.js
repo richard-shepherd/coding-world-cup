@@ -9,6 +9,7 @@
 var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
 var child_process = require('child_process');
+var readline = require('readline');
 
 
 /**
@@ -56,9 +57,12 @@ AIWrapper.prototype.wrap = function(aiInfo) {
     this._aiProcess = child_process.spawn(aiInfo.executable, aiInfo.args, {cwd:aiInfo.absoluteFolder});
 
     // We hook up to stdout from the AI...
+    this._io = readline.createInterface({
+        input: this._aiProcess.stdout,
+        output: process.stdout
+    });
     var that = this;
-    this._aiProcess.stdout.on('data', function(data) {
-        var line = data.toString();
+    this._io.on('line', function(line){
         that.onResponseReceived(line);
     });
 

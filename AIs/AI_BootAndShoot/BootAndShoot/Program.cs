@@ -15,12 +15,13 @@ namespace BootAndShoot
             try
             {
                 // We set up the log level, and play the game...
-                Logger.setLogLevel(Logger.LogLevel.DEBUG);
+                Logger.setLogLevel(Logger.LogLevel.INFO);
                 var game = new BootAndShoot();
             }
             catch (Exception ex)
             {
-                Logger.log("Exception in Main: " + ex.Message, Logger.LogLevel.FATAL);
+                string message = String.Format("Exception in Main: {0} \nStack:\n{1}", ex.Message, ex.StackTrace);
+                Logger.log(message, Logger.LogLevel.FATAL);
             }
         }
     }

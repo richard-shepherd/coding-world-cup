@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,7 @@ namespace BootAndShoot
         static Logger()
         {
             Directory.CreateDirectory("log");
+            Logger.filePath = String.Format("log/log_{0}.txt", Process.GetCurrentProcess().Id);
         }
 
         /// <summary>
@@ -47,13 +49,17 @@ namespace BootAndShoot
                 return;
             }
 
-            var messageToLog = String.Format("{0},{1}: {2}", DateTime.Now.ToString(), logLevel.ToString(), message);
+            var messageToLog = String.Format("{0}: {1}", logLevel.ToString(), message);
             var lines = new List<string>();
             lines.Add(messageToLog);
-            File.AppendAllLines("log/log.txt", lines);
+
+            File.AppendAllLines(Logger.filePath, lines);
         }
 
         // The current log level...
         private static LogLevel m_logLevel = LogLevel.INFO;
+
+        // The file name we're logging to...
+        private static string filePath = "";
     }
 }

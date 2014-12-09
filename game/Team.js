@@ -7,6 +7,7 @@ var TeamState = require('./TeamState');
 var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
 var CWCError = UtilsLib.CWCError;
+var Utils = UtilsLib.Utils;
 var AIUtilsLib = require('../ai_utils');
 var MessageUtils = AIUtilsLib.MessageUtils;
 var PlayerState_Static = require('./PlayerState_Static');
@@ -241,15 +242,64 @@ Team.prototype.setDefaultKickoffPositions = function(pitch) {
  * ----------------------
  * Updates player positions in preparation for kickoff.
  *
- * 'teamKickingOff' is true if this team is the one kicking off,
+ * 'isTeamKickingOff' is true if this team is the one kicking off,
  * false if not.
  */
-Team.prototype.processKickoffResponse = function(data, teamKickingOff) {
+Team.prototype.processKickoffResponse = function(game, data, isTeamKickingOff) {
     // We're expecting a 'players' field...
     if(!('players' in data)) {
         throw new CWCError('Expected a "players" field in KICKOFF response');
     }
 
+    // We set the players' positions...
+    this.processKickoffResponse_PositionPlayers(data, isTeamKickingOff);
+
+    // We make sure that a player is in the centre spot, and has the ball...
+    this.processKickoffResponse_GiveBallToCentrePlayer(game, isTeamKickingOff);
+};
+
+/**
+ * processKickoffResponse_GiveBallToCentrePlayer
+ * ---------------------------------------------
+ * We find the player nearest the centre spot, put him on the centre spot
+ * and give him the ball.
+ */
+Team.prototype.processKickoffResponse_GiveBallToCentrePlayer = function(game, isTeamKickingOff) {
+    // We only put a player on the centre spot if we are the team kicking off...
+    if(!isTeamKickingOff) {
+        return;
+    }
+
+    // We find the player closest to the centre...
+    var closestPlayer = null;
+    var closestDistance = 1000.0;
+    var centreSpot = game.pitch.centreSpot;
+    this._players.forEach(function(player) {
+        // We don't move the goalkeeper...
+        if(player.isGoalkeeper()) {
+            return;
+        }
+
+        // We find the distance to the centre spot for this player...
+        var distance = Utils.distanceBetween(player.dynamicState.position, centreSpot);
+        if(distance < closestDistance) {
+            // This player is the closest we've seen so far...
+            closestPlayer = player;
+            closestDistance = distance;
+        }
+    }, this);
+
+    // We move the closest player to the centre spot and give him the ball...
+    closestPlayer.dynamicState.position.copyFrom(centreSpot);
+    game.giveBallToPlayer(closestPlayer);
+};
+
+/**
+ * processKickoffResponse_PositionPlayers
+ * --------------------------------------
+ * Puts players in the positions specified by 'data'.
+ */
+Team.prototype.processKickoffResponse_PositionPlayers = function(data, isTeamKickingOff) {
     // A maximum of two players are allowed in the centre circle...
     var numberPlayersInCentreCircle = 0;
 
@@ -272,7 +322,7 @@ Team.prototype.processKickoffResponse = function(data, teamKickingOff) {
             playerInfo.position,
             this.state.direction,
             true, // isKickoff
-            teamKickingOff);
+            isTeamKickingOff);
         if(!isValidPosition) {
             return;
         }

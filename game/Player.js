@@ -194,6 +194,9 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
     var newPosition = new Position(position.x, position.y);
     newPosition.addVector(scaledVector);
 
+    // If the player has moved into a goal area, we "slide" around it...
+    this._slideAroundGoalArea(game.pitch, newPosition);
+
     // Is the new position a valid one for this player?
     var validPosition = this.validatePosition(newPosition, this._team.getDirection(), false, false);
     if(!validPosition) {
@@ -214,6 +217,60 @@ Player.prototype._processAction_MOVE = function(game, resetActionWhenComplete) {
     if(position.approxEqual(destination) && resetActionWhenComplete === true) {
         this.clearAction();
     }
+};
+
+/**
+ * _slideAroundGoalArea
+ * --------------------
+ * 'Slides' the payer around a goal area, if he has gone into one of them.
+ * This preserves the y-coordinate, and changes the x-coordinate so that
+ * the point is on the goal-area line.
+ */
+Player.prototype._slideAroundGoalArea = function(pitch, position) {
+    // Only players (not goalkeepers) slide around the area...
+    if(this.staticState.playerType === PlayerState_Static.PlayerType.GOALKEEPER) {
+        return;
+    }
+
+    if(GameUtils.positionIsInLeftHandGoalArea(position)) {
+        // The player has moved into the left-hand goal area...
+        this._slideAroundGoalArea_Left(pitch, position);
+    }
+
+    if(GameUtils.positionIsInRightHandGoalArea(position)) {
+        // The player has moved into the right-hand goal area...
+        this._slideAroundGoalArea_Right(pitch, position);
+    }
+};
+
+/**
+ * _slideAroundGoalArea_Left
+ * -------------------------
+ * (See comments for "_slideAroundGoalArea" above.)
+ */
+Player.prototype._slideAroundGoalArea_Left = function(pitch, position) {
+    // We use the circle formula: x2 + y2 = r2, with values relative to the goal-centre.
+    var y = position.y - pitch.goalCentre;
+    var ySquared = y * y;
+    var rSquared = pitch.goalAreaRadius * pitch.goalAreaRadius;
+    var xSquared = rSquared - ySquared;
+    var x = Math.sqrt(xSquared);
+    position.x = x + 0.001; // +0.001 to make sure we are outside the area
+};
+
+/**
+ * _slideAroundGoalArea_Right
+ * --------------------------
+ * (See comments for "_slideAroundGoalArea" above.)
+ */
+Player.prototype._slideAroundGoalArea_Right = function(pitch, position) {
+    // We use the circle formula: x2 + y2 = r2, with values relative to the goal-centre.
+    var y = position.y - pitch.goalCentre;
+    var ySquared = y * y;
+    var rSquared = pitch.goalAreaRadius * pitch.goalAreaRadius;
+    var xSquared = rSquared - ySquared;
+    var x = pitch.width - Math.sqrt(xSquared);
+    position.x = x - 0.001; // -0.001 to make sure we are outside the area
 };
 
 /**
@@ -255,11 +312,13 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
 
     // 1. Skill...
     var maxSkillVariation = (100.0 - this.staticState.kickingAbility) / 100.0 * 360.0;
+    //maxSkillVariation = 0.0; // TODO: remove this!
     var skillVariation = this._random.nextDouble() * maxSkillVariation - maxSkillVariation / 2.0;
 
     // 2. Angle...
     var differenceInAngle = Math.abs(desiredDirection - dynamicState.direction);
     var maxAngleVariation = differenceInAngle / 180.0 * 90.0;
+    //maxAngleVariation = 0.0; // TODO: remove this!
     var angleVariation = this._random.nextDouble() * maxAngleVariation - maxAngleVariation / 2.0;
 
     // We add the variations to the requested direction, and convert it to a unit vector...

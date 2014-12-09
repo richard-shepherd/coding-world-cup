@@ -14,54 +14,7 @@ namespace BootAndShoot
     /// </summary>
     public abstract class CodingWorldCupAPI
     {
-        #region Public types
-
-        /// <summary>
-        /// Helps create and serialize data to JSON. 
-        /// </summary><remarks>
-        /// This is basically a "typedef" for Dictionary[string, object]
-        /// with a helper to serialize to JSON.
-        /// </remarks>
-        public class JSObject : Dictionary<string, object>
-        {
-            /// <summary>
-            /// Adds a double field, rounding to 4dp.
-            /// </summary>
-            public void add(string name, double value)
-            {
-                value = Math.Round(value, 4);
-                this.Add(name, value);
-            }
-
-            /// <summary>
-            /// Adds a string field.
-            /// </summary>
-            public void add(string name, string value)
-            {
-                this.Add(name, value);
-            }
-
-            /// <summary>
-            /// Adds an object field, for example a list.
-            /// </summary>
-            public void add(string name, object value)
-            {
-                this.Add(name, value);
-            }
-
-            /// <summary>
-            /// Converts the object to a JSON string.
-            /// </summary>
-            public string toJSON()
-            {
-                return Json.Encode(this);
-            }
-        }
-
-        #endregion
-
-
-        #region Public methods
+        #region Public and protected methods
 
         /// <summary>
         /// Constructor.
@@ -88,7 +41,24 @@ namespace BootAndShoot
         public void sendReply(JSObject reply)
         {
             string strReply = reply.toJSON();
+            Logger.log("Sending reply: " + strReply, Logger.LogLevel.DEBUG);
             Console.WriteLine(strReply);
+        }
+
+        /// <summary>
+        /// Returns a Position for the centre of the requested goal.
+        /// </summary>
+        protected Position getGoalCentre(GoalType goal)
+        {
+            double x = 0.0;
+            if ((goal == GoalType.OUR_GOAL && this.playingDirection == DirectionType.LEFT)
+                ||
+                (goal == GoalType.THEIR_GOAL && this.playingDirection == DirectionType.RIGHT))
+            {
+                x = this.pitch.width;
+            }
+            double y = this.pitch.goalCentre;
+            return new Position(x, y);
         }
 
         #endregion
@@ -137,7 +107,7 @@ namespace BootAndShoot
         /// Returns a minimal response (which results in default positions
         /// being allocated).
         /// </remarks>
-        protected virtual void processRequest_Kickoff(dynamic data)
+        protected virtual void processRequest_Kickoff()
         {
             // We create the reply...
             var reply = new JSObject();
@@ -152,7 +122,7 @@ namespace BootAndShoot
         /// We send back an empty list of actions, which means that
         /// the players do nothing.
         /// </remarks>
-        protected virtual void processRequest_Play(dynamic data)
+        protected virtual void processRequest_Play()
         {
             // We create the reply...
             var reply = new JSObject();
@@ -166,6 +136,14 @@ namespace BootAndShoot
         /// (If the implementation in this class has been called.)
         /// </summary>
         protected virtual void onTeamInfoUpdated()
+        {
+        }
+
+        /// <summary>
+        /// Called after the GOAL event has been processed.
+        /// (If the implementation in this class has been called.)
+        /// </summary>
+        protected virtual void onGoal()
         {
         }
 
@@ -219,8 +197,16 @@ namespace BootAndShoot
                     processEvent_StartOfTurn(data);
                     break;
 
+                case "GOAL":
+                    processEvent_Goal(data);
+                    break;
+
                 case "KICKOFF":
                     processEvent_Kickoff(data);
+                    break;
+
+                case "HALF_TIME":
+                    processEvent_HalfTime(data);
                     break;
 
                 default:
@@ -241,11 +227,11 @@ namespace BootAndShoot
                     break;
 
                 case "KICKOFF":
-                    processRequest_Kickoff(data);
+                    processRequest_Kickoff();
                     break;
 
                 case "PLAY":
-                    processRequest_Play(data);
+                    processRequest_Play();
                     break;
 
                 default:
@@ -286,7 +272,7 @@ namespace BootAndShoot
                 else
                 {
                     // This is the goalkeeper...
-                    this.teamGoalkeeperPlayerNumber = playerNumber;
+                    this.goalkeeperPlayerNumber = playerNumber;
                 }
             }
 
@@ -303,6 +289,9 @@ namespace BootAndShoot
             this.gameState = data;
 
             // And we split up parts of it.
+
+            // The time...
+            this.gameTimeSeconds = (double)data.game.currentTimeSeconds;
 
             // The ball...
             this.ball = data.ball;
@@ -348,7 +337,7 @@ namespace BootAndShoot
                 else
                 {
                     // This is the goalkeeper...
-                    this.teamGoalkeeper = playerInfo;
+                    this.goalkeeper = playerInfo;
                 }
             }
         }
@@ -365,6 +354,22 @@ namespace BootAndShoot
                 int playerNumber = playerInfo.staticState.playerNumber;
                 this.allOpposingTeamPlayers[playerNumber] = playerInfo;
             }
+        }
+
+        /// <summary>
+        /// Called when a goal is scored.
+        /// </summary>
+        private void processEvent_Goal(dynamic data)
+        {
+            // We notify the derived class...
+            onGoal();
+        }
+
+        /// <summary>
+        /// Called at half-time.
+        /// </summary>
+        private void processEvent_HalfTime(dynamic data)
+        {
         }
 
         /// <summary>
@@ -389,11 +394,11 @@ namespace BootAndShoot
             // We find the direction we are playing...
             if(this.teamInfo.direction == "LEFT")
             {
-                this.playingDirection = PlayingDirectionType.LEFT;
+                this.playingDirection = DirectionType.LEFT;
             }
             else
             {
-                this.playingDirection = PlayingDirectionType.RIGHT;
+                this.playingDirection = DirectionType.RIGHT;
             }
 
             // Are we the team kicking off?
@@ -419,8 +424,8 @@ namespace BootAndShoot
         protected Dictionary<int, dynamic> teamPlayers = new Dictionary<int, dynamic>();
 
         // Information about the goalkeeper...
-        protected int teamGoalkeeperPlayerNumber = -1;
-        protected dynamic teamGoalkeeper = new { };
+        protected int goalkeeperPlayerNumber = -1;
+        protected dynamic goalkeeper = new { };
 
         // The collection of all players in the opposing team...
         // This is a map of player-number to information about the player.
@@ -445,7 +450,7 @@ namespace BootAndShoot
         protected bool weAreKickingOff = false;
 
         // The direction we are playing...
-        protected enum PlayingDirectionType
+        protected enum DirectionType
         {
             // We don't yet know the playing direction...
             DONT_KNOW,
@@ -456,8 +461,17 @@ namespace BootAndShoot
             // We are shooting at the right goal...
             RIGHT
         }
-        protected PlayingDirectionType playingDirection;
+        protected DirectionType playingDirection;
 
+        // An enum for the two goals...
+        protected enum GoalType
+        {
+            OUR_GOAL,
+            THEIR_GOAL
+        }
+
+        // The current 'game-time' in seconds from the start of the match...
+        protected double gameTimeSeconds;
 
         #endregion
 

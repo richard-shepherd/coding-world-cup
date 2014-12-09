@@ -12,6 +12,7 @@
  * Calculations may be done more frequently than player-AI updates, to
  * make sure that no events are missed.
  */
+var util = require('util');
 var Team = require('./Team');
 var TeamState = require('./TeamState');
 var Player = require('./Player');
@@ -73,7 +74,9 @@ function Game(ai1, ai2, guiWebSocket) {
     this._aiUpdateIntervalSeconds = 0.1;
 
     // The length of the game in seconds...
-    this._gameLengthSeconds = 30.0 * 60.0;
+    //this._gameLengthSeconds = 30.0 * 60.0;
+    this._gameLengthSeconds = 300.0 * 60.0;
+    this._halfTimeSeconds = this._gameLengthSeconds / 2.0;
 
     // If we are in simulation mode, we run the game loop as a
     // tight(ish) loop. If it is false, we use a timer so the game
@@ -89,6 +92,10 @@ function Game(ai1, ai2, guiWebSocket) {
 
     // We set the initial game state...
     this._gsmManager.setState(new GSM_ConfigureAbilities(this));
+
+    // The time from the previous time we processes the game-loop.
+    // This is used to determine when half-time has occurred.
+    this._previousCalculationTimeSeconds = 0.0;
 }
 
 /**
@@ -152,7 +159,11 @@ Game.prototype.getPlayer = function(playerNumber) {
  */
 Game.prototype.onTurn = function() {
     // We log the game time...
-    Logger.log("Time (seconds): " + this.state.currentTimeSeconds.toFixed(4), Logger.LogLevel.INFO_PLUS);
+    var message = util.format('Time: %d\tscore: %d:%d',
+        this.state.currentTimeSeconds.toFixed(4),
+        this._team1.state.score,
+        this._team2.state.score);
+    Logger.log(message, Logger.LogLevel.INFO_PLUS);
     Logger.indent();
 
     // We update the game state - kicking, moving the ball and players etc...
@@ -283,6 +294,9 @@ Game.prototype.calculate_takePossession = function() {
     var player = players[index];
     this.giveBallToPlayer(player);
     player.clearAction();
+
+    // TODO: remove this...
+    Logger.log("Player " + player.staticState.playerNumber + " takes possession. (Index: " + index + ")", Logger.LogLevel.INFO);
 };
 
 /**
@@ -325,6 +339,13 @@ Game.prototype.calculate_tackle = function() {
     var player = players[index];
     this.giveBallToPlayer(player);
     player.clearAction();
+
+    // TODO: remove this...
+    // TODO: Is tackling not including the tacklee?
+    // TODO: Players seem to be tackling others in their own team. (for the AI?)
+    // TODO: is the playing direction right in the AI? Do the teams score own goals?
+    /// TODO: log game-time in AI
+    Logger.log("Player " + player.staticState.playerNumber + " wins tackle. (Index: " + index + ")", Logger.LogLevel.INFO);
 };
 
 /**
@@ -371,11 +392,20 @@ Game.prototype.checkForGoal = function(position1, position2, goalLine) {
 /**
  * _checkGameEvents
  * ----------------
- * Checks game events such as goals being scored, end of half-time
- * and so on, and updates the game-state accordingly.
+ * Checks game events such as end of half-time and so on,
+ * and updates the game-state accordingly.
  */
 Game.prototype._checkGameEvents = function() {
-    // TODO: Write this!
+    // We check for half-time...
+    if(this._previousCalculationTimeSeconds < this._halfTimeSeconds && this.state.currentTimeSeconds >= this._halfTimeSeconds) {
+        // We tell the AIs that it's half time...
+        this.sendEvent_HalfTime();
+
+        // TODO: If we have energy, players should recuperate at half-time.
+        // Team 2 kicks off...
+        this._gsmManager.setState(new GSM_Kickoff(this, this._team2));
+    }
+    this._previousCalculationTimeSeconds = this.state.currentTimeSeconds;
 };
 
 /**
@@ -500,6 +530,14 @@ Game.prototype.sendEvent_Goal = function() {
         team2:this._team2.state
     };
     this.sendEvent(event);
+};
+
+/**
+ * sendEvent_HalfTime
+ * ------------------
+ */
+Game.prototype.sendEvent_HalfTime = function() {
+    this.sendEvent({eventType:"HALF_TIME"});
 };
 
 /**

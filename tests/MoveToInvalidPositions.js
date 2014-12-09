@@ -30,8 +30,8 @@ exports['Player moves into left goal area'] = function(test) {
     // The player should have moved to the edge of the goal area,
     // but not into it...
     var playerPosition = player.dynamicState.position;
-    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
-    test.approx(playerPosition.x, 15.5);
+    test.equal(player.actionState.action, PlayerState_Action.Action.MOVE);
+    test.approx(playerPosition.x, 15.001);
     test.approx(playerPosition.y, 25.0);
 
     test.done();
@@ -57,8 +57,8 @@ exports['Player moves into right goal area'] = function(test) {
     // The player should have moved to the edge of the goal area,
     // but not into it...
     var playerPosition = player.dynamicState.position;
-    test.equal(player.actionState.action, PlayerState_Action.Action.NONE);
-    test.approx(playerPosition.x, 84.5);
+    test.equal(player.actionState.action, PlayerState_Action.Action.MOVE);
+    test.approx(playerPosition.x, 84.999);
     test.approx(playerPosition.y, 25.0);
 
     test.done();

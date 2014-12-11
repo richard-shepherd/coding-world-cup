@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Installing the framework</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">coding world cup</h1>
+        <p class="header">Write AIs to play football</p>
+
+          <ul>
+              <li class="download"><a class="buttons" href="https://github.com/richard-shepherd/coding-world-cup/zipball/master">Download ZIP</a></li>
+              <li class="download"><a class="buttons" href="https://github.com/richard-shepherd/coding-world-cup/tarball/master">Download TAR</a></li>
+              <li><a class="buttons github" href="https://github.com/richard-shepherd/coding-world-cup">View On GitHub</a></li>
+          </ul>
+
+          <p class="header">This project is maintained by
+              <a class="header name" href="https://github.com/richard-shepherd">richard shepherd</a>
+              <a class="header name" href="https://github.com/nrpog">nick pollard</a>
+          </p>
+      </header>
+
+<section>
+
+    <a href="index.html"><img src="images/cwc.png"></a>
+<h2>
+    Installing the coding-world-cup framework
+</h2>
+
+<p>
+    The coding-world-cup framework is written in node.js, but AIs can be written in any language.
+    AIs are run as separate processes and the framework communicates with them by sending JSON messages
+    to the AI's stdin, and receives replies via the AI's stdout.
+</p>
+
+<h3>
+    To get started
+</h3>
+<p>
+<ul>
+    <li>
+        Install <a href="http://nodejs.org/">node.js</a>.
+    </li>
+    <li>
+        Download the framework from one of the links at the left of the page and unzip it.
+    </li>
+    <li>
+        On Windows: Run 'install_dependencies.cmd' from the root folder.
+    </li>
+    <li>
+        On Mac or Linux: Open a command-prompt in the framework's root folder and run 'npm install'.
+    </li>
+    <li>
+        Play the sample game from a command-prompt by running 'node app.js' from root folder.
+    </li>
+</ul>
+</p>
+
+<h3>
+    Look at the sample AIs
+</h3>
+<p>
+    There are two sample AIs in the 'AIs' folder.
+</p>
+<p>
+    'AI_RandomMovement' is written in JavaScript and just moves the players randomly, without
+    really trying to play football.
+</p>
+<p>
+    'AI_BootAndShoot' is written in C# and plays a simple game, attempting to pass the ball
+    between players and shoot at the goal.
+</p>
+
+
+
+</section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

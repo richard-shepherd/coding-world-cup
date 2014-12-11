@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Creating your AI</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">coding world cup</h1>
+        <p class="header">Write AIs to play football</p>
+
+          <ul>
+              <li class="download"><a class="buttons" href="https://github.com/richard-shepherd/coding-world-cup/zipball/master">Download ZIP</a></li>
+              <li class="download"><a class="buttons" href="https://github.com/richard-shepherd/coding-world-cup/tarball/master">Download TAR</a></li>
+              <li><a class="buttons github" href="https://github.com/richard-shepherd/coding-world-cup">View On GitHub</a></li>
+          </ul>
+
+          <p class="header">This project is maintained by
+              <a class="header name" href="https://github.com/richard-shepherd">richard shepherd</a>
+              <a class="header name" href="https://github.com/nrpog">nick pollard</a>
+          </p>
+      </header>
+
+<section>
+
+    <a href="index.html"><img src="images/cwc.png"></a>
+<h2>
+    Creating your AI
+</h2>
+
+<h4>
+    AIs run as separate processes
+</h4>
+<p>
+    Each AI runs as a separate process from the main game engine. The game engine communicates
+    with the AIs by sending them JSON messages through stdin, and by receiving replies from the
+    AI via stdout. This means that AIs can be written in any language. When a game starts, the AI
+    process for each team is spawned by the game engine, and is killed when the game ends.
+</p>
+
+<h4>
+    The AIs folder
+</h4>
+<p>
+    AIs live in the AIs folder. Each one should be in its own sub-folder, which should be
+    named 'AI_[name]'. The folder should contain:
+    <li>
+        The executable code for the AI.
+    </li>
+    <li>
+        A 'CommandLine.txt' file indicating how to run the code.
+    </li>
+</p>
+<p>
+    The first element of 'CommandLine.txt' should be an executable either in the AI's
+    folder or on the path. Any other elemtns are passed to the executable as command-line
+    parameters.
+</p>
+<p>
+    For example, the BootAndShoot sample is a C# executable with no command-line parameters.
+    So its CommandLine.txt is just:
+    <pre><code>BootAndShoot.exe</code></pre>
+</p>
+<p>
+    The RandomMovement sample needs to be run using node.js, so its CommandLine.txt looks like:
+    <pre><code>node RandomMovement.js</code></pre>
+</p>
+<p>
+    Note: At the moment the game engine is rather fussy about the command-line, and it must not
+    have any whitespace (including a newline) after the text.
+</p>
+
+<h4>
+    Listen, process, respond loop
+</h4>
+<p>
+    The main loop in your AI should be:
+    <li>
+        Wait for a JSON message on stdin from the game-engine.
+    </li>
+    <li>
+        Decode and process the message.
+    </li>
+    <li>
+        Respond to the message, if necessary.
+    </li>
+    <li>
+        Loop.
+    </li>
+</p>
+<p>
+    There are two message types that your AI will receive: events and requests. Events provide
+    updated information and do not need a response. Requests need a response (though you can in
+    some cases provide a basic 'empty' response). See the <a href="api_reference.html">API reference</a>
+    for more details of the different messages and response formats.
+</p>
+
+<h4>
+    Running your AI
+</h4>
+<p>
+    The file 'app.js' in the root-folder of the game-engine controls which AIs will be playing.
+    Edit these lines to choose which AIs are playing:
+    <pre><code>
+    var ai1 = aiManager.getAIWrapperFromName('RandomMovement');
+    var ai2 = aiManager.getAIWrapperFromName('BootAndShoot');
+    </code></pre>
+    The AI name should be the name of its folder without the 'AI_' prefix.
+    </p>
+
+<h4>
+    Submitting your AI
+</h4>
+<p>
+    To submit your API, please send a zipped copy of your AI folder along with the source code,
+    to richard.s.shepherd@gmail.com. Any executable files should be compiled for Windows. Please
+    also indicate any frameworks (such as Java or Python) that are required, and the versions needed.
+</p>
+
+</section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

@@ -73,13 +73,31 @@
 <p>
     There are two sample AIs in the 'AIs' folder.
 </p>
+<h4>
+    RandomMovement
+</h4>
 <p>
-    'AI_RandomMovement' is written in JavaScript and just moves the players randomly, without
+    'AI_RandomMovement' is written in node.js / JavaScript and just moves the players randomly, without
     really trying to play football.
 </p>
+
+<h4>
+    BootAndShoot
+</h4>
 <p>
     'AI_BootAndShoot' is written in C# and plays a simple game, attempting to pass the ball
     between players and shoot at the goal.
+</p>
+<p>
+    Some of the code in this sample could be reused as an "API" for your own C# AIs. The specific
+    code for this AI is in the file 'BootAndShoot.cs'. All the other code could be reused for other
+    AIs. You could create your own AI class derived from 'CodingWorldCupAPI' and implements its
+    virtual functions to play the game. The base class reads the JSON messages from the game-engine
+    and parses out some useful data, and converts the received messages into virtual-function 'events'.
+</p>
+<p>
+    Please note, though, that this is not a complete API for the coding-world-cup. It is just a sample.
+    The real coding-world-cup API is a message-based API as described <a href="api_reference.html">here</a>.
 </p>
 
 

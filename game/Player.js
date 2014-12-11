@@ -367,7 +367,7 @@ Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhen
 
     // We check if the player is close enough to the ball...
     var distance = this.getDistanceToBall(game.ball);
-    if(distance > 5.0) {
+    if(distance > 5.001) {
         // The player is too far from the ball to take possession,
         // so we cancel the action...
         this.clearAction();
@@ -423,7 +423,7 @@ Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete)
     var position = this.dynamicState.position;
     var otherPlayerPosition = otherPlayerDynamicState.position;
     var distance = Utils.distanceBetween(position, otherPlayerPosition);
-    if(distance > 5.0) {
+    if(distance > 5.001) {
         // The player is too far away to tackle...
         this.clearAction();
         return;

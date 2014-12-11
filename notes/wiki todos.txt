@@ -1,0 +1,7 @@
+
+- Notes on debugging
+
+- Logging from the game-engine
+
+
+

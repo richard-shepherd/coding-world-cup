@@ -74,8 +74,8 @@ function Game(ai1, ai2, guiWebSocket) {
     this._aiUpdateIntervalSeconds = 0.1;
 
     // The length of the game in seconds...
-    //this._gameLengthSeconds = 30.0 * 60.0;
-    this._gameLengthSeconds = 300.0 * 60.0;
+    this._gameLengthSeconds = 30.0 * 60.0;
+    //this._gameLengthSeconds = 300.0 * 60.0;
     this._halfTimeSeconds = this._gameLengthSeconds / 2.0;
 
     // If we are in simulation mode, we run the game loop as a
@@ -294,9 +294,6 @@ Game.prototype.calculate_takePossession = function() {
     var player = players[index];
     this.giveBallToPlayer(player);
     player.clearAction();
-
-    // TODO: remove this...
-    Logger.log("Player " + player.staticState.playerNumber + " takes possession. (Index: " + index + ")", Logger.LogLevel.INFO);
 };
 
 /**
@@ -339,13 +336,6 @@ Game.prototype.calculate_tackle = function() {
     var player = players[index];
     this.giveBallToPlayer(player);
     player.clearAction();
-
-    // TODO: remove this...
-    // TODO: Is tackling not including the tacklee?
-    // TODO: Players seem to be tackling others in their own team. (for the AI?)
-    // TODO: is the playing direction right in the AI? Do the teams score own goals?
-    /// TODO: log game-time in AI
-    Logger.log("Player " + player.staticState.playerNumber + " wins tackle. (Index: " + index + ")", Logger.LogLevel.INFO);
 };
 
 /**
@@ -403,6 +393,8 @@ Game.prototype._checkGameEvents = function() {
 
         // TODO: If we have energy, players should recuperate at half-time.
         // Team 2 kicks off...
+        this._team1.setDirection(TeamState.Direction.LEFT);
+        this._team2.setDirection(TeamState.Direction.RIGHT);
         this._gsmManager.setState(new GSM_Kickoff(this, this._team2));
     }
     this._previousCalculationTimeSeconds = this.state.currentTimeSeconds;

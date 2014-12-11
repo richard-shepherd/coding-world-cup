@@ -1,7 +1,14 @@
 
-- Notes on debugging
+TODO: Notes on debugging
 
-- Logging from the game-engine
+TODO: Logging from the game-engine
 
+TODO: request for team name and colors
+
+TODO: rules and prizes
+
+TODO: Blog
+
+TODO: Upcoming features
 
 

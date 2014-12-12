@@ -53,6 +53,11 @@
         Install <a href="http://nodejs.org/">node.js</a>.
     </li>
     <li>
+        NOTE: There is a bug in the current node.js installation on Windows.
+        You need to manually create an 'npm' folder in the path: C:\Users\[user-name]\AppData\Roaming.
+        The folder can be empty, but it needs to exist for dependencies to be installed.
+    </li>
+    <li>
         Download the framework from one of the links at the left of the page and unzip it.
     </li>
     <li>
@@ -60,6 +65,9 @@
     </li>
     <li>
         On Mac or Linux: Open a command-prompt in the framework's root folder and run 'npm install'.
+    </li>
+    <li>
+        To run the C# 'BootAndShoot' sample, you may need to <a href="http://www.microsoft.com/en-gb/download/details.aspx?id=17718">install .NET 4</a>.
     </li>
     <li>
         Play the sample game from a command-prompt by running 'node app.js' from root folder.

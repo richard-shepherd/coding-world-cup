@@ -27,7 +27,7 @@ var game = new Game(ai1, ai2, guiWebSocket);
 // Simulation-mode:
 // true plays the game as fast as possible
 // false plays close to real-time
-game.setSimulationMode(false);
+game.setSimulationMode(true);
 
 // And we start to play...
 game.onTurn();

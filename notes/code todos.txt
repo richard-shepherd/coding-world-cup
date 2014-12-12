@@ -23,3 +23,7 @@ TODO: Some notes on wiki about how to debug AIs.
 TODO: Do something if the ball hasn't moved for some time (10 sec?) This could happen, for example, if the ball is in the goal area, and the goalkeeper doesn't take possession.
 
 TODO: log real time in cwc
+
+TODO: Add the game length to the GAME_START event
+
+TODO: Add penalties

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>[template]</title>
+    <title>API Reference</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -35,18 +35,207 @@
 
     <a href="index.html"><img src="images/cwc.png"></a>
 <h2>
-    [page-title]
+    API reference
 </h2>
+<p>
+    All communication between the game-engine and AIs is done by sending and receiving
+    JSON messages via stdin and stdout.
+</p>
 
 <h3>
-    [header].
+    Events and Requests
 </h3>
+<p>
+    There are two types of message: events and requests. Events pass information to AIs and
+    do not need a response. Requests may optionally contain information, and always require
+    a response.
+</p>
+<p>
+    Events are messages containing the fields "messageType":"EVENT" and "eventType":[type].
+    Each event also has a payload specific to the event.
+</p>
+<p>
+    Requests are messages containing the fields "messageType":"REQUEST" and "requestType":[type].
+    Some may also have some payload data, others do not.
+</p>
 
-<p>[some text]</p>
+<h3>
+    Players and player-numbers
+</h3>
+<p>
+    The game is played between two teams of six players. Each team has one goalkeeper and five other players.
+</p>
+<p>
+    The goalkeeper is not allowed out of its goal area, which is a semi-circle around the goal.
+    Other players are not allowed in the goal areas.
+    (The dimensions of the goal-area and the rest of the pitch are provided by one of the events.)
+</p>
+<p>
+    Each player has a player number. These are provided to you in an event towards the start of the game.
+    Whenever you move a player or make it perform any action, you specify the player using its player-number.
+</p>
+<p>
+    Similarly, each team has a team-number which is used when communicating information.
+</p>
 
-<pre><code>
-[some code here]
-</code></pre>
+<h3>
+    Coordinates and directions
+</h3>
+<p>
+    The pitch dimensions are in metres. Coordinates start at (0.0, 0.0) at the top-left of the screen.
+    Players face a direction specified in degrees, where 0.0 is facing straight up and 90.0 is facing right.
+</p>
+<p>
+    When you tell a player to move, it first turns in the direction to move. This is done automatically
+    but will take longer depending on how far it has to turn. When you tell a player to kick the ball,
+    this will be less accurate the further the angle to kick is away from straight ahead for the player.
+    You can improve accuracy by first turning to face the desired direction.
+</p>
+
+<h3>
+    Time
+</h3>
+<p>
+    The game is played in 'turns' where each turn is a time-slice of 100ms. At the start of each turn, both AIs
+    are given the current game-state, including the position of the ball and of all the players. They then
+    respond with actions for each player to perform.
+</p>
+<p>
+    The game-engine itself runs ten times faster than the turns as seen by the AIs, in order to be
+    more accurate about distance-critical events such as tackling.
+</p>
+
+<h3>
+    Events
+</h3>
+<h4>GAME_START</h4>
+<p>
+    Sent at the start of a new game. Holds information about the dimensions of the pitch.
+    <pre><code>{"eventType":"GAME_START","pitch":{"width":100,"height":50,"goalCentre":25,"goalY1":21,"goalY2":29,"centreSpot":{"x":50,"y":25},"centreCircleRadius":10,"goalAreaRadius":15},"messageType":"EVENT"}</code></pre>
+
+</p>
+
+<h4>TEAM_INFO</h4>
+<p>
+    Sent after the GAME_START event. Tells your AI which team-number it is and the player-numbers of the players
+    in your team.
+    <pre><code>{"eventType":"TEAM_INFO","teamNumber":1,"players":[{"playerNumber":0,"playerType":"P"},{"playerNumber":1,"playerType":"P"},{"playerNumber":2,"playerType":"P"},{"playerNumber":3,"playerType":"P"},{"playerNumber":4,"playerType":"P"},{"playerNumber":5,"playerType":"G"}],"messageType":"EVENT"}</code></pre>
+</p>
+
+<h4>KICKOFF</h4>
+<p>
+    Sent shortly before each kickoff. Gives the current score and the direction each team is playing, as well
+    as saying which team will be kicking off.
+    <pre><code>{"eventType":"KICKOFF","team1":{"name":"","score":0,"direction":"RIGHT"},"team2":{"name":"","score":0,"direction":"LEFT"},"teamKickingOff":1,"messageType":"EVENT"}</code></pre>
+</p>
+
+<h4>START_OF_TURN</h4>
+<p>
+    Sent at the start of each turn with the current game state, including the position of the ball, and
+    the positions of all players in both teams.
+    <pre><code>{"game":{"currentTimeSeconds":7.2},"ball":{"position":{"x":52.239,"y":19.314},"vector":{"x":-0.915,"y":-0.403},"speed":14,"controllingPlayerNumber":-1},"team1":{"team":{"name":"","score":0,"direction":"RIGHT"},"players":[{"staticState":{"playerNumber":0,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":25,"y":10},"hasBall":false,"energy":100,"direction":270}},{"staticState":{"playerNumber":1,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":25,"y":25},"hasBall":false,"energy":100,"direction":270}},{"staticState":{"playerNumber":2,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":25,"y":40},"hasBall":false,"energy":100,"direction":270}},{"staticState":{"playerNumber":3,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":73.068,"y":30.268},"hasBall":false,"energy":100,"direction":298.001}},{"staticState":{"playerNumber":4,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":72.957,"y":31.666},"hasBall":false,"energy":100,"direction":301.252}},{"staticState":{"playerNumber":5,"playerType":"G","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":4.977,"y":24.526},"hasBall":false,"energy":100,"direction":354.952}}]},"team2":{"team":{"name":"","score":0,"direction":"LEFT"},"players":[{"staticState":{"playerNumber":6,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":81.198,"y":33.952},"hasBall":false,"energy":100,"direction":296.958}},{"staticState":{"playerNumber":7,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":78.653,"y":32.417},"hasBall":false,"energy":100,"direction":296.521}},{"staticState":{"playerNumber":8,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":76.46,"y":29.984},"hasBall":false,"energy":100,"direction":293.775}},{"staticState":{"playerNumber":9,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":25,"y":35},"hasBall":false,"energy":100,"direction":270}},{"staticState":{"playerNumber":10,"playerType":"P","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":25,"y":15},"hasBall":false,"energy":100,"direction":270}},{"staticState":{"playerNumber":11,"playerType":"G","kickingAbility":66.667,"runningAbility":66.667,"ballControlAbility":66.667,"tacklingAbility":66.667},"dynamicState":{"position":{"x":95.03,"y":24.454},"hasBall":false,"energy":100,"direction":5.975}}]},"eventType":"START_OF_TURN","messageType":"EVENT"}</code></pre>
+</p>
+
+<h4>GOAL</h4>
+<p>
+    Called when a goal is scored, with the new score.
+    <pre><code>{"eventType":"GOAL","team1":{"name":"","score":2,"direction":"LEFT"},"team2":{"name":"","score":7,"direction":"RIGHT"},"messageType":"EVENT"}</code></pre>
+</p>
+
+<h4>HALF_TIME</h4>
+<p>
+    Called at half-time. A kickoff occurs immediately after this, with teams changing direction.
+    <pre><code>{"eventType":"HALF_TIME","messageType":"EVENT"}</code></pre>
+</p>
+
+
+<h3>
+    Requests
+</h3>
+<p>
+    Responses to request must include the "requestType":[type] field to match the field
+    int the request message, as well as the response itself.
+</p>
+
+<h4>CONFIGURE_ABILITIES</h4>
+<p>
+    Sent after the TEAM_INFO event. You choose the level of ability each of your players has in a
+    number of categories: kickingAbility, runningAbility, ballControlAbility and tacklingAbility.
+    Abilities are numbers between 0 - 100, where 100 is the maximum level. However, you are given a
+    maximum allowance for the whole team which does not allow you to assign 100% ability in each
+    category to each player.
+</p>
+<p>
+    Request:
+    <pre><code>{"requestType":"CONFIGURE_ABILITIES","totalKickingAbility":400,"totalRunningAbility":400,"totalBallControlAbility":400,"totalTacklingAbility":400,"messageType":"REQUEST"}</code></pre>
+</p>
+<p>
+    Response:
+    <pre><code>{"requestType":"CONFIGURE_ABILITIES","players":[{"playerNumber":6,"kickingAbility":66.6667,"runningAbility":66.6667,"ballControlAbility":66.6667,"tacklingAbility":66.6667},{"playerNumber":7,"kickingAbility":66.6667,"runningAbility":66.6667,"ballControlAbility":66.6667,"tacklingAbility":66.6667},{"playerNumber":8,"kickingAbility":66.6667,"runningAbility":66.6667,"ballControlAbility":66.6667,"tacklingAbility":66.6667},{"playerNumber":9,"kickingAbility":66.6667,"runningAbility":66.6667,"ballControlAbility":66.6667,"tacklingAbility":66.6667},{"playerNumber":10,"kickingAbility":66.6667,"runningAbility":66.6667,"ballControlAbility":66.6667,"tacklingAbility":66.6667},{"playerNumber":11,"kickingAbility":66.6667,"runningAbility":66.6667,"ballControlAbility":66.6667,"tacklingAbility":66.6667}]}</code></pre>
+</p>
+
+<h4>KICKOFF</h4>
+<p>
+    Requests positions and directions for kickoff. Players must be in their own half. Only players in the team
+    kicking off are allowed in the centre circle. Only two players from the team kicking off are
+    allowed in the centre circle. The player nearest to the centre spot will be placed on the
+    centre spot and will be given the ball.
+</p>
+<p>
+    Request:
+    <pre><code>{"requestType":"KICKOFF","messageType":"REQUEST"}</code></pre>
+</p>
+<p>
+    Response:
+    <pre><code>{"requestType":"KICKOFF","players":[{"playerNumber":6,"position":{"x":75,"y":40},"direction":270},{"playerNumber":7,"position":{"x":75,"y":25},"direction":270},{"playerNumber":8,"position":{"x":75,"y":10},"direction":270},{"playerNumber":9,"position":{"x":51,"y":36},"direction":270},{"playerNumber":10,"position":{"x":51,"y":14},"direction":270}]}</code></pre>
+</p>
+
+<h4>PLAY</h4>
+<p>
+    Called after the START_OF_TURN event. You return an array of "actions", one for each player in the
+    team. You do not have to pass an action for each player: any left out will retain the action they
+    had in the previous turn. You can return an empty array to leave the whole team as it was in the previous turn.
+</p>
+<p>
+    Request:
+    <pre><code>{"requestType":"PLAY","messageType":"REQUEST"}</code></pre>
+</p>
+<p>
+    Response: (see the section on 'Actions' below)
+    <pre><code>{"requestType":"PLAY","actions":[{"playerNumber":0,"action":"MOVE","destination":{"x":25,"y":10},"speed":100},{"playerNumber":1,"action":"MOVE","destination":{"x":25,"y":25},"speed":100},{"playerNumber":2,"action":"MOVE","destination":{"x":25,"y":40},"speed":100},{"playerNumber":3,"action":"MOVE","destination":{"x":52.239,"y":19.314},"speed":100},{"playerNumber":4,"action":"MOVE","destination":{"x":52.239,"y":19.314},"speed":100},{"playerNumber":5,"action":"MOVE","destination":{"x":4.9706420413880341,"y":24.458966085734176},"speed":100}]}</code></pre>
+</p>
+
+<h3>
+    Actions
+</h3>
+<p>
+    You provide an action for each player in response to the PLAY request. Each action specifies the player-number,
+    the action and other data specific to the action.
+</p>
+<h4>MOVE</h4>
+<p>
+    <pre><code>{"playerNumber":0,"action":"MOVE","destination":{"x":75,"y":40},"speed":100}</code></pre>
+</p>
+
+<h4>TURN</h4>
+<p>
+    <pre><code>{"playerNumber":0,"action":"TURN","direction":270}</code></pre>
+</p>
+
+<h4>TAKE_POSSESSION</h4>
+<p>
+    Note: Taking possession can only be done when you are within 5m of the ball. If you set this
+    action when you are further away than this, the action will be automatically cancelled.
+    <pre><code>{"playerNumber":7,"action":"TAKE_POSSESSION"}</code></pre>
+</p>
+
+<h4>KICK</h4>
+<p>
+    Note: When passing to another player in your own team, it may be good to set the strength
+    lower than 100, to allow them to take possession of the ball more easily.
+    <pre><code>{"action":"KICK","playerNumber":6,"destination":{"x":25,"y":15},"speed":100}</code></pre>
+</p>
+
 
 </section>
 

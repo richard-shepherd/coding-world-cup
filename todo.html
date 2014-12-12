@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Logging and Debugging</title>
+    <title>TODO</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -35,43 +35,24 @@
 
     <a href="index.html"><img src="images/cwc.png"></a>
 <h2>
-    Logging and Debugging
+    TODOs and upcoming features
 </h2>
+<p>
+<ul>
+<li>
+    There will shortly be a GUI to let you watch the game being played. Until it is ready, you
+    should look at the log output to see the score and the game progress.
+</li>
+<li>
+    A 'tournament' feature will be added to play multiple AIs against each other.
+</li>
+<li>
+    Penalties will be adding, in case of a draw.
+</li>
+</ul>
 
-<h4>
-    Logging
-</h4>
-<p>
-    The game-engine logs to the file 'log.txt' in the log folder off the root of the game-engine.
-    This contains a log of all messages sent to AIs and the responses received. It can be very
-    useful for debugging your AI, as well as being a reminder of the message formats.
-</p>
-<p>
-    AIs should do their own logging to a location within their own folder. Note that if you are
-    testing your own AI against itself, you may have a problem if both AIs write to the same log
-    file. The 'BootAndShoot' sample avoids this by creating unique log file names including the
-    PID of the process.
 </p>
 
-<h4>
-    Debugging
-</h4>
-<p>
-    Debugging can be tricky, as the AI processes are launched by the game-engine rather than
-    by your own code or IDE.
-</p>
-<p>
-    The C# 'BootAndShoot' sample contains this line in the constructor of the base
-    'CodingWorldCupAPI' class:
-    <pre><code>
-    // Uncomment this line to launch the debugger when the AI starts up.
-    // you can then set breakpoints in the rest of your code.
-    //System.Diagnostics.Debugger.Launch();
-    </code></pre>
-    If uncommented, this breaks and launches the debugger. Other languages may support similar features.
-    Alternatively you could attach a debugger to the running process, though this may miss
-    some of the initial messages.
-</p>
 
 </section>
 

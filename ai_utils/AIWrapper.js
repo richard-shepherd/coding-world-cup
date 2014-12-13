@@ -59,7 +59,7 @@ AIWrapper.prototype.wrap = function(aiInfo) {
     // We hook up to stdout from the AI...
     this._io = readline.createInterface({
         input: this._aiProcess.stdout,
-        output: process.stdout
+        output: this._aiProcess.stdin
     });
     var that = this;
     this._io.on('line', function(line){

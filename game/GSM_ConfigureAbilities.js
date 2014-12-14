@@ -52,8 +52,7 @@ GSM_ConfigureAbilities.prototype.onAIResponsesReceived = function() {
  * team to process.
  */
 GSM_ConfigureAbilities.prototype._processResponse = function (data, team) {
-    // TODO: Put try...catch back later.
-    //try {
+    try {
     // We check that we got a PLAY response...
     if(data.requestType !== 'CONFIGURE_ABILITIES') {
         throw new CWCError('Expected a CONFIGURE_ABILITIES response.')
@@ -61,8 +60,8 @@ GSM_ConfigureAbilities.prototype._processResponse = function (data, team) {
 
     // We got a CONFIGURE_ABILITIES response, so we pass it to the Team to process...
     team.processConfigureAbilitiesResponse(data, this._game.maxTotalAbility);
-    //} catch(ex) {
-    //    // We log the error and report it back to the AI...
-    //    team.getAI().sendError(ex.message);
-    //}
+    } catch(ex) {
+        // We log the error and report it back to the AI...
+        team.getAI().sendError(ex.message);
+    }
 };

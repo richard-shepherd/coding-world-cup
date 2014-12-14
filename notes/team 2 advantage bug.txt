@@ -1,0 +1,64 @@
+- It is something to do with processing team actions.
+  - If we reverse these lines, the advantage goes to the other team:
+          // We move the players...
+          this._team1.processActions(this);
+          this._team2.processActions(this);
+
+
+- Could it be that the KICK action move the ball?
+  - When it has already moved in Game.calculate
+  - Maybe it should *not* move in the Player.action, and the Game bit should be after the player actions?
+
+- Should player actions be processed before the ball moves?
+
+- Could it be that the ball moves with the controlling player?
+  - Then tackling or take possession actions do something weird.
+
+- Think it could be TAKE_POSSESSION vs KICK
+  - Team 1 works on the basis that a member of team 2 has the ball
+  - But then team 2 member kicks the ball. So they don't have it
+  - Then tackling fails (?)
+  - BUT: if team 1 kicks the ball, team 2 know this, and take possession correctly.
+
+- OR, another version of this
+   - KICK currently moves the ball
+   - So,
+
+
+
+Order of play (moving the ball)
+-------------------------------
+1. Send the current state to the AIs (includes ball position)
+2. Get actions from the AIs
+DONE 3. Process all actions that reply on the current state
+DONE    - This includes taking possession and tackling
+DONE 4. Process all actions that change positions
+DONE    - Of players and of the ball
+DONE    - Players first
+DONE    - Ball afterwards
+
+DONE Q: Should we reset all TAKE_POSSESSION actions (after 3.) if a
+   player successfully takes possession?
+   - This could stop a player moving towards the ball when another player
+     gets it.
+   - BUT: what about the 10 calculate rounds, per AI update?
+     - The first player to get the ball finishes the action
+     - But the other players carry on trying to get it.
+A: Yes.
+
+
+Notes:
+DONE - Remove ActionState.tacklingPlayerNumber
+DONE - Remove Player._processAction_TACKLE
+DONE - Player._processAction_KICK should *not* move the ball.
+DONE   - Just sets the new vector and speed for the ball
+DONE - Then ball moves afterwards
+
+
+
+
+
+
+
+
+

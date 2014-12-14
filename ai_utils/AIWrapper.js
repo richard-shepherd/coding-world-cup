@@ -120,8 +120,7 @@ AIWrapper.prototype.sendData = function(jsonData) {
  * string sent by the AI.
  */
 AIWrapper.prototype.onResponseReceived = function (jsonData) {
-    // TODO: Put the try...catch back
-    //try {
+    try {
         // We forward the response to the GSM...
         switch(this._teamNumber) {
             case 1:
@@ -132,10 +131,10 @@ AIWrapper.prototype.onResponseReceived = function (jsonData) {
                 this._gsmManager.onResponse_AI2(jsonData);
                 break;
         }
-    //} catch(ex) {
-    //    // Something went wrong processing the responses...
-    //    this.sendError(ex.message);
-    //}
+    } catch(ex) {
+        // Something went wrong processing the responses...
+        this.sendError(ex.message);
+    }
 };
 
 

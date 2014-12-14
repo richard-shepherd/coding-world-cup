@@ -65,8 +65,7 @@ GSM_Play.prototype.onAIResponsesReceived = function() {
  * team to process.
  */
 GSM_Play.prototype._processResponse = function (data, team) {
-    // TODO: Put try...catch back later.
-    //try {
+    try {
         // We check that we got a PLAY response...
         if(data.requestType !== 'PLAY') {
             throw new CWCError('Expected a PLAY response.')
@@ -74,10 +73,10 @@ GSM_Play.prototype._processResponse = function (data, team) {
 
         // We got a PLAY response, so we pass it to the Team to process...
         team.processPlayResponse(data);
-    //} catch(ex) {
-    //    // We log the error and report it back to the AI...
-    //    team.getAI().sendError(ex.message);
-    //}
+    } catch(ex) {
+        // We log the error and report it back to the AI...
+        team.getAI().sendError(ex.message);
+    }
 };
 
 

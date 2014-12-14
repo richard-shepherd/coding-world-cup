@@ -7,8 +7,4 @@ TODO: request for team name and colors
 
 TODO: rules and prizes
 
-TODO: Blog
-
-TODO: Upcoming features
-
-
+TODO: How to receive errors from the engine. OR think about removing the try...catch and letting the framework fail. May make things more visible?

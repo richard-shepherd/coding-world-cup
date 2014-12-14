@@ -33,9 +33,6 @@ function PlayerState_Action() {
     // For the KICK action...
     this.kickDestination = new Position(0.0, 0.0);
     this.kickSpeed = 0.0; // As a percentage of the ball's max speed.
-
-    // For taking possession, when this involves tackling...
-    this.tacklePlayerNumber = -1;
 }
 
 /**

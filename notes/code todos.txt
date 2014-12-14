@@ -14,11 +14,7 @@ TODO: Only allow the goalkeeper to hold the ball for 5 seconds
 
 TODO: Add fouling to tackling
 
-TODO: Is tackling broken? Should it be related to distance? If you fail to tackle, should there be a time limit before you can tackle again? Otherwise a tackling player will more-or-less always eventually get the ball.
-
 TODO: Try to avoid timewasting. Can't pass back and forth with the goalkeeper
-
-TODO: Some notes on wiki about how to debug AIs.
 
 TODO: Do something if the ball hasn't moved for some time (10 sec?) This could happen, for example, if the ball is in the goal area, and the goalkeeper doesn't take possession.
 
@@ -27,3 +23,5 @@ TODO: log real time in cwc
 TODO: Add the game length to the GAME_START event
 
 TODO: Add penalties
+
+TODO: Add request for team name and colors

@@ -75,7 +75,6 @@ function Game(ai1, ai2, guiWebSocket) {
 
     // The length of the game in seconds...
     this._gameLengthSeconds = 30.0 * 60.0;
-    //this._gameLengthSeconds = 300.0 * 60.0;
     this._halfTimeSeconds = this._gameLengthSeconds / 2.0;
 
     // If we are in simulation mode, we run the game loop as a
@@ -234,18 +233,21 @@ Game.prototype.calculate = function() {
         this.state.currentTimeSeconds += calculationIntervalSeconds;
         calculationTime += calculationIntervalSeconds;
 
-        // We move the ball...
-        this.ball.updatePosition(this);
+        // We see if any players can take possession of the ball or tackle...
+        if(this.ball.state.controllingPlayerNumber === -1) {
+            // No-one has the ball, so players can try to take possession...
+            this.calculate_takePossession();
+        } else {
+            // Someone has the ball, so players can try to tackle...
+            this.calculate_tackle();
+        }
 
         // We move the players...
         this._team1.processActions(this);
         this._team2.processActions(this);
 
-        // We see if any players can take possession of the ball...
-        this.calculate_takePossession();
-
-        // We see if any tackling is taking place...
-        this.calculate_tackle();
+        // We move the ball...
+        this.ball.updatePosition(this);
 
         // We check for game events...
         this._checkGameEvents();
@@ -261,14 +263,6 @@ Game.prototype.calculate = function() {
  * between them.
  */
 Game.prototype.calculate_takePossession = function() {
-    // Is the ball already controlled by a player?
-    var ballState = this.ball.state;
-    if(ballState.controllingPlayerNumber !== -1) {
-        // The ball is already controlled by a player, so no one else
-        // can take possession. (They should tackle instead.)
-        return;
-    }
-
     // We look through the players to find whether they want to take
     // possession, and their probability of doing so...
     var players = [];
@@ -291,9 +285,12 @@ Game.prototype.calculate_takePossession = function() {
     // We've now got a collection of players who could take possession
     // of the ball, so we pick one who actually gets it...
     var index = Math.floor(this._random.nextDouble() * players.length);
-    var player = players[index];
-    this.giveBallToPlayer(player);
-    player.clearAction();
+    var playerWhoGetsBall = players[index];
+    this.giveBallToPlayer(playerWhoGetsBall);
+    playerWhoGetsBall.clearAction();
+
+    // We stop further players taking possession this turn...
+    this._clearTakePossessionActions();
 };
 
 /**
@@ -302,17 +299,9 @@ Game.prototype.calculate_takePossession = function() {
  * Checks if any player can tackle the player with the ball.
  */
 Game.prototype.calculate_tackle = function() {
-    // Does any player have the ball?
-    var ballState = this.ball.state;
-    var playerWithBallNumber = ballState.controllingPlayerNumber;
-    if(playerWithBallNumber === -1) {
-        // No player has the ball...
-        return;
-    }
-    var playerWithBall = this.getPlayer(playerWithBallNumber);
-
     // We look through the players to find whether they want to tackle,
     // and their probability of successfully doing so...
+    var playerWithBall = this.getPlayer(this.ball.state.controllingPlayerNumber);
     var players = [];
     this._players.forEach(function(player) {
         // We get the probability of successfully tackling...
@@ -333,9 +322,23 @@ Game.prototype.calculate_tackle = function() {
     // We've now got a collection of players who could successfully tackle,
     // so we pick one who actually gets it...
     var index = Math.floor(this._random.nextDouble() * players.length);
-    var player = players[index];
-    this.giveBallToPlayer(player);
-    player.clearAction();
+    var playerWhoGetsBall = players[index];
+    this.giveBallToPlayer(playerWhoGetsBall);
+    playerWhoGetsBall.clearAction();
+
+    // We stop further players taking possession this turn...
+    this._clearTakePossessionActions();
+};
+
+/**
+ * _clearTakePossessionActions
+ * ---------------------------
+ * Clears the TAKE_POSSESSION action from all players.
+ */
+Game.prototype._clearTakePossessionActions = function() {
+    this._players.forEach(function(player) {
+        player.clearTakePossessionAction();
+    });
 };
 
 /**

@@ -312,26 +312,23 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
 
     // 1. Skill...
     var maxSkillVariation = (100.0 - this.staticState.kickingAbility) / 100.0 * 360.0;
-    //maxSkillVariation = 0.0; // TODO: remove this!
     var skillVariation = this._random.nextDouble() * maxSkillVariation - maxSkillVariation / 2.0;
 
     // 2. Angle...
     var differenceInAngle = Math.abs(desiredDirection - dynamicState.direction);
     var maxAngleVariation = differenceInAngle / 180.0 * 90.0;
-    //maxAngleVariation = 0.0; // TODO: remove this!
     var angleVariation = this._random.nextDouble() * maxAngleVariation - maxAngleVariation / 2.0;
 
     // We add the variations to the requested direction, and convert it to a unit vector...
     var direction = desiredDirection + skillVariation + angleVariation;
     var vector = Utils.vectorFromDirection(direction);
 
-    // We set the ball's vector and speed, and update its position...
+    // We set the ball's vector and speed...
     var ball = game.ball;
     var ballState = ball.state;
     ballState.vector = vector;
     ballState.speed = actionState.kickSpeed / 100.0 * ball.getMaxSpeed();
     ballState.controllingPlayerNumber = -1;
-    ball.updatePosition(game);
 
     // We're no longer managing the ball...
     dynamicState.hasBall = false;
@@ -356,17 +353,9 @@ Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhen
         return;
     }
 
-    // We check if another player has possession...
-    var ballState = game.ball.state;
-    if(ballState.controllingPlayerNumber !== -1) {
-        // The ball is in another player's possession, so we try to tackle...
-        this.actionState.tacklePlayerNumber = ballState.controllingPlayerNumber;
-        this._processAction_TACKLE(game, resetActionWhenComplete);
-        return;
-    }
-
     // We check if the player is close enough to the ball...
-    var distance = this.getDistanceToBall(game.ball);
+    var ball = game.ball;
+    var distance = this.getDistanceToBall(ball);
     if(distance > 5.001) {
         // The player is too far from the ball to take possession,
         // so we cancel the action...
@@ -374,63 +363,8 @@ Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhen
         return;
     }
 
-    // We are close enough and the ball is not owned, so we move towards
-    // the ball...
-    this.actionState.moveDestination.copyFrom(ballState.position);
-    this.actionState.moveSpeed = 100.0;
-    this._processAction_MOVE(game, false);
-};
-
-/**
- * _processAction_TACKLE
- * ---------------------
- * The player just moves towards the player to tackle when processing this
- * action. The decision about who gets the ball is taken by the Game.
- */
-Player.prototype._processAction_TACKLE = function(game, resetActionWhenComplete) {
-    // Is the target player in the same team?
-    var playerNumber = this.staticState.playerNumber;
-    var otherPlayerNumber = this.actionState.tacklePlayerNumber;
-    if((playerNumber <= Team.NUMBER_OF_PLAYERS && otherPlayerNumber <= Team.NUMBER_OF_PLAYERS) ||
-        (playerNumber > Team.NUMBER_OF_PLAYERS && otherPlayerNumber > Team.NUMBER_OF_PLAYERS)) {
-        // The players are on the same team...
-        this.clearAction();
-        return;
-    }
-
-    // Does the other player have the ball?
-    var otherPlayer = game.getPlayer(otherPlayerNumber);
-    var otherPlayerDynamicState = otherPlayer.dynamicState;
-    if(otherPlayerDynamicState.hasBall === false) {
-        // The other player does not have the ball...
-        this.clearAction();
-        return;
-    }
-
-    // You cannot tackle the goalkeeper...
-    if(otherPlayer.isGoalkeeper()) {
-        this.clearAction();
-        return;
-    }
-
-    // The goalkeeper cannot tackle another player...
-    if(this.isGoalkeeper()) {
-        this.clearAction();
-        return;
-    }
-
-    // Is the other player close enough?
-    var position = this.dynamicState.position;
-    var otherPlayerPosition = otherPlayerDynamicState.position;
-    var distance = Utils.distanceBetween(position, otherPlayerPosition);
-    if(distance > 5.001) {
-        // The player is too far away to tackle...
-        this.clearAction();
-        return;
-    }
-
-    // We move towards the other player...
-    this.actionState.moveDestination.copyFrom(otherPlayerPosition);
+    // We are close enough and the ball is not owned, so we move towards the ball...
+    this.actionState.moveDestination.copyFrom(ball.state.position);
     this.actionState.moveSpeed = 100.0;
     this._processAction_MOVE(game, false);
 };
@@ -480,7 +414,7 @@ Player.prototype.getProbabilityOfTakingPossession = function(game) {
  */
 Player.prototype.getProbabilityOfSuccessfulTackle = function(game, opponent) {
     // Is this player trying to tackle?
-    if(!this.isTackling(game.ball)) {
+    if(!this.isTackling(game.ball, opponent)) {
         return 0.0;
     }
 
@@ -650,6 +584,17 @@ Player.prototype.clearAction = function() {
 };
 
 /**
+ * clearTakePossessionAction
+ * -------------------------
+ * Sets the action to NONE if it was previously TAKE_POSSESSION.
+ */
+Player.prototype.clearTakePossessionAction = function() {
+    if(this.actionState.action === PlayerState_Action.Action.TAKE_POSSESSION) {
+        this.clearAction();
+    }
+};
+
+/**
  * setPosition
  * -----------
  */
@@ -784,9 +729,19 @@ Player.prototype.isTakingPossession = function(ball) {
  * True if the player is tackling, ie trying to take possession when the
  * ball is controlled by another player.
  */
-Player.prototype.isTackling = function(ball) {
+Player.prototype.isTackling = function(ball, opponent) {
     // Are we trying to take possession?
     if(this.actionState.action != PlayerState_Action.Action.TAKE_POSSESSION) {
+        return false;
+    }
+
+    // The goalkeepers cannot tackle...
+    if(this.staticState.playerType === PlayerState_Static.PlayerType.GOALKEEPER) {
+        return false;
+    }
+
+    // Players cannot tackle the goalkeeper...
+    if(opponent.staticState.playerType === PlayerState_Static.PlayerType.GOALKEEPER) {
         return false;
     }
 

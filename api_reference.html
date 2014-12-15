@@ -118,7 +118,8 @@
 <h4>TEAM_INFO</h4>
 <p>
     Sent after the GAME_START event. Tells your AI which team-number it is and the player-numbers of the players
-    in your team.
+    in your team. For each player, the "playerType" field indicates whether it is a player ("P") or the goalkeeper
+    ("G").
     <pre><code>{"eventType":"TEAM_INFO","teamNumber":1,"players":[{"playerNumber":0,"playerType":"P"},{"playerNumber":1,"playerType":"P"},{"playerNumber":2,"playerType":"P"},{"playerNumber":3,"playerType":"P"},{"playerNumber":4,"playerType":"P"},{"playerNumber":5,"playerType":"G"}],"messageType":"EVENT"}</code></pre>
 </p>
 

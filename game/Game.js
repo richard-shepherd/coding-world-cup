@@ -487,7 +487,8 @@ Game.prototype.sendEvent = function(event) {
 Game.prototype.sendEvent_GameStart = function() {
     var event = {
         eventType:"GAME_START",
-        pitch: this.pitch
+        pitch: this.pitch,
+        gameLengthSeconds: this._gameLengthSeconds
     };
     this.sendEvent(event);
 };

@@ -85,16 +85,16 @@ function Game(ai1, ai2, guiWebSocket) {
     // The maximum total ability in each category...
     this.maxTotalAbility = 400;
 
+    // The time from the previous time we processes the game-loop.
+    // This is used to determine when half-time has occurred.
+    this._previousCalculationTimeSeconds = 0.0;
+
     // We send some events to the AIs at the start of the game...
     this.sendEvent_GameStart();
     this._sendEvent_TeamInfo();
 
     // We set the initial game state...
     this._gsmManager.setState(new GSM_ConfigureAbilities(this));
-
-    // The time from the previous time we processes the game-loop.
-    // This is used to determine when half-time has occurred.
-    this._previousCalculationTimeSeconds = 0.0;
 }
 
 /**

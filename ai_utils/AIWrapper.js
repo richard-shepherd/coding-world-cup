@@ -15,7 +15,10 @@ var readline = require('readline');
 /**
  * @constructor
  */
-function AIWrapper() {
+function AIWrapper(name) {
+    // The team's name...
+    this.name = name;
+
     // The team number...
     this._teamNumber = -1;
 

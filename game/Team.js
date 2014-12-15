@@ -26,6 +26,7 @@ function Team(ai, teamNumber) {
 
     // The team state (score etc)...
     this.state = new TeamState();
+    this.state.name = ai.name;
 
     // The collection of _players.
     // (The player objects are created in the Game, and passed to us later)...

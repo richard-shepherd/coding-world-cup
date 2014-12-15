@@ -99,7 +99,7 @@ AIManager.prototype.getAIWrapperFromName = function(name) {
     var aiInfo = this._aiInfos[name];
 
     // And create an AIWrapper for it...
-    var aiWrapper = new AIWrapper();
+    var aiWrapper = new AIWrapper(name);
     aiWrapper.wrap(aiInfo);
 
     return aiWrapper;

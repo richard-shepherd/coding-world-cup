@@ -8,7 +8,7 @@ namespace BootAndShoot
     /// <summary>
     /// A coding-world-cup API which:
     /// - Keeps three players in its own half as defenders.
-    /// - Puts two players in the opponents half as forwards.
+    /// - Puts two players in the opponent's half as forwards.
     /// 
     /// Defenders
     /// ---------

@@ -79,9 +79,35 @@
             var context = canvas.getContext("2d");
             context.clearRect(0, 0, canvas.width, canvas.height);
 
+            showScore(context, canvas, data);
             showBall(context, data);
             showTeam(context, data.team1, '#ff0000');
             showTeam(context, data.team2, '#0000ff');
+        }
+
+        /**
+         * showScore
+         * ---------
+         */
+        function showScore(context, canvas, data) {
+            // We show team1's score...
+            var team1 = data.team1.team;
+            context.font = 'bold 16pt Courier New';
+            context.fillStyle = 'black';
+            var x = (team1.direction === "RIGHT") ? border: canvas.width / 2;
+            context.fillText(team1.name + ': ' + team1.score, x, 17);
+
+            // We show team2's score...
+            var team2 = data.team2.team;
+            context.font = 'bold 16pt Courier New';
+            context.fillStyle = 'black';
+            x = (team2.direction === "RIGHT") ? border: canvas.width / 2;
+            context.fillText(team2.name + ': ' + team2.score, x, 17);
+
+            // We show the game time...
+            context.font = 'bold 16pt Courier New';
+            context.fillStyle = 'black';
+            context.fillText(data.game.currentTimeSeconds.toFixed(1), canvas.width/2-15, canvas.height - 10);
         }
 
         /**

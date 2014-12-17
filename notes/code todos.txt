@@ -25,3 +25,8 @@ TODO: Add the game length to the GAME_START event
 TODO: Add penalties
 
 TODO: Add request for team name and colors
+
+TODO: Log with \r\n for Windows
+
+TODO: Make CommandLine less fussy about whitespace and newlines
+

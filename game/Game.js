@@ -35,16 +35,33 @@ var MessageUtils = AIUtilsLib.MessageUtils;
 /**
  * @constructor
  */
-function Game(ai1, ai2, guiWebSocket) {
-    // We store the GUIWebSocket, to send updates to the GUI...
-    this._guiWebSocket = guiWebSocket;
+function Game(ai1, ai2) {
+    // The AI-wrappers...
+    this._ai1 = ai1;
+    this._ai2 = ai2;
 
+    // The GUIWebSocket, to send updates to the GUI...
+    this.guiWebSocket = null;
+
+    // If we are in simulation mode, we run the game loop as a
+    // tight(ish) loop. If it is false, we use a timer so the game
+    // runs more in real time...
+    this.simulationMode = false;
+
+}
+
+/**
+ * play
+ * ----
+ * Starts a new game.
+ */
+Game.prototype.play = function() {
     // A timer for use with the game loop...
     this._timer = new NanoTimer();
 
     // Used with decisions that have a random element...
     this._random = new Random();
-    
+
     // The game state...
     this.state = new GameState();
 
@@ -53,15 +70,6 @@ function Game(ai1, ai2, guiWebSocket) {
 
     // The ball...
     this.ball = new Ball();
-
-    // We create the teams and the _players...
-    this.createTeams(ai1, ai2);
-
-    // The game-state-machine (GSM) that manages game events and transitions.
-    // Note: This has to be done after creating the teams.
-    this._gsmManager = new GSM_Manager();
-    ai1.setGSMManager(this._gsmManager);
-    ai2.setGSMManager(this._gsmManager);
 
     // The interval in seconds between calculation updates.
     // This includes the 'physics' of player and ball movement
@@ -77,11 +85,6 @@ function Game(ai1, ai2, guiWebSocket) {
     this._gameLengthSeconds = 30.0 * 60.0;
     this._halfTimeSeconds = this._gameLengthSeconds / 2.0;
 
-    // If we are in simulation mode, we run the game loop as a
-    // tight(ish) loop. If it is false, we use a timer so the game
-    // runs more in real time...
-    this.simulationMode = false;
-
     // The maximum total ability in each category...
     this.maxTotalAbility = 400;
 
@@ -89,13 +92,25 @@ function Game(ai1, ai2, guiWebSocket) {
     // This is used to determine when half-time has occurred.
     this._previousCalculationTimeSeconds = 0.0;
 
+    // We create the teams and the _players...
+    this.createTeams(this._ai1, this._ai2);
+
+    // The game-state-machine (GSM) that manages game events and transitions.
+    // Note: This has to be done after creating the teams.
+    this._gsmManager = new GSM_Manager();
+    this._ai1.setGSMManager(this._gsmManager);
+    this._ai2.setGSMManager(this._gsmManager);
+
     // We send some events to the AIs at the start of the game...
     this.sendEvent_GameStart();
     this._sendEvent_TeamInfo();
 
     // We set the initial game state...
     this._gsmManager.setState(new GSM_ConfigureAbilities(this));
-}
+
+    // We start to play...
+    this.onTurn();
+};
 
 /**
  * createTeams
@@ -472,8 +487,8 @@ Game.prototype.sendEvent = function(event) {
     this._team2.getAI().sendData(jsonEvent);
 
     // And to the GUI...
-    if(this._guiWebSocket !== null) {
-        this._guiWebSocket.broadcast(jsonEvent);
+    if(this.guiWebSocket !== null) {
+        this.guiWebSocket.broadcast(jsonEvent);
     }
 
     Logger.log('SENT EVENT: ' + jsonEvent, Logger.LogLevel.DEBUG);

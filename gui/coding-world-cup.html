@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+    <div id="connection_message"></div>
+    <canvas id="pitch"></canvas>
+
+    <!-- The code that shows the game -->
+    <script type="text/javascript">
+
+        // The canvas is 'global' to the other functions here...
+        var canvas = document.getElementById("pitch");
+        var border = 30; // A border around the pitch
+        var scale = 10; // We scale up the game's pitch units, e.g. 100m -> 1000px
+
+        // We wait for a server connection...
+        connectToServer();
+
+
+        /**
+         * connectToServer
+         * ---------------
+         */
+        function connectToServer() {
+            // We try to connect to the server's web-socket...
+            var ws = new WebSocket("ws://localhost:12345");
+
+            // Called when we receive a message from the server...
+            ws.onmessage = function(message) {
+                // We convert the JSON into an object...
+                var jsonData = message.data;
+                var data = JSON.parse(jsonData);
+
+                // We are only interested in EVENTs...
+                if(data.messageType !== 'EVENT') {
+                    return;
+                }
+
+                // We process the various types of events...
+                if(data.eventType === 'GAME_START') {
+                    drawPitch(data.pitch);
+                } else {
+                    console.log('Unhandled eventType: ' + data.eventType);
+                }
+            };
+
+            // Called when there is an error on the web-socket...
+            ws.onerror = function() {
+                // If we get an error, this is most likely because the server is not running...
+                document.getElementById("connection_message").innerText = "Start the server and then refresh the page";
+            };
+        }
+
+        /**
+         * drawPitch
+         * ---------
+         */
+        function drawPitch(pitch) {
+            var context = canvas.getContext("2d");
+
+            // We get some of the dimensions of the pitch, scaled up to px...
+            var pitchWidth = pitch.width * scale;
+            var pitchHeight = pitch.height * scale;
+            var centreSpotX = pitchWidth / 2.0 + border;
+            var centreSpotY = pitchHeight / 2.0 + border;
+            var centreCircleRadius = pitch.centreCircleRadius * scale;
+
+            // For circles and arcs...
+            var twoPI = 2.0 * Math.PI;
+            var halfPI = Math.PI / 2.0;
+
+            // We set the size of the canvas to be the pitch plus the border...
+            canvas.width = pitchWidth + border * 2;
+            canvas.height = pitchHeight + border * 2;
+
+            // We color the pitch green...
+            context.fillStyle = "#008000";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            // We put a white border around the pitch...
+            context.beginPath();
+            context.rect(border, border, pitchWidth, pitchHeight);
+            context.lineWidth = 2;
+            context.strokeStyle = "white";
+            context.stroke();
+
+            // The centre circle...
+            context.beginPath();
+            context.arc(centreSpotX, centreSpotY, centreCircleRadius, 0.0, twoPI, false);
+            context.lineWidth = 2;
+            context.strokeStyle = "#ffffff";
+            context.stroke();
+
+            // The half-way line...
+            context.beginPath();
+            context.moveTo(centreSpotX, border);
+            context.lineTo(centreSpotX, pitchHeight + border);
+            context.lineWidth = 2;
+            context.strokeStyle = "#ffffff";
+            context.stroke();
+
+            // The goals...
+            var goalY1 = pitch.goalY1 * scale + border;
+            var goalY2 = pitch.goalY2 * scale + border;
+            var goalCentreY = (goalY1 + goalY2) / 2.0;
+            var goalHeight = goalY2 - goalY1;
+            var goalAreaRadius = pitch.goalAreaRadius * scale;
+
+            // The left goal...
+            context.beginPath();
+            context.rect(border, goalY1, -20, goalHeight);
+            context.lineWidth = 2;
+            context.strokeStyle = "white";
+            context.stroke();
+
+            // The left goal area...
+            context.beginPath();
+            context.arc(border, goalCentreY, goalAreaRadius, -halfPI, halfPI, false);
+            context.lineWidth = 2;
+            context.strokeStyle = "#ffffff";
+            context.stroke();
+
+            // The right goal...
+            context.beginPath();
+            context.rect(pitchWidth + border, goalY1, 20, goalHeight);
+            context.lineWidth = 2;
+            context.strokeStyle = "white";
+            context.stroke();
+
+            // The right goal area...
+            context.beginPath();
+            context.arc(pitchWidth + border, goalCentreY, goalAreaRadius, -halfPI, halfPI, true);
+            context.lineWidth = 2;
+            context.strokeStyle = "#ffffff";
+            context.stroke();
+
+        }
+
+
+    </script>
+
+</body>
+</html>

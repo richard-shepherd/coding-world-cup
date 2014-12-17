@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Blog</title>
+    <title>Running the GUI</title>
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
@@ -34,48 +34,26 @@
 <section>
 
     <a href="index.html"><img src="images/cwc.png"></a>
-
-
-<h3>17-Dec-2014</h3>
+<h2>
+    Running the GUI
+</h2>
 <p>
-    Added a simple GUI. See: <a href="gui.html">Running the GUI</a>.
+    There is a simple HTML GUI. To run it:
+    <ul>
+    <li>
+        In app.js set: <code>var playWithGUI = true;</code>
+    </li>
+    <li>
+        Run the server as normal, ie launch it with <code>node app.js</code>.
+    </li>
+    <li>
+        The server will wait for the GUI to connect.
+    </li>
+    <li>
+        Launch coding-world-cup.html from the 'gui' folder.
+    </li>
+    </ul>
 </p>
-
-
-<h3>15-Dec-2014</h3>
-<p>
-    Added the game length in seconds to the GAME_START event.
-</p>
-<p>
-    The AI name is now used as the team name. There is no change to the API for this, as the
-    team name was always sent, though previously it was an empty string.
-</p>
-
-
-<h3>14-Dec-2014</h3>
-<p>
-    Fixed the bug which gave an advantage to team 2.
-</p>
-
-
-<h3>13-Dec-2014</h3>
-<p>
-    Running from a command-line no longer shows the AI's stdout in the console. Only the output from the
-    game-engine is now shown.
-</p>
-
-
-<h3>12-Dec-2014</h3>
-<p>
-    Updated the <a href="install_framework.html">'installing the framework'</a> page, to include a workaround
-    for npm not working correctly with the current installation of node.js.
-</p>
-<p>
-    Added notes about installing .NET 4 as needed by the C# BootAndShoot sample.
-</p>
-
-
-
 
 </section>
 

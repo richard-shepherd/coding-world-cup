@@ -162,8 +162,8 @@
             // We get some of the dimensions of the pitch, scaled up to px...
             var pitchWidth = pitch.width * scale;
             var pitchHeight = pitch.height * scale;
-            var centreSpotX = pitchWidth / 2.0 + border;
-            var centreSpotY = pitchHeight / 2.0 + border;
+            var centreSpotX = pitch.centreSpot.x * scale + border;
+            var centreSpotY = pitch.centreSpot.y * scale + border;
             var centreCircleRadius = pitch.centreCircleRadius * scale;
 
             // We set the size of the canvases to be the pitch plus the border...

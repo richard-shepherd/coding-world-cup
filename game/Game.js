@@ -43,19 +43,6 @@ function Game(ai1, ai2) {
     // The GUIWebSocket, to send updates to the GUI...
     this.guiWebSocket = null;
 
-    // If we are in simulation mode, we run the game loop as a
-    // tight(ish) loop. If it is false, we use a timer so the game
-    // runs more in real time...
-    this.simulationMode = false;
-
-}
-
-/**
- * play
- * ----
- * Starts a new game.
- */
-Game.prototype.play = function() {
     // A timer for use with the game loop...
     this._timer = new NanoTimer();
 
@@ -92,6 +79,11 @@ Game.prototype.play = function() {
     // This is used to determine when half-time has occurred.
     this._previousCalculationTimeSeconds = 0.0;
 
+    // If we are in simulation mode, we run the game loop as a
+    // tight(ish) loop. If it is false, we use a timer so the game
+    // runs more in real time...
+    this.simulationMode = false;
+
     // We create the teams and the _players...
     this.createTeams(this._ai1, this._ai2);
 
@@ -100,7 +92,14 @@ Game.prototype.play = function() {
     this._gsmManager = new GSM_Manager();
     this._ai1.setGSMManager(this._gsmManager);
     this._ai2.setGSMManager(this._gsmManager);
+}
 
+/**
+ * play
+ * ----
+ * Starts a new game.
+ */
+Game.prototype.play = function() {
     // We send some events to the AIs at the start of the game...
     this.sendEvent_GameStart();
     this._sendEvent_TeamInfo();

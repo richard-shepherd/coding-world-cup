@@ -30,9 +30,9 @@ exports['On same team'] = function(test) {
 
     // We check the results...
     var player1Position = player1.dynamicState.position;
-    test.equal(player1.actionState.action, PlayerState_Action.Action.NONE);
-    test.equal(player1Position.x, 40.0);
+    test.equal(player1Position.x, 38.0);
     test.equal(player1Position.y, 21.0);
+    test.equal(player1.actionState.action, PlayerState_Action.Action.NONE);
 
     test.done();
 };
@@ -56,8 +56,8 @@ exports['Tackling the goalkeeper'] = function(test) {
 
     // We check the results...
     var player1Position = player1.dynamicState.position;
-    test.equal(player1.actionState.action, PlayerState_Action.Action.NONE);
-    test.equal(player1Position.x, 40.0);
+    test.equal(player1.actionState.action, PlayerState_Action.Action.TAKE_POSSESSION);
+    test.equal(player1Position.x, 38.0);
     test.equal(player1Position.y, 21.0);
 
     test.done();

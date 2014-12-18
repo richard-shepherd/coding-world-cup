@@ -16,7 +16,7 @@ var Utils = UtilsLib.Utils;
  */
 function MockAIWrapper() {
     // We call the base class constructor...
-    AIWrapper.call(this);
+    AIWrapper.call(this, 'mock-ai');
 }
 Utils.extend(AIWrapper, MockAIWrapper); // Derives from AIWrapper.
 

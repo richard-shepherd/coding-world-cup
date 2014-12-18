@@ -133,7 +133,7 @@ exports['Kick up facing up'] = function(test) {
 
     // The player kicks the ball...
     player._setAction_KICK({destination:{x:10.0, y:25.0}, speed:100});
-    player.processAction(game);
+    game.calculate();
 
     // The ball should have moved 3m...
     var ballState = ball.state;

@@ -40,7 +40,7 @@ exports['Lucky'] = function(test) {
     // The player kicks the ball...
     var kickTo = Utils.pointFromDirection({x:50.0, y:25.0}, 288.0, 20.0);
     player._setAction_KICK({destination:kickTo, speed:100});
-    player.processAction(game);
+    game.calculate();
 
     // The ball should have moved 3m...
     var ballState = ball.state;
@@ -80,7 +80,7 @@ exports['70pc ability'] = function(test) {
     // The player kicks the ball...
     var kickTo = Utils.pointFromDirection({x:50.0, y:25.0}, 77.0, 20.0);
     player._setAction_KICK({destination:kickTo, speed:100});
-    player.processAction(game);
+    game.calculate();
 
     // The ball should have moved 3m...
     var ballState = ball.state;

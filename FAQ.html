@@ -80,7 +80,7 @@
 <p>
     The game-engine has an algorithm to choose between multiple players who try to take possession
     (either of a free ball, or when tackling). This is based on the relative skill of the players, and
-    there is a random element as well. For kicking see below.
+    there is a random element as well. For kicking, see below.
 </p>
 
 <h5>Do I have to have possession to kick the ball?</h5>
@@ -137,7 +137,7 @@
 <p>
     tacklingAbility: Tackling is decided by looking at the relative tacklingAbility of the player
     and the player with the ball. This produces a probability of getting the ball. A random element
-    then decides whether you get it or nat, based on this probability.
+    then decides whether you get it or not, based on this probability.
 </p>
 
 <h5>Dribbling - do I just move when in possession or do I need to kick the ball along the way?</h5>
@@ -154,7 +154,8 @@
 <h5>Which values accept floats and which ints? Setting abilities seems to be floats...what about
     move/kick/turn params? Are floats accepted and used or do you trunk/round on the server side?</h5>
 <p>
-    Player numbers are ints, all other values are floats.
+    Player numbers are ints, all other values are floats. Values are rounded to 3dp (ie, 1mm) when
+    passed to the AIs, to keep the JSON a bit smaller than it would otherwise be.
 </p>
 
 <h5>Do you simulate “noise” in the physics? I.e. if I kick the ball at 90 degrees, does it go precisely

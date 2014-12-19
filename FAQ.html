@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>FAQ</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">coding world cup</h1>
+        <p class="header">Write AIs to play football</p>
+
+          <ul>
+              <li class="download"><a class="buttons" href="https://github.com/richard-shepherd/coding-world-cup/zipball/master">Download ZIP</a></li>
+              <li class="download"><a class="buttons" href="https://github.com/richard-shepherd/coding-world-cup/tarball/master">Download TAR</a></li>
+              <li><a class="buttons github" href="https://github.com/richard-shepherd/coding-world-cup">View On GitHub</a></li>
+          </ul>
+
+          <p class="header">This project is maintained by
+              <a class="header name" href="https://github.com/richard-shepherd">richard shepherd</a>
+              <a class="header name" href="https://github.com/nrpog">nick pollard</a>
+          </p>
+      </header>
+
+<section>
+
+    <a href="index.html"><img src="images/cwc.png"></a>
+<h2>
+    FAQ
+</h2>
+
+<h5>How does move/turn work (is move just a “push” toward the specified direction)?
+    Can I move backwards? Is there a speed penalty?</h5>
+<p>
+    Players can only move in the direction they are facing. When you move, you set a
+    desired point on the pitch where you want to end up. If you are not facing in the
+    right direction, the game-engine will first turn you to this direction. This takes
+    a small amount of time. Players turn at 600 degrees / second.
+</p>
+
+<h5>What happens with player-player collisions? Can 2 players occupy the same space?
+    Can 2 players running into each other end up going through each other?</h5>
+<p>
+    There are no player collisions. Players can run through each other and can occupy the
+    same space.
+</p>
+
+<h5>What about ball-player collisions? Is it handled same as player-player? Since the ball can move
+    faster, what happens with the “bullet through paper” collision detection? I.e. can a fast moving
+    ball appear in front of me on one tick then behind me on the next?</h5>
+<p>
+    The ball does not collide with the players. So it can go through them. Players will only
+    interact with the ball is they issue the TAKE_POSSESSION action.
+</p>
+<p>
+    The physics 'engine' in the game runs ten times faster than the AI updates to give greater
+    precision to ball-handling. In addition to this, when you issue the TAKE_POSSESSION action,
+    your player is on "autopilot" to intercept the ball (as long as you are within 5m of it).
+    This means that you do not need to do manoeuvres that would be smaller than the 100ms precision
+    of the AI updates.
+</p>
+
+<h5>Is kicking cumulative (multiple kicks)? I.e. can I kick the ball in 2 consecutive ticks in
+    order to make it travel faster?</h5>
+<p>
+    No. You can only kick once.
+</p>
+
+<h5>If 2 players “take possession” on same tick - who wins?  If 2 players kick the ball on the
+    same tick, what happens?</h5>
+<p>
+    The game-engine has an algorithm to choose between multiple players who try to take possession
+    (either of a free ball, or when tackling). This is based on the relative skill of the players, and
+    there is a random element as well. For kicking see below.
+</p>
+
+<h5>Do I have to have possession to kick the ball?</h5>
+<p>
+    Yes.
+</p>
+
+<h5>What do the commands actually do (E.g. tackle)?</h5>
+<p>
+    There is a small amount of documentation in the <a href="api_reference.html">API reference</a>.
+</p>
+<p>
+    Here is a quick summary of the actions:
+</p>
+<p>
+    MOVE: You set a desired destination (x, y) and a speed (0-100). The player will first turn towards the
+    destination and then move towards it. The player moves at speed/100*playerMaxSpeed. (Note: there was
+    going to be a concept of energy in the game, but this will most likely not be implemented. In the
+    absence of energy, there is very little reason not to always move at speed=100.)
+</p>
+<p>
+    TURN: You set a direction, where 0 degrees is straight up, 90 degrees is facing right. So actions,
+    such as kicking, are more accurate if you are facing the right direction.
+</p>
+<p>
+    TAKE_POSSESSION: This can only be issued if you are within 5m of the ball. It will first move you
+    towards the ball. When you are within 0.5m of it, it will attempt to take possession, including
+    tackling another player if necessary. Whether you are successful depends on the speed of the ball
+    and on the player's abilities (see below).
+</p>
+<p>
+    KICK: You set a destination (x, y) and a speed. Kicking is more accurate if you are facing in the
+    direction you are kicking. Speed is a percentage of the ball's maximum speed which is 30m/s. When
+    passing to a player, you may want to kick at less than full speed, to give them a better chance
+    of taking possession.
+</p>
+
+<h5>What do the abilities actually do? (E.g. kicking...is it power / precision / etc</h5>
+<p>
+    All abilities are between 0 (low ability) and 100 (high ability). The abilities are:
+</p>
+<p>
+    kickingAbility: How accurately you kick. When facing in the direction you are kicking,
+    100 will kick completely accurately, 0 will kick completely randomly. Accuracy drops off
+    the further away from straight you kick, even with 100% ability.
+</p>
+<p>
+    runningAbility: Affects the maximum speed you can run.
+</p>
+<p>
+    ballControlAbility: Taking possession of a free ball is affected by the speed of the ball and
+    the player's ballControlAbility.
+</p>
+<p>
+    tacklingAbility: Tackling is decided by looking at the relative tacklingAbility of the player
+    and the player with the ball. This produces a probability of getting the ball. A random element
+    then decides whether you get it or nat, based on this probability.
+</p>
+
+<h5>Dribbling - do I just move when in possession or do I need to kick the ball along the way?</h5>
+<p>
+    You can move when you have possession, but you will only move at 40% of your normal running speed.
+</p>
+
+<h5>How do I know I have / lost possession?</h5>
+<p>
+    There is no event raised when possession changes, but you can look at the controllingPlayerNumber
+    of the ball object. Or you can check the hasBall field on the dynamicState of a player.
+</p>
+
+<h5>Which values accept floats and which ints? Setting abilities seems to be floats...what about
+    move/kick/turn params? Are floats accepted and used or do you trunk/round on the server side?</h5>
+<p>
+    Player numbers are ints, all other values are floats.
+</p>
+
+<h5>Do you simulate “noise” in the physics? I.e. if I kick the ball at 90 degrees, does it go precisely
+    at 90 degrees on a straight line until it stops or is there “noise” simulated in the movement?
+</h5>
+<p>
+    There is some randomness in kicking (see above). But once the ball is moving, there is no
+    further noise in its movement.
+</p>
+
+
+</section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+  </body>
+</html>

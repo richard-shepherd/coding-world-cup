@@ -30,3 +30,4 @@ TODO: Log with \r\n for Windows
 
 TODO: Make CommandLine less fussy about whitespace and newlines
 
+TODO: You can't see the ball when a player has it.

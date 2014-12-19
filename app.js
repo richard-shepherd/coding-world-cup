@@ -24,10 +24,10 @@ var ai2 = aiManager.getAIWrapperFromName('BootAndShoot');
 var game = new Game(ai1, ai2);
 
 // Simulation-mode: true plays the game as fast as possible, false plays close to real-time...
-game.setSimulationMode(true);
+game.setSimulationMode(false);
 
 // Set if you want to play with a GUI. If true, this creates a WebSocket and waits for a client connection...
-var playWithGUI = false;
+var playWithGUI = true;
 if(playWithGUI) {
     // We're playing with a GUI, so we wait for a client connection...
     var guiWebSocket = new GUIWebSocket(12345);

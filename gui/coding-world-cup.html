@@ -121,32 +121,36 @@
             var y = position.y * scale + border;
             var radius = 5;
 
-            //var width = context.canvas.width;
-            //var start = Math.PI * 2.0 * x / width;
+            // We 'rotate' the ball as it moves...
+            var width = context.canvas.width;
+            var start = x * 0.05;
 
             context.beginPath();
-            context.arc(x, y, radius, Math.PI*0.25, Math.PI*0.75, false);
+            context.arc(x, y, radius, start, start+halfPI, false);
             context.lineTo(x, y);
             context.closePath();
             context.fillStyle = 'black';
             context.fill();
 
+            start += halfPI;
             context.beginPath();
-            context.arc(x, y, radius, Math.PI*0.75, Math.PI*1.25, false);
+            context.arc(x, y, radius, start, start+halfPI, false);
             context.lineTo(x, y);
             context.closePath();
             context.fillStyle = 'white';
             context.fill();
 
+            start += halfPI;
             context.beginPath();
-            context.arc(x, y, radius, Math.PI*1.25, Math.PI*1.75, false);
+            context.arc(x, y, radius, start, start+halfPI, false);
             context.lineTo(x, y);
             context.closePath();
             context.fillStyle = 'black';
             context.fill();
 
+            start += halfPI;
             context.beginPath();
-            context.arc(x, y, radius, Math.PI*1.75, Math.PI*0.25, false);
+            context.arc(x, y, radius, start, start+halfPI, false);
             context.lineTo(x, y);
             context.closePath();
             context.fillStyle = 'white';

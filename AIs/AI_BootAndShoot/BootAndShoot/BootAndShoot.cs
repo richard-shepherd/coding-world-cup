@@ -39,6 +39,40 @@ namespace BootAndShoot
         #region CodingWorldCupAPI implementation
 
         /// <summary>
+        /// We request semi-random abilities for our players.
+        /// </summary>
+        protected override void processRequest_ConfigureAbilities(dynamic data)
+        {
+            int numberOfPlayers = this.teamPlayers.Count + 1; // +1 for the goalkeeper
+            double averageKickingAbility = data.totalKickingAbility / numberOfPlayers;
+            double averageRunningAbility = data.totalRunningAbility / numberOfPlayers;
+            double averageBallControlAbility = data.totalBallControlAbility / numberOfPlayers;
+            double averageTacklingAbility = data.totalTacklingAbility / numberOfPlayers;
+
+            // We create the reply...
+            var reply = new JSObject();
+            reply.add("requestType", "CONFIGURE_ABILITIES");
+
+            // We give each player a random ability based around the average...
+            var rnd = new Random();
+            var variation = 30.0;
+            var playerInfos = new List<JSObject>();
+            foreach (var playerNumber in this.allTeamPlayers.Keys)
+            {
+                var playerInfo = new JSObject();
+                playerInfo.add("playerNumber", playerNumber);
+                playerInfo.add("kickingAbility", averageKickingAbility + rnd.NextDouble() * variation - variation/2.0);
+                playerInfo.add("runningAbility", averageRunningAbility + rnd.NextDouble() * variation - variation / 2.0);
+                playerInfo.add("ballControlAbility", averageBallControlAbility + rnd.NextDouble() * variation - variation / 2.0);
+                playerInfo.add("tacklingAbility", averageTacklingAbility + rnd.NextDouble() * variation - variation / 2.0);
+                playerInfos.Add(playerInfo);
+            }
+            reply.add("players", playerInfos);
+
+            sendReply(reply);
+        }
+
+        /// <summary>
         /// Called when team-info has been updated.
         /// 
         /// At this point we know the player-numbers for the players

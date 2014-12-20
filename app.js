@@ -19,8 +19,6 @@ var aiManager = new AIManager();
 // We create two AIs...
 var ai1 = aiManager.getAIWrapperFromName('BootAndShoot');
 var ai2 = aiManager.getAIWrapperFromName('BootAndShoot');
-//var ai1 = aiManager.getAIWrapperFromName('RandomMovement');
-//var ai2 = aiManager.getAIWrapperFromName('RandomMovement');
 
 // We create a game...
 var game = new Game(ai1, ai2);

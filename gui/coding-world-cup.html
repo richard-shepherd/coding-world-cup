@@ -80,9 +80,9 @@
             context.clearRect(0, 0, canvas.width, canvas.height);
 
             showScore(context, canvas, data);
+            showTeam(context, data.team1, 'red');
+            showTeam(context, data.team2, 'blue');
             showBall(context, data);
-            showTeam(context, data.team1, '#ff0000');
-            showTeam(context, data.team2, '#0000ff');
         }
 
         /**
@@ -121,10 +121,42 @@
             var y = position.y * scale + border;
             var radius = 5;
 
+            //var width = context.canvas.width;
+            //var start = Math.PI * 2.0 * x / width;
+
             context.beginPath();
-            context.arc(x, y, radius, 0.0, twoPI, false);
-            context.fillStyle = '#000000';
+            context.arc(x, y, radius, Math.PI*0.25, Math.PI*0.75, false);
+            context.lineTo(x, y);
+            context.closePath();
+            context.fillStyle = 'black';
             context.fill();
+
+            context.beginPath();
+            context.arc(x, y, radius, Math.PI*0.75, Math.PI*1.25, false);
+            context.lineTo(x, y);
+            context.closePath();
+            context.fillStyle = 'white';
+            context.fill();
+
+            context.beginPath();
+            context.arc(x, y, radius, Math.PI*1.25, Math.PI*1.75, false);
+            context.lineTo(x, y);
+            context.closePath();
+            context.fillStyle = 'black';
+            context.fill();
+
+            context.beginPath();
+            context.arc(x, y, radius, Math.PI*1.75, Math.PI*0.25, false);
+            context.lineTo(x, y);
+            context.closePath();
+            context.fillStyle = 'white';
+            context.fill();
+
+            context.beginPath();
+            context.arc(x, y, radius, 0, Math.PI * 2.0, false);
+            context.lineWidth = 1;
+            context.strokeStyle = "black";
+            context.stroke();
         }
 
         /**
@@ -190,7 +222,7 @@
             pitchContext.beginPath();
             pitchContext.arc(centreSpotX, centreSpotY, centreCircleRadius, 0.0, twoPI, false);
             pitchContext.lineWidth = 2;
-            pitchContext.strokeStyle = "#ffffff";
+            pitchContext.strokeStyle = "white";
             pitchContext.stroke();
 
             // The half-way line...
@@ -198,7 +230,7 @@
             pitchContext.moveTo(centreSpotX, border);
             pitchContext.lineTo(centreSpotX, pitchHeight + border);
             pitchContext.lineWidth = 2;
-            pitchContext.strokeStyle = "#ffffff";
+            pitchContext.strokeStyle = "white";
             pitchContext.stroke();
 
             // The goals...
@@ -219,7 +251,7 @@
             pitchContext.beginPath();
             pitchContext.arc(border, goalCentreY, goalAreaRadius, -halfPI, halfPI, false);
             pitchContext.lineWidth = 2;
-            pitchContext.strokeStyle = "#ffffff";
+            pitchContext.strokeStyle = "white";
             pitchContext.stroke();
 
             // The right goal...
@@ -233,7 +265,7 @@
             pitchContext.beginPath();
             pitchContext.arc(pitchWidth + border, goalCentreY, goalAreaRadius, -halfPI, halfPI, true);
             pitchContext.lineWidth = 2;
-            pitchContext.strokeStyle = "#ffffff";
+            pitchContext.strokeStyle = "white";
             pitchContext.stroke();
         }
 

@@ -122,7 +122,6 @@
             var radius = 5;
 
             // We 'rotate' the ball as it moves...
-            var width = context.canvas.width;
             var start = x * 0.05;
 
             context.beginPath();
@@ -177,10 +176,31 @@
                 var y = position.y * scale + border;
                 var radius = 8;
 
+                // We draw a circle for the player...
                 context.beginPath();
                 context.arc(x, y, radius, 0.0, twoPI, false);
                 context.fillStyle = color;
                 context.fill();
+
+                // We show the direction the player is facing...
+                var angle = player.dynamicState.direction;
+                var angleRadians = (angle - 90.0)/360.0 * twoPI;
+                context.beginPath();
+                context.arc(x, y, radius, angleRadians - 0.1, angleRadians + 0.1, false);
+                context.lineTo(x, y);
+                context.closePath();
+                context.fillStyle = 'black';
+                context.fill();
+
+                // We add the player number...
+                var playerNumber = player.staticState.playerNumber;
+                context.font = '8pt Courier New';
+                context.fillStyle = 'black';
+                if(playerNumber < 10) {
+                    context.fillText(playerNumber, x-12, y+15);
+                } else {
+                    context.fillText(playerNumber, x-15, y+15);
+                }
             });
         }
 

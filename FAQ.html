@@ -38,6 +38,48 @@
     FAQ
 </h2>
 
+<h5>
+    Does the order in which the server receive commands has any effect?
+    Say 2 players are within 5m of the ball and they both call take_possession.
+    Say they are players 0 (from team1) and 7 (from team2).
+    Is the outcome the same if you receive the request from 0 followed by 7 OR
+    from 7 followed by 0?
+</h5>
+<p>
+    The order makes no difference. The game-engine waits for both responses before
+    processing them. So there is no advantage to being the first to reply. That said,
+    I’m thinking of timing the request-response, and having a secondary prize for the
+    most time-efficient AI.
+</p>
+
+<h5>
+    In the docs you mention that if I call move, it auto-turns me first.
+    Does that mean that the turn command should only really be used for improving kicking accuracy?
+    Also, do I get penalised the same amount for turning before a move if I need to turn by 1 degree
+    or by 30 degrees? (assuming here the server will always turn me to the right direction first before moving me).
+</h5>
+<p>
+    Facing the right direction is most useful for kicking accuracy. But it can be good for moving as well.
+    For example, in the BootAndShoot sample, the players don’t make any attempt to face the right direction.
+    So when they need to start moving, they often are facing in a random direction and pay a time cost
+    to turn before moving.
+</p>
+<p>
+    The time cost is proportional to the amount you need to turn. Internally, there is a calculation
+    loop that runs ten times for every 100ms AI update, ie every 10ms of game-time. If you need to
+    turn, you will always pay at least one of these 10ms penalties before you start moving, but you
+    might pay more depending on how far you have to turn. Players turn at 600 degrees/second.
+</p>
+
+<h5>
+    When moving, can I ever overshoot my target point? I.e. if I'm reeeeally close to (x,y), do I need to move at a
+    reduced speed in order to hit (x,y) exactly during the next game tick, rather than overshooting
+    and then having to move backwards?
+</h5>
+<p>
+    You can’t overshoot, even if moving at full speed.
+</p>
+
 <h5>Can players move into the goal area? Can the goalkeeper move outside it?</h5>
 <p>
     No. The game-engine will prevent players moving into the goal area, or the

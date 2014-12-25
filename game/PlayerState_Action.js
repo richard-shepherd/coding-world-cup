@@ -25,7 +25,6 @@ function PlayerState_Action() {
 
     // For the MOVE action...
     this.moveDestination = new Position(0.0, 0.0);
-    this.moveSpeed = 0.0; // As a percentage of the player's max speed.
 
     // For the TURN action...
     this.direction = 0.0;

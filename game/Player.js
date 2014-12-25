@@ -365,7 +365,6 @@ Player.prototype._processAction_TAKE_POSSESSION = function(game, resetActionWhen
 
     // We are close enough and the ball is not owned, so we move towards the ball...
     this.actionState.moveDestination.copyFrom(ball.state.position);
-    this.actionState.moveSpeed = 100.0;
     this._processAction_MOVE(game, false);
 };
 
@@ -525,12 +524,8 @@ Player.prototype._setAction_MOVE = function(action) {
     if(!('destination' in action)) {
         throw new CWCError('Expected "destination" field in MOVE action');
     }
-    if(!('speed' in action)) {
-        throw new CWCError('Expected "speed" field in MOVE action');
-    }
     this.actionState.action = PlayerState_Action.Action.MOVE;
     this.actionState.moveDestination.copyFrom(action.destination);
-    this.actionState.moveSpeed = action.speed;
 };
 
 /**
@@ -562,7 +557,12 @@ Player.prototype._setAction_KICK = function(action) {
     }
     this.actionState.action = PlayerState_Action.Action.KICK;
     this.actionState.kickDestination.copyFrom(action.destination);
-    this.actionState.kickSpeed = action.speed;
+
+    // We validate and set the speed...
+    var speed = action.speed;
+    if(speed < 0.0) speed = 0.0;
+    if(speed > 100.0) speed = 100.0;
+    this.actionState.kickSpeed = speed;
 };
 
 /**

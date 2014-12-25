@@ -37,6 +37,21 @@
 
 <h2>Blog</h2>
 
+<h3>25-Dec-2014</h3>
+<p>
+    Happy Christmas!
+</p>
+<p>
+    Some extra validation for the kick action. You cannot now kick with speed less than 0.0
+    or greater than 100.0.
+</p>
+<p>
+    I have removed the 'speed' field from the MOVE action. Without energy in the game, there was no
+    point moving at less than full speed, and moving at variable speed had never been implemented
+    properly. You do not need to change your code for this, but if you pass a 'speed' field it will
+    be ignored.
+</p>
+
 <h3>24-Dec-2014</h3>
 <p>
     The game-engine now forces abilities to be between 0.0 and 100.0. Previously you could specify

@@ -16,9 +16,6 @@ function PlayerState_Dynamic() {
     // Whether the player has the ball or not...
     this.hasBall = false;
 
-    // The player's energy...
-    this.energy = 100.0;
-
     // The direction the player is facing, in degrees.
     // 0.0 is straight up, 90.0 is facing right...
     this.direction = 0.0;

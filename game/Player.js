@@ -454,8 +454,7 @@ Player.prototype.getDistanceToBall = function(ball) {
  */
 Player.prototype.getSpeed = function() {
     var runningAbility = this.staticState.runningAbility / 100.0;
-    var energy = this.dynamicState.energy / 100.0;
-    var speed = runningAbility * energy * Player.MAX_SPEED;
+    var speed = runningAbility * Player.MAX_SPEED;
 
     // If we have the ball, we move slower...
     if(this.dynamicState.hasBall) {

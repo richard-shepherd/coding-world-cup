@@ -138,7 +138,7 @@ Player.prototype._processAction_TURN = function(game, resetActionWhenComplete) {
 
     // We turn by the amount, and check if we've gone past 360 degrees...
     var newDirection = currentDirection + angleToTurn * directionToTurn;
-    if(newDirection > 360.0) {
+    if(newDirection >= 360.0) {
         newDirection -= 360.0;
     }
     if(newDirection < 0) {

@@ -85,7 +85,7 @@ exports['70pc ability'] = function(test) {
     // The ball should have moved 3m...
     var ballState = ball.state;
     var ballPosition = ballState.position;
-    var ballAt = Utils.pointFromDirection({x:50.0, y:25.0}, 93.2, 3.0); // 93.2 = 77 + (0.3 * 360) * 0.65 - (0.3 * 360) / 2
+    var ballAt = Utils.pointFromDirection({x:50.0, y:25.0}, 85.1, 3.0); // 93.2 = 77 + (0.3 * 180) * 0.65 - (0.3 * 180) / 2
     test.approx(ballPosition.x, ballAt.x);
     test.approx(ballPosition.y, ballAt.y);
     test.equal(ballState.controllingPlayerNumber, -1);

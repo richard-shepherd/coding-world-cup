@@ -299,7 +299,7 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
     // 1. Skill of player
     // ------------------
     // If the player has 100% passing-ability, we have zero variation
-    // If the player has 0% passing-ability we have up to 360-degrees of variation
+    // If the player has 0% passing-ability we have up to 180-degrees of variation
     // The actual variation is a random number up to the maximum variation.
     //
     // 2. Angle to destination
@@ -311,7 +311,7 @@ Player.prototype._processAction_KICK = function(game, resetActionWhenComplete) {
     // The actual variation is a random number up to the maximum variation.
 
     // 1. Skill...
-    var maxSkillVariation = (100.0 - this.staticState.kickingAbility) / 100.0 * 360.0;
+    var maxSkillVariation = (100.0 - this.staticState.kickingAbility) / 100.0 * 180.0;
     var skillVariation = this._random.nextDouble() * maxSkillVariation - maxSkillVariation / 2.0;
 
     // 2. Angle...

@@ -58,6 +58,13 @@
     The ball moves with the player when it is controlled, so these values have no meaning in this
     case. Zeros are (slightly) less confusing than retaining the ball's pre-controlled values.
 </p>
+<p>
+    There is now a grace-period of one turn after taking possession (either of a free ball or
+    by tackling) where other players cannot take possession. This give the successful player a
+    chance to do something with the ball, such as kicking it. This does not affect you issuing
+    the TAKE_POSSESSION action - you can still do that - but it will not have any effect in the
+    turn immediately after another player has taken possession.
+</p>
 
 <h3>26-Dec-2014</h3>
 <p>

@@ -26,8 +26,8 @@ var GSM_Kickoff = require('./GSM_Kickoff');
 var UtilsLib = require('../utils');
 var Logger = UtilsLib.Logger;
 var Utils = UtilsLib.Utils;
-var NanoTimer = require('nanotimer');
 var Random = UtilsLib.Random;
+var CWCError = UtilsLib.CWCError;
 var AIUtilsLib = require('../ai_utils');
 var MessageUtils = AIUtilsLib.MessageUtils;
 
@@ -42,9 +42,6 @@ function Game(ai1, ai2) {
 
     // The GUIWebSocket, to send updates to the GUI...
     this.guiWebSocket = null;
-
-    // A timer for use with the game loop...
-    this._timer = new NanoTimer();
 
     // Used with decisions that have a random element...
     this._random = new Random();
@@ -323,6 +320,9 @@ Game.prototype.calculate_takePossession = function() {
     this.giveBallToPlayer(playerWhoGetsBall);
     playerWhoGetsBall.clearAction();
 
+    // We log the taking possession...
+    Logger.log('Player ' + playerWhoGetsBall.staticState.playerNumber + ' takes possession.', Logger.LogLevel.DEBUG);
+
     // We stop further players taking possession this turn...
     this._clearTakePossessionActions();
 };
@@ -359,6 +359,9 @@ Game.prototype.calculate_tackle = function() {
     var playerWhoGetsBall = players[index];
     this.giveBallToPlayer(playerWhoGetsBall);
     playerWhoGetsBall.clearAction();
+
+    // We log the tackle...
+    Logger.log('Player ' + playerWhoGetsBall.staticState.playerNumber + ' successfully tackles.', Logger.LogLevel.DEBUG);
 
     // We stop further players taking possession this turn...
     this._clearTakePossessionActions();
@@ -578,10 +581,16 @@ Game.prototype.giveBallToPlayer = function(player) {
     var playerDynamicState = player.dynamicState;
     var ballState = this.ball.state;
 
-    // We give the player the ball...
+    // We take the ball from the current player (if there is one)...
+    if(ballState.controllingPlayerNumber !== -1) {
+        var previousPlayer = this.getPlayer(ballState.controllingPlayerNumber);
+        previousPlayer.dynamicState.hasBall = false;
+    }
+
+    // We give the new player the ball...
     playerDynamicState.hasBall = true;
 
-    // We tell the ball that it is owned by the player...
+    // We tell the ball that it is owned by the new player...
     ballState.controllingPlayerNumber = player.getPlayerNumber();
     ballState.position.copyFrom(playerDynamicState.position);
 };

@@ -331,10 +331,8 @@ namespace BootAndShoot
         {
             int playerNumber = player.staticState.playerNumber;
 
-            // We find the goal to aim at, and choose a point a bit to the side
-            // of the centre...
+            // We find the goal to aim at...
             var shootAt = getGoalCentre(GoalType.THEIR_GOAL);
-            shootAt.y += ((this.rnd.NextDouble() < 0.5) ? 2.0 : -2.0);
 
             // We kick the ball at the goal...
             var action = new JSObject();

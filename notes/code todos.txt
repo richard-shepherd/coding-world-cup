@@ -16,4 +16,3 @@ TODO: Add request for team name and colors
 
 TODO: Make CommandLine less fussy about whitespace and newlines
 
-TODO: If someone has taken possession, is it possible to please report the ball's speed as 0 and vector as (0,0)?

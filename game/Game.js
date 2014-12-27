@@ -79,6 +79,11 @@ function Game(ai1, ai2) {
     // 1.0 plays in real-time, 0.0 plays as fast-as-possible...
     this._turnRate = 1.0;
 
+    // After a player taking possession, there is a grace period of
+    // a number of turns before another player can take possession...
+    this._gracePeriodTurns = 1;
+    this._gracePeriodTurnsRemaining = 0;
+
     // When playing in real-time mode, we keep a track of the time each
     // turn was played, to try to keep as close to real-time as possible...
     this._previousTurnTime = process.hrtime();
@@ -238,6 +243,11 @@ Game.prototype.calculate = function() {
     // - Turn and/or move players to their new positions.
     // - Check game event (goals, half-time etc)
 
+    // We reduce the grace-period turns if they are in force...
+    if(this._gracePeriodTurnsRemaining > 0) {
+        this._gracePeriodTurnsRemaining--;
+    }
+
     // We calculate multiple times to smooth out the movement, and
     // make it more likely for players to be able to tackle and take
     // possession of the ball...
@@ -249,13 +259,7 @@ Game.prototype.calculate = function() {
         calculationTime += calculationIntervalSeconds;
 
         // We see if any players can take possession of the ball or tackle...
-        if(this.ball.state.controllingPlayerNumber === -1) {
-            // No-one has the ball, so players can try to take possession...
-            this.calculate_takePossession();
-        } else {
-            // Someone has the ball, so players can try to tackle...
-            this.calculate_tackle();
-        }
+        this.calculate_takePossession();
 
         // We move the players...
         this._team1.processActions(this);
@@ -272,12 +276,32 @@ Game.prototype.calculate = function() {
 /**
  * calculate_takePossession
  * ------------------------
+ * Checks if any player can take possession of the ball.
+ */
+Game.prototype.calculate_takePossession = function() {
+    // If we are in the grace period, no-one can take possession...
+    if(this._gracePeriodTurnsRemaining > 0) {
+        return;
+    }
+
+    if (this.ball.state.controllingPlayerNumber === -1) {
+        // No-one has the ball, so players can try to take possession...
+        this.calculate_takePossession_freeBall();
+    } else {
+        // Someone has the ball, so players can try to tackle...
+        this.calculate_takePossession_tackle();
+    }
+};
+
+/**
+ * calculate_takePossession_freeBall
+ * ---------------------------------
  * Checks if any of the players can take possession of the ball.
  *
  * If more than one wants to take possession, we have to decide
  * between them.
  */
-Game.prototype.calculate_takePossession = function() {
+Game.prototype.calculate_takePossession_freeBall = function() {
     // We look through the players to find whether they want to take
     // possession, and their probability of doing so...
     var players = [];
@@ -309,14 +333,17 @@ Game.prototype.calculate_takePossession = function() {
 
     // We stop further players taking possession this turn...
     this._clearTakePossessionActions();
+
+    // We start the grace period...
+    this._gracePeriodTurnsRemaining = this._gracePeriodTurns + 1;
 };
 
 /**
- * calculate_tackle
- * ----------------
+ * calculate_takePossession_tackle
+ * -------------------------------
  * Checks if any player can tackle the player with the ball.
  */
-Game.prototype.calculate_tackle = function() {
+Game.prototype.calculate_takePossession_tackle = function() {
     // We look through the players to find whether they want to tackle,
     // and their probability of successfully doing so...
     var playerWithBall = this.getPlayer(this.ball.state.controllingPlayerNumber);
@@ -349,6 +376,9 @@ Game.prototype.calculate_tackle = function() {
 
     // We stop further players taking possession this turn...
     this._clearTakePossessionActions();
+
+    // We start the grace period...
+    this._gracePeriodTurnsRemaining = this._gracePeriodTurns + 1;
 };
 
 /**

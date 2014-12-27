@@ -41,14 +41,22 @@
 <p>
     Fixed a rather nasty bug where tackling did not correctly remove possession from the
     tackled player. This meant that the tackled player could later kick the ball even though
-    they did not have it!
+    they did not have it. This fix makes a previous discussion more important, namely whether
+    there should be a 'grace period' after taking possession to give the new player a chance
+    to kick the ball. At the moment, possession can go backwards and forwards between players
+    for a long time until (via the random element in tackling) one player fails to get it. I
+    need to implement something for this.
 </p>
 <p>
-    However, this fix makes a previous discussion more important, namely whether there should
-    be a 'grace period' after taking possession to give the new player a chance to kick the ball.
-    At the moment, possession can go backwards and forwards between players for a long time until
-    (via the random element in tackling) one player fails to get it. I need to implement something
-    for this.
+    Replaced Game.setSimulationMode(bool) with Game.setTurnRate(rate). This lets you choose the
+    speed at which turns are taken. This does not affect game-time, it just affect the real-world time
+    that turns take. For example: set to 1.0 to play in real-time, 0.5 to play at twice real-time
+    and 0.0 to play as-fast-as-possible.
+</p>
+<p>
+    The ball's speed is set to 0.0 and its vector to (0.0, 0.0) when it is controlled by a player.
+    The ball moves with the player when it is controlled, so these values have no meaning in this
+    case. Zeros are (slightly) less confusing than retaining the ball's pre-controlled values.
 </p>
 
 <h3>26-Dec-2014</h3>

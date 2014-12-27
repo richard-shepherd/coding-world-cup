@@ -40,6 +40,8 @@ exports['Equal ability'] = function(test) {
     var ballState = game.ball.state;
     test.equal(player1.actionState.action, PlayerState_Action.Action.NONE);
     test.equal(ballState.controllingPlayerNumber, 1);
+    test.equal(player1.dynamicState.hasBall, true);
+    test.equal(player2.dynamicState.hasBall, false);
     var distance = Utils.distanceBetween(player1Position, player2Position);
     test.lessThanOrEqual(distance, 0.5);
 

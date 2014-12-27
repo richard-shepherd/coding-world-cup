@@ -37,6 +37,20 @@
 
 <h2>Blog</h2>
 
+<h3>27-Dec-2014</h3>
+<p>
+    Fixed a rather nasty bug where tackling did not correctly remove possession from the
+    tackled player. This meant that the tackled player could later kick the ball even though
+    they did not have it!
+</p>
+<p>
+    However, this fix makes a previous discussion more important, namely whether there should
+    be a 'grace period' after taking possession to give the new player a chance to kick the ball.
+    At the moment, possession can go backwards and forwards between players for a long time until
+    (via the random element in tackling) one player fails to get it. I need to implement something
+    for this.
+</p>
+
 <h3>26-Dec-2014</h3>
 <p>
     Improved timing when playing the game in real-time mode. The turns now take account of the

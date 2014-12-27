@@ -93,14 +93,14 @@ namespace BootAndShoot
             setDefaultPosition(this.playerNumber_LeftWingDefender, DirectionType.RIGHT, new Position(25, 10), 90);
             setDefaultPosition(this.playerNumber_CentreDefender, DirectionType.RIGHT, new Position(25, 25), 90);
             setDefaultPosition(this.playerNumber_RightWingDefender, DirectionType.RIGHT, new Position(25, 40), 90);
-            setDefaultPosition(this.playerNumber_LeftWingForward, DirectionType.RIGHT, new Position(75, 15), 90);
-            setDefaultPosition(this.playerNumber_RightWingForward, DirectionType.RIGHT, new Position(75, 35), 90);
+            setDefaultPosition(this.playerNumber_LeftWingForward, DirectionType.RIGHT, new Position(71, 15), 90);
+            setDefaultPosition(this.playerNumber_RightWingForward, DirectionType.RIGHT, new Position(71, 35), 90);
 
             setDefaultPosition(this.playerNumber_LeftWingDefender, DirectionType.LEFT, new Position(75, 40), 270);
             setDefaultPosition(this.playerNumber_CentreDefender, DirectionType.LEFT, new Position(75, 25), 270);
             setDefaultPosition(this.playerNumber_RightWingDefender, DirectionType.LEFT, new Position(75, 10), 270);
-            setDefaultPosition(this.playerNumber_LeftWingForward, DirectionType.LEFT, new Position(25, 35), 270);
-            setDefaultPosition(this.playerNumber_RightWingForward, DirectionType.LEFT, new Position(25, 15), 270);
+            setDefaultPosition(this.playerNumber_LeftWingForward, DirectionType.LEFT, new Position(29, 35), 270);
+            setDefaultPosition(this.playerNumber_RightWingForward, DirectionType.LEFT, new Position(29, 15), 270);
 
             // We set up the kickoff positions. 
             // Note: The player nearest the centre will be automatically "promoted"

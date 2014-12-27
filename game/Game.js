@@ -76,10 +76,8 @@ function Game(ai1, ai2) {
     // This is used to determine when half-time has occurred.
     this._previousCalculationTimeSeconds = 0.0;
 
-    // If we are in simulation mode, we run the game loop as a
-    // tight(ish) loop. If it is false, we use a timer so the game
-    // runs more in real time...
-    this.simulationMode = false;
+    // 1.0 plays in real-time, 0.0 plays as fast-as-possible...
+    this._turnRate = 1.0;
 
     // When playing in real-time mode, we keep a track of the time each
     // turn was played, to try to keep as close to real-time as possible...
@@ -209,36 +207,22 @@ Game.prototype.playNextTurn = function () {
         return;
     }
 
-    var that = this;
-    if(this.simulationMode) {
-        // We are in simulation mde, so we play the next turn
-        // as soon as possible...
-        setImmediate(function() {
-            that.onTurn();
-        });
-    } else {
-        // We are in real-time mode, so we play the next turn after an interval.
-        //
-        // We try to correct the timeout interval for the amount of processing that
-        // has taken place, to keep the game as close as possible to real-time.
-        //
-        // We run a hot loop until we have reached the 'update-interval' since
-        // the previous turn.
-        var intervalMicros = this._aiUpdateIntervalSeconds * 1000000.0;
-        for(;;) {
-            var timeSincePreviousTurn = process.hrtime(this._previousTurnTime);
-            var timeSincePreviousTurnMicros = timeSincePreviousTurn[0] * 1000000.0 + timeSincePreviousTurn[1] / 1000.0;
-            if(timeSincePreviousTurnMicros >= intervalMicros) {
-                break;
-            }
+    // We may need to wait a bit before playing the next turn...
+    var intervalMicros = this._aiUpdateIntervalSeconds * 1000000.0 * this._turnRate;
+    for(;;) {
+        var timeSincePreviousTurn = process.hrtime(this._previousTurnTime);
+        var timeSincePreviousTurnMicros = timeSincePreviousTurn[0] * 1000000.0 + timeSincePreviousTurn[1] / 1000.0;
+        if(timeSincePreviousTurnMicros >= intervalMicros) {
+            break;
         }
-        this._previousTurnTime = process.hrtime();
-
-        // We play the next turn...
-        setImmediate(function() {
-            that.onTurn();
-        });
     }
+    this._previousTurnTime = process.hrtime();
+
+    // We play the next turn...
+    var that = this;
+    setImmediate(function() {
+        that.onTurn();
+    });
 };
 
 /**
@@ -593,6 +577,13 @@ Game.prototype.giveBallToPlayer = function(player) {
     // We tell the ball that it is owned by the new player...
     ballState.controllingPlayerNumber = player.getPlayerNumber();
     ballState.position.copyFrom(playerDynamicState.position);
+
+    // We set the ball's speed and vector to zero. (They are not really zero as the
+    // ball moves with the controlling player. But they are not whatever they previously
+    // were.)
+    ballState.speed = 0.0;
+    ballState.vector.x = 0.0;
+    ballState.vector.y = 0.0;
 };
 
 /**
@@ -626,13 +617,14 @@ Game.prototype.setGameState = function(gameState) {
 };
 
 /**
- * setSimulationMode
- * -----------------
- * If simulationMode is true, the game runs as fast as possible.
- * If false, it runs closer to real-time.
+ * setTurnRate
+ * -----------
+ * Sets the speed of turns as a proportion of real-time.
+ * 1.0 = real-time
+ * 0.0 = as-fast-as-possible
  */
-Game.prototype.setSimulationMode = function(simulationMode) {
-    this.simulationMode = simulationMode;
+Game.prototype.setTurnRate = function(turnRate) {
+    this._turnRate = turnRate;
 };
 
 // Exports...

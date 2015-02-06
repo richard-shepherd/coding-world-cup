@@ -35,10 +35,13 @@ var MessageUtils = AIUtilsLib.MessageUtils;
 /**
  * @constructor
  */
-function Game(ai1, ai2) {
+function Game(ai1, ai2, gameOverCallback) {
     // The AI-wrappers...
     this._ai1 = ai1;
     this._ai2 = ai2;
+
+    // The game-over callback...
+    this._gameOverCallback = gameOverCallback;
 
     // The GUIWebSocket, to send updates to the GUI...
     this.guiWebSocket = null;
@@ -180,7 +183,7 @@ Game.prototype.onTurn = function() {
         this.state.currentTimeSeconds.toFixed(4),
         this._team1.state.score,
         this._team2.state.score);
-    Logger.log(message, Logger.LogLevel.INFO_PLUS);
+    Logger.log(message, Logger.LogLevel.INFO);
     Logger.indent();
 
     // We update the game state - kicking, moving the ball and players etc...
@@ -209,6 +212,11 @@ Game.prototype.playNextTurn = function () {
     // Has the game ended?
     if(this.state.currentTimeSeconds >= this._gameLengthSeconds) {
         Logger.log("Game over!", Logger.LogLevel.INFO);
+        this._ai1.kill();
+        this._ai2.kill();
+        if(this._gameOverCallback) {
+            this._gameOverCallback();
+        }
         return;
     }
 
@@ -445,7 +453,6 @@ Game.prototype._checkGameEvents = function() {
         // We tell the AIs that it's half time...
         this.sendEvent_HalfTime();
 
-        // TODO: If we have energy, players should recuperate at half-time.
         // Team 2 kicks off...
         this._team1.setDirection(TeamState.Direction.LEFT);
         this._team2.setDirection(TeamState.Direction.RIGHT);

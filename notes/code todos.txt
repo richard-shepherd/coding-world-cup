@@ -1,18 +1,18 @@
+TODO: *** Do something if the ball hasn't moved for some time (10 sec?) This could happen, for example, if the ball is in the goal area, and the goalkeeper doesn't take possession.
+      Also happens if players keep taking possesion from each other.
+
+TODO: *** Try to avoid timewasting. Can't pass back and forth with the goalkeeper
+
 TODO: Think about timeouts for AI responses
 
 TODO: Add processing time allowances to the Teams. Process in GSM_Base??
 
 TODO: Only allow the goalkeeper to hold the ball for 5 seconds
 
-TODO: Try to avoid timewasting. Can't pass back and forth with the goalkeeper
-
-TODO: Do something if the ball hasn't moved for some time (10 sec?) This could happen, for example, if the ball is in the goal area, and the goalkeeper doesn't take possession.
 
 TODO: Add the game length to the GAME_START event
 
 TODO: Add penalties
-
-TODO: Add request for team name and colors
 
 TODO: Make CommandLine less fussy about whitespace and newlines
 

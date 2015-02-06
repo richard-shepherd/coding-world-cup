@@ -77,6 +77,15 @@ AIWrapper.prototype.wrap = function(aiInfo) {
 };
 
 /**
+ * kill
+ * ----
+ * Kills the AI process.
+ */
+AIWrapper.prototype.kill = function() {
+    this._aiProcess.kill();
+};
+
+/**
  * setGSMManager
  * -------------
  */

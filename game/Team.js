@@ -386,15 +386,16 @@ Team.prototype.processConfigureAbilitiesResponse = function(data, maxTotalAbilit
         var ballControlAbility = (playerInfo.ballControlAbility <= remainingBallControlAbility) ? playerInfo.ballControlAbility : remainingBallControlAbility;
         var tacklingAbility = (playerInfo.tacklingAbility <= remainingTacklingAbility) ? playerInfo.tacklingAbility : remainingTacklingAbility;
 
-        // Abilities must be between 0 and 100...
+        // We validate and cap abilities...
+        var maxAbility = 100.0;
         if(kickingAbility < 0.0) kickingAbility = 0.0;
-        if(kickingAbility > 100.0 ) kickingAbility = 100.0;
+        if(kickingAbility > maxAbility ) kickingAbility = maxAbility;
         if(runningAbility  < 0.0) runningAbility = 0.0;
-        if(runningAbility  > 100.0 ) runningAbility  = 100.0;
+        if(runningAbility  > maxAbility ) runningAbility  = maxAbility;
         if(ballControlAbility < 0.0) ballControlAbility = 0.0;
-        if(ballControlAbility > 100.0 ) ballControlAbility = 100.0;
+        if(ballControlAbility > maxAbility ) ballControlAbility = maxAbility;
         if(tacklingAbility < 0.0) tacklingAbility = 0.0;
-        if(tacklingAbility > 100.0 ) tacklingAbility = 100.0;
+        if(tacklingAbility > maxAbility ) tacklingAbility = maxAbility;
 
         player.staticState.kickingAbility = kickingAbility;
         player.staticState.runningAbility = runningAbility;

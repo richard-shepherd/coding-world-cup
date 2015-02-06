@@ -9,6 +9,7 @@ exports.PlayerState_Action = require('./PlayerState_Action');
 exports.PlayerState_Static = require('./PlayerState_Static');
 exports.Team = require('./Team');
 exports.TeamState = require('./TeamState');
+exports.Tournament = require('./Tournament');
 
 
 

@@ -105,6 +105,19 @@ AIManager.prototype.getAIWrapperFromName = function(name) {
     return aiWrapper;
 };
 
+/**
+ * getAINames
+ * ----------
+ * Returns a list of all the AI names.
+ */
+AIManager.prototype.getAINames = function() {
+    var names = [];
+    for(var name in this._aiInfos) {
+        names.push(name);
+    }
+    return names;
+};
+
 // Exports...
 module.exports = AIManager;
 

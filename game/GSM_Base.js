@@ -61,7 +61,7 @@ GSM_Base.prototype.onTurn = function() {
 /**
  * checkState
  * ----------
- * Virtual function, usually handled by a erived class.
+ * Virtual function, usually handled by a derived class.
  */
 GSM_Base.prototype.checkState = function() {
     return this;

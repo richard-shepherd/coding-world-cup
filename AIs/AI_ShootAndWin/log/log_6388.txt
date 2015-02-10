@@ -1,0 +1,35 @@
+INFO: Starting game loop
+INFO: 0.2: Forward 3 shoots to x:100, y:25
+INFO: 16: Defender 1 kicks the ball to x:71.065, y:15.15
+INFO: 19.9: Forward 3 shoots to x:100, y:25
+INFO: Goalkeeper kicks the ball to x:21.261, y:31.167
+INFO: 41.7: Defender 1 kicks the ball to x:71, y:35
+INFO: 45: Forward 4 shoots to x:100, y:25
+INFO: 57.7: Forward 3 shoots to x:100, y:25
+INFO: 59.8: Forward 3 shoots to x:100, y:25
+INFO: 73.5: GOAL!!!
+INFO: 73.7: Forward 3 shoots to x:100, y:25
+INFO: 84.2: Forward 3 shoots to x:100, y:25
+INFO: 98.6: Defender 1 kicks the ball to x:71, y:15
+INFO: Goalkeeper kicks the ball to x:14.235, y:20.266
+INFO: 153.1: Defender 0 kicks the ball to x:71, y:15
+INFO: 163.7: GOAL!!!
+INFO: 163.9: Forward 3 shoots to x:100, y:25
+INFO: Goalkeeper kicks the ball to x:14.737, y:27.803
+INFO: Goalkeeper kicks the ball to x:17.537, y:25.727
+INFO: 209.2: Defender 0 kicks the ball to x:71, y:15
+INFO: Goalkeeper kicks the ball to x:22.037, y:24.229
+INFO: Goalkeeper kicks the ball to x:14.197, y:20.156
+INFO: 268.1: GOAL!!!
+INFO: 268.3: Forward 3 shoots to x:100, y:25
+INFO: 274.2: Forward 4 shoots to x:100, y:25
+INFO: 274.7: GOAL!!!
+INFO: 290.9: GOAL!!!
+INFO: 291.1: Forward 3 shoots to x:100, y:25
+INFO: 301.8: Defender 1 kicks the ball to x:71, y:15
+INFO: 305.5: Forward 3 shoots to x:100, y:25
+INFO: 318.6: Defender 2 kicks the ball to x:71, y:35
+INFO: 322.1: Forward 4 shoots to x:100, y:25
+INFO: 325.8: Forward 4 shoots to x:100, y:25
+INFO: Goalkeeper kicks the ball to x:12.882, y:17.314
+INFO: Goalkeeper kicks the ball to x:20.853, y:23.469

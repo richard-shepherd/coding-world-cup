@@ -1,0 +1,5 @@
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Release\GermanyYogesh.csprojResolveAssemblyReference.cache
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Release\GermanyYogesh.exe
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Release\GermanyYogesh.pdb
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh.exe
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh.pdb

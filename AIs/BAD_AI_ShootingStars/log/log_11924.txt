@@ -1,0 +1,9 @@
+FATAL: Exception in Main: Cannot implicitly convert type 'decimal' to 'float'. An explicit conversion exists (are you missing a cast?) 
+Stack:
+   at CallSite.Target(Closure , CallSite , Object )
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute1[T0,TRet](CallSite site, T0 arg0)
+   at ShootingStars.GameParameters.Ball.UpdateBallState(Object ballState) in c:\Users\Rohan\Documents\Projects\Node.js\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootingStars\ShootingStars\ShootingStars\GameParameters\Ball.cs:line 18
+   at System.Dynamic.UpdateDelegates.UpdateAndExecuteVoid2[T0,T1](CallSite site, T0 arg0, T1 arg1)
+   at ShootingStars.CommunicationFramework.EventPublisher.EventReceived(Object eventData) in c:\Users\Rohan\Documents\Projects\Node.js\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootingStars\ShootingStars\ShootingStars\CommunicationFramework\EventPublisher.cs:line 44
+   at ShootingStars.CommunicationFramework.EventPublisher.Start() in c:\Users\Rohan\Documents\Projects\Node.js\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootingStars\ShootingStars\ShootingStars\CommunicationFramework\EventPublisher.cs:line 69
+   at ShootingStars.Program.Main(String[] args) in c:\Users\Rohan\Documents\Projects\Node.js\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootingStars\ShootingStars\ShootingStars\Program.cs:line 35

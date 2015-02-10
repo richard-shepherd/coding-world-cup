@@ -1,0 +1,7 @@
+C:\FootballChallenge\AIs\AI_BootAndShoot\BootAndShoot\obj\Debug\BootAndShoot.csprojResolveAssemblyReference.cache
+C:\FootballChallenge\AIs\AI_BootAndShoot\BootAndShoot\obj\Debug\BootAndShoot.exe
+C:\FootballChallenge\AIs\AI_BootAndShoot\BootAndShoot\obj\Debug\BootAndShoot.pdb
+C:\FootballChallenge\AIs\AI_BootAndShoot\BootAndShoot.exe
+C:\FootballChallenge\AIs\AI_BootAndShoot\BootAndShoot.pdb
+C:\FootballChallenge\AIs\AI_ArgentinaYogesh\ArgentinaYogesh\obj\Debug\BootAndShoot.exe
+C:\FootballChallenge\AIs\AI_ArgentinaYogesh\ArgentinaYogesh\obj\Debug\BootAndShoot.pdb

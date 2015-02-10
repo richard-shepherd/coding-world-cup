@@ -1,0 +1,7 @@
+C:\FootballChallenge\AIs\AI_ArgentinaYogesh\ArgentinaYogesh\obj\Debug\ArgentinaYogesh.exe
+C:\FootballChallenge\AIs\AI_ArgentinaYogesh\ArgentinaYogesh\obj\Debug\ArgentinaYogesh.pdb
+C:\FootballChallenge\AIs\AI_ArgentinaYogesh\ArgentinaYogesh.exe
+C:\FootballChallenge\AIs\AI_ArgentinaYogesh\ArgentinaYogesh.pdb
+C:\FootballChallenge\AIs\AI_ArgentinaYogesh\ArgentinaYogesh\obj\Debug\ArgentinaYogesh.csprojResolveAssemblyReference.cache
+C:\FootballChallenge\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\ArgentinaYogesh.exe
+C:\FootballChallenge\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\ArgentinaYogesh.pdb

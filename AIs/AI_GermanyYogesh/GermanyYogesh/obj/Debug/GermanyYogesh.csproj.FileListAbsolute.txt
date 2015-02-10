@@ -1,0 +1,15 @@
+C:\FootballChallenge\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.csprojResolveAssemblyReference.cache
+C:\FootballChallenge\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.exe
+C:\FootballChallenge\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.pdb
+C:\FootballChallenge\AIs\AI_GermanyYogesh\GermanyYogesh.exe
+C:\FootballChallenge\AIs\AI_GermanyYogesh\GermanyYogesh.pdb
+C:\football\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.exe
+C:\football\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.pdb
+C:\football\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.csprojResolveAssemblyReference.cache
+C:\football\AIs\AI_GermanyYogesh\GermanyYogesh.exe
+C:\football\AIs\AI_GermanyYogesh\GermanyYogesh.pdb
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.exe
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.pdb
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh\obj\Debug\GermanyYogesh.csprojResolveAssemblyReference.cache
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh.exe
+D:\code\coding-world-cup\AIs\AI_GermanyYogesh\GermanyYogesh.pdb

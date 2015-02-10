@@ -1,0 +1,4 @@
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootAndShoot_BD\BootAndShoot\obj\Debug\BootAndShoot.exe
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootAndShoot_BD\BootAndShoot\obj\Debug\BootAndShoot.pdb
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootAndShoot_BD\BootAndShoot.exe
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootAndShoot_BD\BootAndShoot.pdb

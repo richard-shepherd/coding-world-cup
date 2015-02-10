@@ -1,0 +1,10 @@
+C:\Users\972536\Desktop\Challenge\richard-shepherd-coding-world-cup-ad69576\richard-shepherd-coding-world-cup-ad69576\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS\obj\Release\BootAndShoot_MIS.exe
+C:\Users\972536\Desktop\Challenge\richard-shepherd-coding-world-cup-ad69576\richard-shepherd-coding-world-cup-ad69576\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS\obj\Release\BootAndShoot_MIS.pdb
+C:\Users\972536\Desktop\Challenge\richard-shepherd-coding-world-cup-ad69576\richard-shepherd-coding-world-cup-ad69576\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS.exe
+C:\Users\972536\Desktop\Challenge\richard-shepherd-coding-world-cup-ad69576\richard-shepherd-coding-world-cup-ad69576\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS.pdb
+C:\Users\972536\Desktop\Challenge\richard-shepherd-coding-world-cup-ad69576\richard-shepherd-coding-world-cup-ad69576\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS\obj\Release\BootAndShoot_MIS.csprojResolveAssemblyReference.cache
+C:\Users\972536\Desktop\Football_29_12_2014\Football_29122014\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS\obj\Release\BootAndShoot_MIS.exe
+C:\Users\972536\Desktop\Football_29_12_2014\Football_29122014\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS\obj\Release\BootAndShoot_MIS.pdb
+C:\Users\972536\Desktop\Football_29_12_2014\Football_29122014\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS\obj\Release\BootAndShoot_MIS.csprojResolveAssemblyReference.cache
+C:\Users\972536\Desktop\Football_29_12_2014\Football_29122014\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS.exe
+C:\Users\972536\Desktop\Football_29_12_2014\Football_29122014\AIs\AI_BootAndShoot_MIS\BootAndShoot_MIS.pdb

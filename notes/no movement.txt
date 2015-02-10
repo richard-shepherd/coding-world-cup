@@ -1,0 +1,16 @@
+- If there has been no movement (or hardly any) for a while, I think we
+  should move the ball automatically.
+
+- Some combinations of AIs seem to get in a state where they cluster around the
+  ball, and it ends up not moving. Maybe it just gets passed between the players
+  who are all in the same place.
+
+- So the ball may move a little.
+
+- We want to check something like the maximum movement in the last X seconds.
+
+- Not just how far the ball is now from where it was X seconds ago - as it may
+  have moved somewhere and then moved back again.
+
+
+

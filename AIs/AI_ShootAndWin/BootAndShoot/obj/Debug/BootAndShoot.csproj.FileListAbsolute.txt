@@ -1,0 +1,5 @@
+C:\Users\Sneha\Desktop\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootAndWin\BootAndShoot\obj\Debug\BootAndShoot.csprojResolveAssemblyReference.cache
+C:\Users\Sneha\Desktop\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootAndWin\BootAndShoot\obj\Debug\BootAndShoot.exe
+C:\Users\Sneha\Desktop\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootAndWin\BootAndShoot\obj\Debug\BootAndShoot.pdb
+C:\Users\Sneha\Desktop\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootAndWin\BootAndShoot.exe
+C:\Users\Sneha\Desktop\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_ShootAndWin\BootAndShoot.pdb

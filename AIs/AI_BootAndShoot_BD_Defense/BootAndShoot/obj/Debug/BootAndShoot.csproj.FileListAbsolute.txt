@@ -1,0 +1,5 @@
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootShootAndGoal\BootAndShoot\obj\Debug\BootAndShoot.exe
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootShootAndGoal\BootAndShoot\obj\Debug\BootAndShoot.pdb
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootShootAndGoal\BootAndShoot.exe
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootShootAndGoal\BootAndShoot.pdb
+E:\codingChallenge\richard-shepherd-coding-world-cup-2688dfa\AIs\AI_BootShootAndGoal\BootAndShoot\obj\Debug\BootAndShoot.csprojResolveAssemblyReference.cache

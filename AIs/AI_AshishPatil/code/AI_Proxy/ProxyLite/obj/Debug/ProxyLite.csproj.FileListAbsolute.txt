@@ -1,0 +1,10 @@
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\bin\Debug\ProxyLite.exe.config
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\bin\Debug\ProxyLite.exe
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\bin\Debug\ProxyLite.pdb
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\bin\Debug\Utility.dll
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\bin\Debug\Newtonsoft.Json.dll
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\bin\Debug\Utility.pdb
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\bin\Debug\Newtonsoft.Json.xml
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\obj\Debug\ProxyLite.csprojResolveAssemblyReference.cache
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\obj\Debug\ProxyLite.exe
+C:\Ashish\Contest\coding-world-cup-master\AIs\AI_Proxy\AI_Proxy\ProxyLite\obj\Debug\ProxyLite.pdb

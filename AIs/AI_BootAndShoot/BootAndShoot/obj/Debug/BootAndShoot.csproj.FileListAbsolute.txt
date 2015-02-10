@@ -1,0 +1,5 @@
+D:\code\coding-world-cup\AIs\AI_BootAndShoot\BootAndShoot\obj\Debug\BootAndShoot.exe
+D:\code\coding-world-cup\AIs\AI_BootAndShoot\BootAndShoot\obj\Debug\BootAndShoot.pdb
+D:\code\coding-world-cup\AIs\AI_BootAndShoot\BootAndShoot\obj\Debug\BootAndShoot.csprojResolveAssemblyReference.cache
+D:\code\coding-world-cup\AIs\AI_BootAndShoot\BootAndShoot.exe
+D:\code\coding-world-cup\AIs\AI_BootAndShoot\BootAndShoot.pdb

@@ -1,0 +1,10 @@
+- Multi round tournaments
+
+- Sound effects
+
+- GOAL!!!
+
+- Make GUI faster and slower
+
+- Sudden death (if necessary)
+

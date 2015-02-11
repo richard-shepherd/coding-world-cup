@@ -30,6 +30,7 @@ var Random = UtilsLib.Random;
 var CWCError = UtilsLib.CWCError;
 var AIUtilsLib = require('../ai_utils');
 var MessageUtils = AIUtilsLib.MessageUtils;
+var GameUtils = require('./GameUtils');
 
 
 /**
@@ -667,6 +668,14 @@ Game.prototype.setGameState = function(gameState) {
  */
 Game.prototype.setTurnRate = function(turnRate) {
     this._turnRate = turnRate;
+};
+
+/**
+ * Returns true if the ball is in one of the goal areas.
+ */
+Game.prototype.ballIsInGoalArea = function() {
+    var ballPosition = this.ball.state.position;
+    return GameUtils.positionIsInGoalArea(ballPosition);
 };
 
 // Exports...

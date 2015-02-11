@@ -25,6 +25,7 @@ exports['time wasting'] = function(test) {
     // We play for 15 seconds...
     for(var i=0; i<150; ++i) {
         game.calculate();
+        game._gsmManager.checkState();
     }
 
     // We should be in the GSM_BallInGoalArea state...
@@ -33,6 +34,7 @@ exports['time wasting'] = function(test) {
     // We play for another 10 seconds...
     for(var i=0; i<100; ++i) {
         game.calculate();
+        game._gsmManager.checkState();
     }
 
     // The ball should have been teleported outside the goal area...
@@ -66,6 +68,7 @@ exports['ball moves before time wasting'] = function(test) {
     // We play for 10 seconds...
     for(var i=0; i<100; ++i) {
         game.calculate();
+        game._gsmManager.checkState();
     }
 
     // We should be in the GSM_BallInGoalArea state...
@@ -75,6 +78,7 @@ exports['ball moves before time wasting'] = function(test) {
     ballPosition.x = 34.0;
     ballPosition.y = 25.0;
     game.calculate();
+    game._gsmManager.checkState();
 
     // We should be back in the Play state...
     test.equal(game._gsmManager._state.constructor.name, "GSM_Play");

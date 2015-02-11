@@ -19,6 +19,8 @@ function GSM_Play(game) {
 Utils.extend(GSM_Base, GSM_Play); // Derived from GSM_Base.
 module.exports = GSM_Play;
 
+var GSM_BallInGoalArea = require('./GSM_BallInGoalArea');
+
 /**
  * checkState
  * ----------
@@ -26,7 +28,14 @@ module.exports = GSM_Play;
  * if we want to change the state.
  */
 GSM_Play.prototype.checkState = function() {
-    return this;
+    if(this._game.ballIsInGoalArea()) {
+        // The ball is in the goal area, as we move to the state which
+        // checks for timewasting...
+        return new GSM_BallInGoalArea(this._game);
+    } else {
+        // The ball is not in the goal area, so we carry on playing normally...
+        return this;
+    }
 };
 
 /**

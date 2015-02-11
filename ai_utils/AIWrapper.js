@@ -27,6 +27,9 @@ function AIWrapper(name) {
 
     // The AI process...
     this._aiProcess  = null;
+
+    // The processing time taken...
+    this.processingTimeSeconds = 0.0;
 }
 module.exports = AIWrapper;
 

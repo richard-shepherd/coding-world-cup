@@ -77,7 +77,7 @@ GSM_Base.prototype.sendRequestToBothAIs = function(request) {
     this._aiResponses = {};
 
     // We note the time before sending the update, so that we
-    // an time how long the AIs take to process it...
+    // can time how long the AIs take to process it...
     this._updateSentTime = process.hrtime();
 
     // We send the request...
@@ -128,12 +128,16 @@ GSM_Base.prototype._checkResponses = function() {
     if(!('AI2' in this._aiResponses)) return;
 
     // We've got updates from both AIs.
-    var ai1 = this._aiResponses.AI1;
-    var ai2 = this._aiResponses.AI2;
+    var response1 = this._aiResponses.AI1;
+    var response2 = this._aiResponses.AI2;
 
     // We convert the JSON data to objects...
-    ai1.data = JSON.parse(ai1.jsonData);
-    ai2.data = JSON.parse(ai2.jsonData);
+    response1.data = JSON.parse(response1.jsonData);
+    response2.data = JSON.parse(response2.jsonData);
+
+    // We update the processing time for each AI...
+    this._AI1.processingTimeSeconds += response1.processingTimeSeconds;
+    this._AI2.processingTimeSeconds += response2.processingTimeSeconds;
 
     // We call into the derived class to handle the responses...
     this.onAIResponsesReceived();

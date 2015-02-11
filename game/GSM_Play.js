@@ -29,7 +29,7 @@ var GSM_BallInGoalArea = require('./GSM_BallInGoalArea');
  */
 GSM_Play.prototype.checkState = function() {
     if(this._game.ballIsInGoalArea()) {
-        // The ball is in the goal area, as we move to the state which
+        // The ball is in the goal area, so we move to the state which
         // checks for timewasting...
         return new GSM_BallInGoalArea(this._game);
     } else {

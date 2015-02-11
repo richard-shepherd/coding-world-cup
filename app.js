@@ -11,7 +11,7 @@ var AIManager = AIUtilsLib.AIManager;
 
 // Comment out one of the lines below to either play a
 // single game or play a tournament...
-playGame('OlympiaKosF', 'Rimpo');
+playGame('PlanA', 'Rimpo');
 //playTournament();
 
 /**

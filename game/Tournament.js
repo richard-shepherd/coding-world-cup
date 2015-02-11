@@ -8,6 +8,7 @@ var AIUtilsLib = require('../ai_utils');
 var AIManager = AIUtilsLib.AIManager;
 var Game = require('./Game');
 var UtilsLib = require('../utils');
+var Utils = UtilsLib.Utils;
 var Logger = UtilsLib.Logger;
 
 
@@ -25,6 +26,7 @@ function Tournament() {
             gamesDrawn: 0,
             gamesLost: 0,
             points: 0,
+            processingTimeSeconds: 0.0,
             goalsScored: 0
         };
     }, this);
@@ -113,6 +115,10 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
             team2Info.points += 1;
         }
 
+        // We update the processing time...
+        team1Info.processingTimeSeconds += ai1.processingTimeSeconds;
+        team2Info.processingTimeSeconds += ai2.processingTimeSeconds;
+
         // We show the scores...
         that._showScores();
 
@@ -133,7 +139,7 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
 Tournament.prototype._showScores = function() {
     for(var name in this._scores) {
         var score = this._scores[name];
-        var jsonScore = JSON.stringify(score);
+        var jsonScore = JSON.stringify(score, Utils.decimalPlaceReplacer(4));
         Logger.log(name + ": " + jsonScore, Logger.LogLevel.INFO_PLUS);
     }
 };

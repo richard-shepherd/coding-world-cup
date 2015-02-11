@@ -87,6 +87,11 @@ function Game(ai1, ai2, gameOverCallback) {
     this._gracePeriodTurns = 1;
     this._gracePeriodTurnsRemaining = 0;
 
+    // If the ball has been in the goal area too long, we consider this
+    // to be timewasting. After this number of seconds, the ball is
+    // "teleported" outside the area...
+    this.goalAreaTimewastingLimitSeconds = 20.0;
+
     // When playing in real-time mode, we keep a track of the time each
     // turn was played, to try to keep as close to real-time as possible...
     this._previousTurnTime = process.hrtime();

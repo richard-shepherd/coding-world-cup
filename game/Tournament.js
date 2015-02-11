@@ -22,6 +22,9 @@ function Tournament() {
     this._aiNames.forEach(function(aiName) {
         this._scores[aiName] = {
             gamesWon: 0,
+            gamesDrawn: 0,
+            gamesLost: 0,
+            points: 0,
             goalsScored: 0
         };
     }, this);
@@ -93,10 +96,21 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
         team2Info.goalsScored += team2Score;
 
         if(team1Score > team2Score) {
+            // Team 1 has won...
             team1Info.gamesWon += 1;
-        }
-        if(team2Score > team1Score) {
+            team1Info.points += 3;
+            team2Info.gamesLost += 1;
+        } else if(team2Score > team1Score) {
+            // Team 2 has won...
             team2Info.gamesWon += 1;
+            team2Info.points += 3;
+            team1Info.gamesLost += 1;
+        } else {
+            // It was a draw...
+            team1Info.gamesDrawn += 1;
+            team2Info.gamesDrawn += 1;
+            team1Info.points += 1;
+            team2Info.points += 1;
         }
 
         // We show the scores...
@@ -119,7 +133,8 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
 Tournament.prototype._showScores = function() {
     for(var name in this._scores) {
         var score = this._scores[name];
-        Logger.log(name + ": Games=" + score.gamesWon + ", Goals=" + score.goalsScored, Logger.LogLevel.INFO_PLUS);
+        var jsonScore = JSON.stringify(score);
+        Logger.log(name + ": " + jsonScore, Logger.LogLevel.INFO_PLUS);
     }
 };
 

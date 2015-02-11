@@ -11,7 +11,7 @@ var AIManager = AIUtilsLib.AIManager;
 
 // Comment out one of the lines below to either play a
 // single game or play a tournament...
-//playGame('Aixps', 'BootAndShoot_MIS');
+//playGame('Rimpo', 'OlympiaKosF');
 playTournament();
 
 /**
@@ -50,7 +50,7 @@ function playGame(player1Name, player2Name) {
     var game = new Game(ai1, ai2);
 
     // 1.0 plays at real-time, 0.5 plays twice as fast, 0.0 plays as fast as possible...
-    game.setTurnRate(0.6);
+    game.setTurnRate(0.5);
 
     // Set if you want to play with a GUI. If true, this creates a WebSocket and waits for a client connection...
     var playWithGUI = true;

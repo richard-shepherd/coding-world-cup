@@ -132,8 +132,6 @@ class AiBase(object) :
         x = 0 if self.DirectionRight else Class.Pitch.Width
         if Util.Distance( (x, Class.Pitch.GoalCentre), self.__ball.Position) <= Class.Pitch.GoalAreaRadius :
             self.__ballInMyGoalAreaTurns += 1
-            if self.__ballInMyGoalAreaTurns > 10* globalTimeLimitForBallInMyGoalArea :
-                raise Exception('Time wasting!')
         else :
             self.__ballInMyGoalAreaTurns = 0
         if self.__ball.PlayerNbr is not None :

@@ -231,9 +231,15 @@
             // We clear the player canvas...
             playerContext.clearRect(0, 0, playerCanvas.width, playerCanvas.height);
 
-            // We color the pitch green...
-            pitchContext.fillStyle = "#008000";
-            pitchContext.fillRect(0, 0, pitchCanvas.width, pitchCanvas.height);
+            // We color the pitch green, with stripes...
+            var numberOfStripes = 8;
+            var stripeWidth = Math.floor(pitchCanvas.width / numberOfStripes);
+            var stripeX = 0;
+            for(var i=0; i<numberOfStripes; ++i) {
+                pitchContext.fillStyle = (i%2 === 0) ? "#008000" : "#008800";
+                pitchContext.fillRect(stripeX, 0, stripeX + stripeWidth, pitchCanvas.height);
+                stripeX += stripeWidth;
+            }
 
             // We put a white border around the pitch...
             pitchContext.beginPath();

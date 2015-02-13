@@ -53,7 +53,7 @@ function playGame(player1Name, player2Name) {
     game.setTurnRate(0.5);
 
     // Set if you want to play with a GUI. If true, this creates a WebSocket and waits for a client connection...
-    var playWithGUI = true;
+    var playWithGUI = false;
     if(playWithGUI) {
         // We're playing with a GUI, so we wait for a client connection...
         var guiWebSocket = new GUIWebSocket(12345);

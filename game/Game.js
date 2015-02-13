@@ -40,6 +40,8 @@ function Game(ai1, ai2, gameOverCallback) {
     // The AI-wrappers...
     this._ai1 = ai1;
     this._ai2 = ai2;
+    ai1.setGame(this);
+    ai2.setGame(this);
 
     // The game-over callback...
     this._gameOverCallback = gameOverCallback;
@@ -58,6 +60,11 @@ function Game(ai1, ai2, gameOverCallback) {
 
     // The ball...
     this.ball = new Ball();
+
+    // Indicates whether the game is over.
+    // This can be set if the game terminates unexpectedly. For example,
+    // by one of the AIs crashing...
+    this._gameOver = false;
 
     // The interval in seconds between calculation updates.
     // This includes the 'physics' of player and ball movement
@@ -215,14 +222,15 @@ Game.prototype.onTurn = function() {
 Game.prototype.playNextTurn = function () {
     Logger.dedent();
 
+    // We check if some external even has already finished the game.
+    // This can happen, for example, if one of the AI processes crashes.
+    if(this._gameOver) {
+        return;
+    }
+
     // Has the game ended?
     if(this.state.currentTimeSeconds >= this._gameLengthSeconds) {
-        Logger.log("Game over!", Logger.LogLevel.INFO);
-        this._ai1.dispose();
-        this._ai2.dispose();
-        if(this._gameOverCallback) {
-            this._gameOverCallback();
-        }
+        this.onGameOver();
         return;
     }
 
@@ -242,6 +250,21 @@ Game.prototype.playNextTurn = function () {
     setImmediate(function() {
         that.onTurn();
     });
+};
+
+/**
+ * onGameOver
+ * ----------
+ * Called when the game is over.
+ */
+Game.prototype.onGameOver = function() {
+    Logger.log("Game over!", Logger.LogLevel.INFO);
+    this._ai1.dispose();
+    this._ai2.dispose();
+    this._gameOver = true;
+    if(this._gameOverCallback) {
+        this._gameOverCallback();
+    }
 };
 
 /**
@@ -676,6 +699,26 @@ Game.prototype.setTurnRate = function(turnRate) {
 Game.prototype.ballIsInGoalArea = function() {
     var ballPosition = this.ball.state.position;
     return GameUtils.positionIsInGoalArea(ballPosition);
+};
+
+/**
+ * onAI1Died
+ * ---------
+ * Called if AI1's process has died.
+ */
+Game.prototype.onAI1Died = function() {
+    this._team1.state.score = 0;
+    this.onGameOver();
+};
+
+/**
+ * onAI2Died
+ * ---------
+ * Called if AI2's process has died.
+ */
+Game.prototype.onAI2Died = function() {
+    this._team2.state.score = 0;
+    this.onGameOver();
 };
 
 // Exports...

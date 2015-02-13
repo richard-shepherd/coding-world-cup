@@ -31,6 +31,9 @@ function AIWrapper(name) {
     // Whether this object has been disposed...
     this._disposed = false;
 
+    // The game this AI is part of...
+    this._game = null;
+
     // The processing time taken...
     this.processingTimeSeconds = 0.0;
 }
@@ -60,6 +63,14 @@ AIWrapper.prototype.dispose = function() {
  */
 AIWrapper.prototype.setTeamNumber = function(teamNumber) {
     this._teamNumber = teamNumber;
+};
+
+/**
+ * setGame
+ * -------
+ */
+AIWrapper.prototype.setGame = function(game) {
+    this._game = game;
 };
 
 /**
@@ -105,8 +116,21 @@ AIWrapper.prototype._onExit = function() {
         return;
     }
 
-    // TODO The process exited unexpectedly...
-    Logger.log(this.name +  ' EXITED UNEXPECTEDLY!', Logger.LogLevel.ERROR);
+    // The process exited unexpectedly...
+    Logger.log(this.name +  ' exited unexpectedly.', Logger.LogLevel.ERROR);
+
+    // We notify the game...
+    if(this._game !== null) {
+        switch(this._teamNumber) {
+            case 1:
+                this._game.onAI1Died();
+                break;
+
+            case 2:
+                this._game.onAI2Died();
+                break;
+        }
+    }
 };
 
 /**

@@ -218,8 +218,8 @@ Game.prototype.playNextTurn = function () {
     // Has the game ended?
     if(this.state.currentTimeSeconds >= this._gameLengthSeconds) {
         Logger.log("Game over!", Logger.LogLevel.INFO);
-        this._ai1.kill();
-        this._ai2.kill();
+        this._ai1.dispose();
+        this._ai2.dispose();
         if(this._gameOverCallback) {
             this._gameOverCallback();
         }

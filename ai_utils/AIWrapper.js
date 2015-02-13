@@ -28,6 +28,9 @@ function AIWrapper(name) {
     // The AI process...
     this._aiProcess  = null;
 
+    // Whether this object has been disposed...
+    this._disposed = false;
+
     // The processing time taken...
     this.processingTimeSeconds = 0.0;
 }
@@ -38,11 +41,17 @@ module.exports = AIWrapper;
  * -------
  */
 AIWrapper.prototype.dispose = function() {
+    if(this._disposed) {
+        return;
+    }
+
     // We kill the AI process...
     if(this._aiProcess !== null) {
         this._aiProcess.kill();
         this._aiProcess = null;
     }
+
+    this._disposed = true;
 };
 
 /**
@@ -62,6 +71,12 @@ AIWrapper.prototype.wrap = function(aiInfo) {
     // We launch the AI process...
     this._aiProcess = child_process.spawn(aiInfo.executable, aiInfo.args, {cwd:aiInfo.absoluteFolder});
 
+    // We listen for the process exiting unexpectedly...
+    var that = this;
+    this._aiProcess.on('exit', function(code, signal) {
+        that._onExit();
+    });
+
     // We hook up to stdout from the AI...
     this._io = readline.createInterface({
         input: this._aiProcess.stdout,
@@ -80,12 +95,18 @@ AIWrapper.prototype.wrap = function(aiInfo) {
 };
 
 /**
- * kill
- * ----
- * Kills the AI process.
+ * onExit
+ * ------
+ * Called when the process exits.
  */
-AIWrapper.prototype.kill = function() {
-    this._aiProcess.kill();
+AIWrapper.prototype._onExit = function() {
+    // If this object has been disposed, then the process exited as expected...
+    if(this._disposed) {
+        return;
+    }
+
+    // TODO The process exited unexpectedly...
+    Logger.log(this.name +  ' EXITED UNEXPECTEDLY!', Logger.LogLevel.ERROR);
 };
 
 /**
@@ -102,17 +123,23 @@ AIWrapper.prototype.setGSMManager = function(gsmManager) {
  * Sends an error message to the AI.
  */
 AIWrapper.prototype.sendError = function(message) {
-    // We log the error...
-    Logger.log(message, Logger.LogLevel.ERROR);
+    try {
+        // We log the error...
+        Logger.log(message, Logger.LogLevel.ERROR);
 
-    // We create an error message to send to the AI...
-    var errorMessage = {
-        messageType: "ERROR",
-        error: message
-    };
+        // We create an error message to send to the AI...
+        var errorMessage = {
+            messageType: "ERROR",
+            error: message
+        };
 
-    var jsonErrorMessage = JSON.stringify(errorMessage);
-    this.sendData(jsonErrorMessage);
+        var jsonErrorMessage = JSON.stringify(errorMessage);
+        this.sendData(jsonErrorMessage);
+    } catch(ex) {
+        // The process may have exited unexpectedly...
+        Logger.log(ex.message, Logger.LogLevel.ERROR);
+        this._onExit();
+    }
 };
 
 /**
@@ -121,9 +148,15 @@ AIWrapper.prototype.sendError = function(message) {
  * Sends the data passed in to the AI.
  */
 AIWrapper.prototype.sendData = function(jsonData) {
-    if(this._aiProcess !== null) {
-        this._aiProcess.stdin.write(jsonData);
-        this._aiProcess.stdin.write('\n');
+    try {
+        if(this._aiProcess !== null) {
+            this._aiProcess.stdin.write(jsonData);
+            this._aiProcess.stdin.write('\n');
+        }
+    } catch(ex) {
+        // The process may have exited unexpectedly...
+        Logger.log(ex.message, Logger.LogLevel.ERROR);
+        this._onExit();
     }
 };
 

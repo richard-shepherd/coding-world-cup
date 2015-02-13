@@ -35,7 +35,7 @@ function Tournament() {
 
     // We create a log file for the tournament...
     filendir.ws('tournament.log', '');
-    this._file = fs.openSync('tournament.log'', 'w');
+    this._file = fs.openSync('tournament.log', 'w');
 }
 
 /**

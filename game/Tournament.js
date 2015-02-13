@@ -10,6 +10,8 @@ var Game = require('./Game');
 var UtilsLib = require('../utils');
 var Utils = UtilsLib.Utils;
 var Logger = UtilsLib.Logger;
+var fs = require('fs');
+var filendir = require('filendir');
 
 
 /**
@@ -30,6 +32,10 @@ function Tournament() {
             goalsScored: 0
         };
     }, this);
+
+    // We create a log file for the tournament...
+    filendir.ws('tournament.log', '');
+    this._file = fs.openSync('tournament.log'', 'w');
 }
 
 /**
@@ -37,16 +43,21 @@ function Tournament() {
  * ----
  */
 Tournament.prototype.play = function() {
-    this._playOneRound();
+    this._playNextRound(1);
 };
 
 /**
- * playOneRound
- * ------------
- * Plays one round of all AIs against all others.
+ * playNextRound
+ * -------------
+ * Plays one round of the tournament, ie all players against all other players.
  */
-Tournament.prototype._playOneRound = function() {
-    this._playNextGame(0, 0);
+Tournament.prototype._playNextRound = function(roundNumber) {
+    var that = this;
+    setImmediate(function() {
+        that._playNextGame(roundNumber, 0, 0, function() {
+            that._playNextRound(roundNumber+1);
+        });
+    });
 };
 
 /**
@@ -54,7 +65,7 @@ Tournament.prototype._playOneRound = function() {
  * ------------
  * Plays a game between the players with the indexes passed in.
  */
-Tournament.prototype._playNextGame = function(player1Index, player2Index) {
+Tournament.prototype._playNextGame = function(roundNumber, player1Index, player2Index, roundFinishedCallback) {
     var numberOfPlayers = this._aiNames.length;
     if(player2Index === numberOfPlayers) {
         // We've played all games for player1, so we move to the next player...
@@ -63,7 +74,8 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
     }
     if(player1Index === numberOfPlayers) {
         // We've played all the games in this round...
-        return;
+        this._showScores(roundNumber);
+        roundFinishedCallback();
     }
 
     // We find the AIs...
@@ -81,8 +93,7 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
     var ai2 = this._aiManager.getAIWrapperFromName(player2Name);
 
     // We log who's playing...
-    Logger.log("---", Logger.LogLevel.INFO_PLUS);
-    Logger.log(player1Name + " vs. " + player2Name, Logger.LogLevel.INFO_PLUS);
+    this.log("Round: " + roundNumber + ", " + player1Name + " vs. " + player2Name);
 
     // We play the game...
     var game = new Game(ai1, ai2, function() {
@@ -119,9 +130,6 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
         team1Info.processingTimeSeconds += ai1.processingTimeSeconds;
         team2Info.processingTimeSeconds += ai2.processingTimeSeconds;
 
-        // We show the scores...
-        that._showScores();
-
         // We play the next game...
         player2Index += 1;
         setImmediate(function() {
@@ -136,12 +144,22 @@ Tournament.prototype._playNextGame = function(player1Index, player2Index) {
  * showScores
  * ----------
  */
-Tournament.prototype._showScores = function() {
+Tournament.prototype._showScores = function(roundNumber) {
+    this.log("Scores after round " + roundNumber);
     for(var name in this._scores) {
         var score = this._scores[name];
         var jsonScore = JSON.stringify(score, Utils.decimalPlaceReplacer(4));
-        Logger.log(name + ": " + jsonScore, Logger.LogLevel.INFO_PLUS);
+        this.log(name + ": " + jsonScore);
     }
+};
+
+/**
+ * log
+ * ---
+ * Writes a message to the log file.
+ */
+Tournament.prototype.log = function(message) {
+    fs.writeSync(this._file, message + '\n');
 };
 
 // Exports...

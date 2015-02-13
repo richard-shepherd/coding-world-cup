@@ -1,3 +1,0 @@
-INFO: Starting game loop
-INFO: 9.2: GOAL!!!
-INFO: 16.7: GOAL!!!

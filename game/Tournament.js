@@ -76,6 +76,7 @@ Tournament.prototype._playNextGame = function(roundNumber, player1Index, player2
         // We've played all the games in this round...
         this._showScores(roundNumber);
         roundFinishedCallback();
+        return;
     }
 
     // We find the AIs...
@@ -85,7 +86,7 @@ Tournament.prototype._playNextGame = function(roundNumber, player1Index, player2
     if(player1Name === player2Name) {
         player2Index += 1;
         setImmediate(function() {
-            that._playNextGame(player1Index, player2Index);
+            that._playNextGame(roundNumber, player1Index, player2Index, roundFinishedCallback);
         });
         return;
     }
@@ -133,7 +134,7 @@ Tournament.prototype._playNextGame = function(roundNumber, player1Index, player2
         // We play the next game...
         player2Index += 1;
         setImmediate(function() {
-            that._playNextGame(player1Index, player2Index);
+            that._playNextGame(roundNumber, player1Index, player2Index, roundFinishedCallback);
         });
     });
     game.setTurnRate(0.0);
@@ -159,6 +160,7 @@ Tournament.prototype._showScores = function(roundNumber) {
  * Writes a message to the log file.
  */
 Tournament.prototype.log = function(message) {
+    console.log(message);
     fs.writeSync(this._file, message + '\n');
 };
 

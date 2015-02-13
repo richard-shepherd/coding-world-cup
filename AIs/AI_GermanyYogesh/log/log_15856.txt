@@ -1,2 +1,0 @@
-INFO: Starting game loop
-INFO: 20.3: GOAL!!!

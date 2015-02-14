@@ -22,7 +22,7 @@ playTournament();
 function playTournament() {
     // We set up logging...
     Logger.addHandler(new LogHandler_Console(Logger.LogLevel.INFO_PLUS));
-    Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.DEBUG));
+    Logger.addHandler(new LogHandler_File('./log/log.txt', Logger.LogLevel.INFO_PLUS));
 
     // We play the tournament...
     var tournament = new Tournament();

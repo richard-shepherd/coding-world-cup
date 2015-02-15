@@ -27,6 +27,10 @@
         var scale = 10; // We scale up the game's pitch units, e.g. 100m -> 1000px
         var twoPI = 2.0 * Math.PI;
         var halfPI = Math.PI / 2.0;
+        var bigText = '';
+        var bigTextAlpha = 0.0;
+        var bigTextAlphaFadePerTurn = 0.03;
+        var goalSound1 = new Audio('goal1.mp3');
 
         // We wait for a server connection...
         connectToServer();
@@ -56,6 +60,8 @@
                     drawPitch(data.pitch);
                 } else if(data.eventType === 'START_OF_TURN') {
                     onStartOfTurn(data);
+                } else if(data.eventType === 'GOAL') {
+                    onGoal(data);
                 } else {
                     console.log('Unhandled eventType: ' + data.eventType);
                 }
@@ -66,6 +72,16 @@
                 // If we get an error, this is most likely because the server is not running...
                 document.getElementById("connection_message").innerText = "Start the server and then refresh the page";
             };
+        }
+
+        /**
+         * onGoal
+         * ------
+         * Called when a goal has been scored.
+         */
+        function onGoal(data) {
+            setBigText('GOAL!!!');
+            goalSound1.play();
         }
 
         /**
@@ -83,6 +99,7 @@
             showTeam(context, data.team1, 'red');
             showTeam(context, data.team2, 'blue');
             showBall(context, data);
+            showBigText(context, canvas);
         }
 
         /**
@@ -202,6 +219,47 @@
                     context.fillText(playerNumber, x-15, y+15);
                 }
             });
+        }
+
+        /**
+         * showBigText
+         * -----------
+         * Shows the currently set big-text in the centre of the screen.
+         * This fades out over time.
+         */
+        function showBigText(context, canvas) {
+            if(bigTextAlpha <= 0.0) {
+                return;
+            }
+
+            // We show the text in the centre of the screen with the
+            // current visibility...
+            context.font = 'bold 80pt Courier New';
+            var textWidth = context.measureText(bigText).width;
+            var textHeight = 0.0;
+            context.fillStyle = "rgba(255, 255, 0, " + bigTextAlpha + ")";
+            context.fillText(bigText, canvas.width/2.0 - textWidth/2.0, canvas.height/2.0 - textHeight/2.0);
+            context.lineWidth = 3;
+            context.strokeStyle = "rgba(0, 0, 0, " + bigTextAlpha + ")";
+            context.strokeText(bigText, canvas.width/2.0 - textWidth/2.0, canvas.height/2.0 - textHeight/2.0);
+
+            // We reduce the visibility each turn...
+            bigTextAlpha -= bigTextAlphaFadePerTurn;
+        }
+
+        /**
+         * setBigText
+         * ----------
+         * Sets text to be shown in the middle of the screen.
+         * The text fades out over a few seconds.
+         */
+        function setBigText(text) {
+            bigText = text;
+            bigTextAlpha = 1.0;
+
+            var canvas = document.getElementById("player_canvas");
+            var context = canvas.getContext("2d");
+            showBigText(context, canvas);
         }
 
         /**

@@ -259,6 +259,25 @@ Game.prototype.playNextTurn = function () {
  */
 Game.prototype.onGameOver = function() {
     Logger.log("Game over!", Logger.LogLevel.INFO);
+
+    // We send a message to the GUI to display the result.
+    // This is not sent to the AIs, as many may not support the event.
+    var team1Score = this._team1.state.score;
+    var team2Score = this._team2.state.score;
+    if(team1Score > team2Score) {
+        var result = this._team1.getName() + " wins!";
+    } else if(team2Score > team1Score) {
+        var result = this._team2.getName() + " wins!";
+    } else {
+        var result = "Draw";
+    }
+    var event = {
+        eventType: "GAME_OVER",
+        result: result
+    };
+    this.sendEvent(event, false, true);
+
+    // We clean up...
     this._ai1.dispose();
     this._ai2.dispose();
     this._gameOver = true;
@@ -549,16 +568,18 @@ Game.prototype.giveAllPlayersMaxAbilities = function() {
  * ---------
  * Sends the event to both AIs and to the GUI.
  */
-Game.prototype.sendEvent = function(event) {
+Game.prototype.sendEvent = function(event, sendToAIs, sendToGUI) {
     // We get the JSON version of the event...
     var jsonEvent = MessageUtils.getEventJSON(event);
 
     // We send the event to both AIs...
-    this._team1.getAI().sendData(jsonEvent);
-    this._team2.getAI().sendData(jsonEvent);
+    if(sendToAIs) {
+        this._team1.getAI().sendData(jsonEvent);
+        this._team2.getAI().sendData(jsonEvent);
+    }
 
     // And to the GUI...
-    if(this.guiWebSocket !== null) {
+    if( sendToGUI && this.guiWebSocket !== null) {
         this.guiWebSocket.broadcast(jsonEvent);
     }
 
@@ -576,7 +597,7 @@ Game.prototype.sendEvent_GameStart = function() {
         pitch: this.pitch,
         gameLengthSeconds: this._gameLengthSeconds
     };
-    this.sendEvent(event);
+    this.sendEvent(event, true, true);
 };
 
 /**
@@ -598,7 +619,7 @@ Game.prototype.sendEvent_StartOfTurn = function() {
     // We get the DTO and pass it to the AIs...
     var event = this.getDTO(true);
     event.eventType = "START_OF_TURN";
-    this.sendEvent(event);
+    this.sendEvent(event, true, true);
 };
 
 /**
@@ -611,7 +632,7 @@ Game.prototype.sendEvent_Goal = function() {
         team1:this._team1.state,
         team2:this._team2.state
     };
-    this.sendEvent(event);
+    this.sendEvent(event, true, true);
 };
 
 /**
@@ -619,7 +640,7 @@ Game.prototype.sendEvent_Goal = function() {
  * ------------------
  */
 Game.prototype.sendEvent_HalfTime = function() {
-    this.sendEvent({eventType:"HALF_TIME"});
+    this.sendEvent({eventType:"HALF_TIME"}, true, true);
 };
 
 /**

@@ -30,7 +30,7 @@ function GSM_Kickoff(game, teamToKickOff) {
         team2:game.getTeam2().state,
         teamKickingOff:teamToKickOff.getTeamNumber()
     };
-    game.sendEvent(event);
+    game.sendEvent(event, true, true);
 
     // And the request...
     this.sendRequestToBothAIs({requestType:'KICKOFF'});

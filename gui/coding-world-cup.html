@@ -31,8 +31,16 @@
         var bigText = '';
         var bigTextAlpha = 0.0;
         var bigTextAlphaFadePerTurn = 0.03;
-        var goalSound1 = new Audio('goal1.mp3');
+        var goalSounds = [
+            new Audio('goal1.mp3'),
+            new Audio('goal2.mp3'),
+            new Audio('goal3.mp3'),
+            new Audio('goal4.mp3'),
+            new Audio('goal5.mp3')];
+        var goalSoundIndex = 0;
+        var numGoalSounds = 5;
         var equalizerSound1 = new Audio('equalizer1.mp3');
+        var overSound = new Audio('over.mp3');
 
         // We wait for a server connection...
         connectToServer();
@@ -96,9 +104,15 @@
             // We play a sound...
             var isEqualizer = (data.team1.team.score === data.team2.team.score);
             if(isEqualizer) {
+                // Played when scores are equalized...
                 equalizerSound1.play();
             } else {
-                goalSound1.play();
+                // We play the next goal sound...
+                goalSounds[goalSoundIndex].play();
+                goalSoundIndex += 1;
+                if(goalSoundIndex === numGoalSounds) {
+                    goalSoundIndex = 0;
+                }
             }
         }
 
@@ -121,6 +135,7 @@
             clearCanvas("text_canvas");
             showScore(data);
             setBigText(data.result);
+            overSound.play();
         }
 
         /**
@@ -163,19 +178,29 @@
             var canvas = document.getElementById("text_canvas");
             var context = canvas.getContext("2d");
 
+            var textY = 20;
+            var textBorderColor = "#202020";
+            var textFont = "bold 22pt Courier New";
+
             // We show team1's score...
             var team1 = data.team1.team;
-            context.font = 'bold 16pt Courier New';
-            context.fillStyle = 'black';
+            context.font = textFont;
+            context.fillStyle = "#ff4040";
             var x = (team1.direction === "RIGHT") ? border: canvas.width / 2;
-            context.fillText(team1.name + ': ' + team1.score, x, 17);
+            context.fillText(team1.name + ': ' + team1.score, x, textY);
+            context.lineWidth = 1;
+            context.strokeStyle = textBorderColor;
+            context.strokeText(team1.name + ': ' + team1.score, x, textY);
 
             // We show team2's score...
             var team2 = data.team2.team;
-            context.font = 'bold 16pt Courier New';
-            context.fillStyle = 'black';
+            context.font = textFont;
+            context.fillStyle = "#4040ff";
             x = (team2.direction === "RIGHT") ? border: canvas.width / 2;
-            context.fillText(team2.name + ': ' + team2.score, x, 17);
+            context.fillText(team2.name + ': ' + team2.score, x, textY);
+            context.lineWidth = 1;
+            context.strokeStyle = textBorderColor;
+            context.strokeText(team2.name + ': ' + team2.score, x, textY);
 
             // We show the game time...
             context.font = 'bold 16pt Courier New';

@@ -81,7 +81,7 @@ function Game(ai1, ai2, gameOverCallback) {
     this._aiUpdateIntervalSeconds = 0.1;
 
     // The length of the game in seconds...
-    this._gameLengthSeconds = 10.0 * 60.0;
+    this._gameLengthSeconds = 1.0 * 60.0;
     this._halfTimeSeconds = this._gameLengthSeconds / 2.0;
 
     // The maximum total ability in each category...

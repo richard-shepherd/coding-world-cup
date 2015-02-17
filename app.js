@@ -48,6 +48,7 @@ function playGame(player1Name, player2Name) {
 
     // We create a game...
     var game = new Game(ai1, ai2);
+    game.suddenDeath = true;
 
     // 1.0 plays at real-time, 0.5 plays twice as fast, 0.0 plays as fast as possible...
     game.setTurnRate(0.5);

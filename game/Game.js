@@ -61,6 +61,10 @@ function Game(ai1, ai2, gameOverCallback) {
     // The ball...
     this.ball = new Ball();
 
+    // Whether we go to sudden-death if a game is a draw...
+    this.suddenDeath = false;
+    this._inSuddenDeathPhase = false;
+
     // Indicates whether the game is over.
     // This can be set if the game terminates unexpectedly. For example,
     // by one of the AIs crashing...
@@ -77,7 +81,7 @@ function Game(ai1, ai2, gameOverCallback) {
     this._aiUpdateIntervalSeconds = 0.1;
 
     // The length of the game in seconds...
-    this._gameLengthSeconds = 20.0 * 60.0;
+    this._gameLengthSeconds = 10.0 * 60.0;
     this._halfTimeSeconds = this._gameLengthSeconds / 2.0;
 
     // The maximum total ability in each category...
@@ -228,10 +232,22 @@ Game.prototype.playNextTurn = function () {
         return;
     }
 
-    // Has the game ended?
-    if(this.state.currentTimeSeconds >= this._gameLengthSeconds) {
+    // Has the game ended? The game is over if any of these is true:
+    // - Time is up and we are not playing sudden-death
+    // - Time is up and we have a winner (regardless of playing sudden death)
+    var afterNormalTime = this.state.currentTimeSeconds >= this._gameLengthSeconds;
+    var gameIsDrawn = (this._team1.state.score === this._team2.state.score);
+    if((afterNormalTime && !this.suddenDeath) || (afterNormalTime && !gameIsDrawn)
+) {
         this.onGameOver();
         return;
+    }
+
+    // If normal-time has ended, we may need to go into the sudden-death
+    // phase, if the game is currently drawn...
+    if(afterNormalTime && this.suddenDeath && gameIsDrawn && !this._inSuddenDeathPhase) {
+        this._inSuddenDeathPhase = true;
+        this.sendEvent({eventType: "SUDDEN_DEATH"}, false, true);
     }
 
     // We may need to wait a bit before playing the next turn...
@@ -271,10 +287,9 @@ Game.prototype.onGameOver = function() {
     } else {
         var result = "Draw";
     }
-    var event = {
-        eventType: "GAME_OVER",
-        result: result
-    };
+    var event = this.getDTO(true);
+    event.eventType = "GAME_OVER";
+    event.result = result;
     this.sendEvent(event, false, true);
 
     // We clean up...
@@ -627,11 +642,8 @@ Game.prototype.sendEvent_StartOfTurn = function() {
  * --------------
  */
 Game.prototype.sendEvent_Goal = function() {
-    var event = {
-        eventType:"GOAL",
-        team1:this._team1.state,
-        team2:this._team2.state
-    };
+    var event = this.getDTO(true);
+    event.eventType = "GOAL";
     this.sendEvent(event, true, true);
 };
 

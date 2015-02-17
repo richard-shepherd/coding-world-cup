@@ -18,6 +18,7 @@
     -->
     <canvas id="pitch_canvas" style="position:absolute; left:0; top:0; z-index:0;"></canvas>
     <canvas id="player_canvas" style="position:absolute; left:0; top:0; z-index:1;"></canvas>
+    <canvas id="text_canvas" style="position:absolute; left:0; top:0; z-index:2;"></canvas>
 
     <!-- The code that shows the game -->
     <script type="text/javascript">
@@ -31,6 +32,7 @@
         var bigTextAlpha = 0.0;
         var bigTextAlphaFadePerTurn = 0.03;
         var goalSound1 = new Audio('goal1.mp3');
+        var equalizerSound1 = new Audio('equalizer1.mp3');
 
         // We wait for a server connection...
         connectToServer();
@@ -66,6 +68,8 @@
                     onHalfTime(data);
                 } else if(data.eventType === 'GAME_OVER') {
                     onGameOver(data);
+                } else if(data.eventType === 'SUDDEN_DEATH') {
+                    onSuddenDeath(data);
                 } else {
                     console.log('Unhandled eventType: ' + data.eventType);
                 }
@@ -84,8 +88,18 @@
          * Called when a goal has been scored.
          */
         function onGoal(data) {
+            // We show the new score and GOAL!!!
+            clearCanvas("text_canvas");
+            showScore(data);
             setBigText('GOAL!!!');
-            goalSound1.play();
+
+            // We play a sound...
+            var isEqualizer = (data.team1.team.score === data.team2.team.score);
+            if(isEqualizer) {
+                equalizerSound1.play();
+            } else {
+                goalSound1.play();
+            }
         }
 
         /**
@@ -94,6 +108,7 @@
          * Called at half-time.
          */
         function onHalfTime(data) {
+            clearCanvas("text_canvas");
             setBigText('Half Time');
         }
 
@@ -103,7 +118,19 @@
          * Called when the game is over.
          */
         function onGameOver(data) {
+            clearCanvas("text_canvas");
+            showScore(data);
             setBigText(data.result);
+        }
+
+        /**
+         * onSuddenDeath
+         * -------------
+         * Called at the end of the game if we are playing sudden-death.
+         */
+        function onSuddenDeath(data) {
+            clearCanvas("text_canvas");
+            setBigText('Sudden Death!');
         }
 
         /**
@@ -113,22 +140,29 @@
          */
         function onStartOfTurn(data) {
             // We get the canvas and drawing context, and clear it...
-            var canvas = document.getElementById("player_canvas");
-            var context = canvas.getContext("2d");
-            context.clearRect(0, 0, canvas.width, canvas.height);
+            var playerCanvas = document.getElementById("player_canvas");
+            var playerContext = playerCanvas.getContext("2d");
+            playerContext.clearRect(0, 0, playerCanvas.width, playerCanvas.height);
 
-            showScore(context, canvas, data);
-            showTeam(context, data.team1, 'red');
-            showTeam(context, data.team2, 'blue');
-            showBall(context, data);
-            showBigText(context, canvas);
+            var textCanvas = document.getElementById("text_canvas");
+            var textContext = textCanvas.getContext("2d");
+            textContext.clearRect(0, 0, textCanvas.width, textCanvas.height);
+
+            showTeam(playerContext, data.team1, 'red');
+            showTeam(playerContext, data.team2, 'blue');
+            showBall(playerContext, data);
+            showScore(data);
+            showBigText();
         }
 
         /**
          * showScore
          * ---------
          */
-        function showScore(context, canvas, data) {
+        function showScore(data) {
+            var canvas = document.getElementById("text_canvas");
+            var context = canvas.getContext("2d");
+
             // We show team1's score...
             var team1 = data.team1.team;
             context.font = 'bold 16pt Courier New';
@@ -254,6 +288,9 @@
                 return;
             }
 
+            var canvas = document.getElementById("text_canvas");
+            var context = canvas.getContext("2d");
+
             // We show the text in the centre of the screen with the
             // current visibility...
             context.font = 'bold 80pt Courier New';
@@ -278,10 +315,17 @@
         function setBigText(text) {
             bigText = text;
             bigTextAlpha = 1.0;
+            showBigText();
+        }
 
-            var canvas = document.getElementById("player_canvas");
+        /**
+         * clearCanvas
+         * -----------
+         */
+        function clearCanvas(canvasName) {
+            var canvas = document.getElementById(canvasName);
             var context = canvas.getContext("2d");
-            showBigText(context, canvas);
+            context.clearRect(0, 0, canvas.width, canvas.height);
         }
 
         /**
@@ -294,6 +338,8 @@
             var pitchContext = pitchCanvas.getContext("2d");
             var playerCanvas = document.getElementById("player_canvas");
             var playerContext = playerCanvas.getContext("2d");
+            var textCanvas = document.getElementById("text_canvas");
+            var textContext = playerCanvas.getContext("2d");
 
             // We get some of the dimensions of the pitch, scaled up to px...
             var pitchWidth = pitch.width * scale;
@@ -307,9 +353,12 @@
             pitchCanvas.height = pitchHeight + border * 2;
             playerCanvas.width = pitchWidth + border * 2;
             playerCanvas.height = pitchHeight + border * 2;
+            textCanvas.width = pitchWidth + border * 2;
+            textCanvas.height = pitchHeight + border * 2;
 
-            // We clear the player canvas...
+            // We clear the player canvas and the text canvas...
             playerContext.clearRect(0, 0, playerCanvas.width, playerCanvas.height);
+            textContext.clearRect(0, 0, textCanvas.width, textCanvas.height);
 
             // We color the pitch green, with stripes...
             var numberOfStripes = 8;
